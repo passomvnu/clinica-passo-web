@@ -913,20 +913,27 @@
     </div>
   </footer>
 
-  <!-- BOTONES FLOTANTES DE ACCIÓN RÁPIDA (MOBILE / DESKTOP) -->
-  <div class="floating-emergency-bar" id="floatingEmergency">
-    <a href="tel:01142641654" class="floating-btn call-btn" aria-label="Llamar de Urgencia al 011 4264-1654">
-      <i data-lucide="phone-call"></i>
-      <span class="btn-text">Guardia: <strong>011 4264-1654</strong></span>
+  <!-- BARRA FIJA INFERIOR OPTIMIZADA PARA MÓVILES (IPHONE / ANDROID / NETLIFY) -->
+  <div class="fixed-bottom-bar" id="mobileActionBar">
+    <button class="btn-action btn-turnos" onclick="openTurnoModal()" aria-label="Solicitar Turno Médico">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
+        <line x1="16" x2="16" y1="2" y2="6"/>
+        <line x1="8" x2="8" y1="2" y2="6"/>
+        <line x1="3" x2="10" y1="10" y2="10"/>
+      </svg>
+      <span>Pedir Turno</span>
+    </button>
+    <a href="https://wa.me/5491122467973?text=Hola%20Cl%C3%ADnica%20Passo,%20quisiera%20consultar%20por%20un%20turno" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="btn-action btn-whatsapp" 
+       aria-label="Escribir por WhatsApp">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+      </svg>
+      <span>WhatsApp</span>
     </a>
-    <button class="floating-btn whatsapp-btn" onclick="openDirectWhatsApp()" aria-label="Escribir por WhatsApp">
-      <i data-lucide="message-circle"></i>
-      <span class="btn-text">WhatsApp Turnos</span>
-    </button>
-    <button class="floating-btn turno-btn" onclick="openTurnoModal()" aria-label="Pedir Turno">
-      <i data-lucide="calendar"></i>
-      <span class="btn-text">Pedir Turno</span>
-    </button>
   </div>
 
   <!-- MODAL DE SOLICITUD DE TURNOS -->

@@ -72,7 +72,7 @@ body {
   background-color: var(--bg-body);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  padding-bottom: 70px; /* Espacio para barra fija móvil */
+  padding-bottom: calc(75px + env(safe-area-inset-bottom, 0px) + 48px); /* Espacio para barra fija + iPhone + Netlify */
 }
 
 @media (min-width: 768px) {
@@ -416,6 +416,42 @@ button, input, select, textarea {
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--text-muted);
+}
+
+@media (max-width: 600px) {
+  .top-bar-content {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.75rem;
+  }
+  .top-bar-left, .top-bar-right {
+    gap: 0.6rem;
+    font-size: 0.78rem;
+  }
+  .nav-container {
+    height: auto;
+    min-height: 66px;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+  }
+  .brand-logo {
+    gap: 0.55rem;
+  }
+  .brand-logo-img {
+    width: 40px;
+    height: 40px;
+  }
+  .logo-title {
+    font-size: 1.12rem;
+  }
+  .logo-subtitle {
+    font-size: 0.62rem;
+  }
+  .nav-actions .btn-primary {
+    padding: 0.45rem 0.75rem;
+    font-size: 0.82rem;
+  }
 }
 
 .nav-links {
@@ -1900,86 +1936,91 @@ input:focus, select:focus, textarea:focus {
 }
 
 /* ==========================================================================
-   BOTÓN FLOTANTE MÓVIL & ACCIONES FIJAS
+   BARRA FIJA INFERIOR OPTIMIZADA PARA MÓVILES (IPHONE / ANDROID / NETLIFY)
    ========================================================================== */
-.floating-emergency-bar {
+.fixed-bottom-bar {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  background: #FFFFFF;
-  padding: 0.6rem 1rem;
-  box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.12);
   display: flex;
-  gap: 0.6rem;
-  z-index: 99;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  z-index: 99999;
+  box-sizing: border-box;
+  
+  /* Evita que se tape con la barra de gestos de iPhone y la insignia de Netlify */
+  padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px) + 48px);
 }
 
-@media (min-width: 768px) {
-  .floating-emergency-bar {
-    bottom: 2rem;
-    right: 2rem;
-    left: auto;
-    width: auto;
-    background: transparent;
-    padding: 0;
-    box-shadow: none;
-    flex-direction: column;
-    align-items: flex-end;
-  }
-}
-
-.floating-btn {
+.btn-action {
+  flex: 1;                     /* Cada botón ocupa exactamente el 50% */
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  font-family: var(--font-heading);
-  font-weight: 700;
-  padding: 0.8rem 1.25rem;
-  border-radius: var(--radius-full);
+  gap: 8px;                    /* Espacio entre el icono y el texto */
+  min-height: 46px;            /* Altura táctil ideal */
+  border-radius: 12px;         /* Bordes redondeados modernos */
   border: none;
   cursor: pointer;
-  box-shadow: var(--shadow-lg);
-  transition: var(--transition);
-  flex: 1;
+  text-decoration: none;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 14.5px;
+  letter-spacing: -0.01em;
+  white-space: nowrap;         /* Nunca rompe el texto en 2 renglones */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: transform 0.15s ease, filter 0.15s ease;
 }
 
+.btn-action:active {
+  transform: scale(0.97);      /* Efecto de pulsación natural en el celular */
+}
+
+.btn-turnos {
+  background-color: var(--primary-royal);
+  color: #FFFFFF !important;
+}
+
+.btn-turnos:hover {
+  background-color: var(--primary-royal-dark);
+}
+
+.btn-whatsapp {
+  background-color: #25D366;
+  color: #FFFFFF !important;
+}
+
+.btn-whatsapp:hover {
+  background-color: #1EBE5D;
+}
+
+/* En Computadoras (Escritorio / Tablets) */
 @media (min-width: 768px) {
-  .floating-btn {
-    flex: initial;
-    padding: 0.9rem 1.6rem;
+  .fixed-bottom-bar {
+    width: auto;
+    left: auto;
+    right: 24px;
+    bottom: 24px;
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
   }
-}
-
-.floating-btn.call-btn {
-  background: var(--emergency-red);
-  color: #FFFFFF;
-}
-
-.floating-btn.call-btn:hover {
-  background: var(--emergency-red-hover);
-  transform: scale(1.04);
-}
-
-.floating-btn.whatsapp-btn {
-  background: #25D366;
-  color: #FFFFFF;
-}
-
-.floating-btn.whatsapp-btn:hover {
-  background: #1EBE5D;
-  transform: scale(1.04);
-}
-
-.floating-btn.turno-btn {
-  background: var(--primary-royal);
-  color: #FFFFFF;
-}
-
-.floating-btn.turno-btn:hover {
-  background: var(--primary-royal-dark);
-  transform: scale(1.04);
+  
+  .btn-action {
+    flex: initial;
+    min-width: 170px;
+    padding: 12px 20px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  }
 }
 
 /* ==========================================================================
