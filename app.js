@@ -8,8 +8,8 @@
 // ==========================================================================
 const CLINICA_CONFIG = {
   // Formato internacional de Argentina: 549 + 11 + número de celular sin el 15
-  whatsappNumber: '5491122467973', // Número de WhatsApp para Turnos y Consultas
-  telefonoGuardia: '011 4264-1654',
+  whatsappNumber: '5491139511478', // Número de WhatsApp para Turnos y Consultas
+  telefonoGuardia: '011 42640056',
   direccion: 'Av. Eva Perón 3097, B1832 Temperley, Provincia de Buenos Aires'
 };
 
