@@ -1952,21 +1952,31 @@ input:focus, select:focus, textarea:focus {
   align-items: center;
   gap: 10px;
   padding: 10px 14px;
-  z-index: 99999;
+  z-index: 999;
   box-sizing: border-box;
   
   /* Evita que se tape con la barra de gestos de iPhone y la insignia de Netlify */
   padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px) + 48px);
+  transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+}
+
+/* Ocultar barra fija cuando el modal de turnos esté abierto */
+body.modal-open .fixed-bottom-bar,
+.fixed-bottom-bar.hidden-by-modal {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 .btn-action {
-  flex: 1;                     /* Cada botón ocupa exactamente el 50% */
+  flex: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;                    /* Espacio entre el icono y el texto */
-  min-height: 46px;            /* Altura táctil ideal */
-  border-radius: 12px;         /* Bordes redondeados modernos */
+  gap: 8px;
+  min-height: 46px;
+  border-radius: 12px;
   border: none;
   cursor: pointer;
   text-decoration: none;
@@ -1974,13 +1984,13 @@ input:focus, select:focus, textarea:focus {
   font-weight: 700;
   font-size: 14.5px;
   letter-spacing: -0.01em;
-  white-space: nowrap;         /* Nunca rompe el texto en 2 renglones */
+  white-space: nowrap;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   transition: transform 0.15s ease, filter 0.15s ease;
 }
 
 .btn-action:active {
-  transform: scale(0.97);      /* Efecto de pulsación natural en el celular */
+  transform: scale(0.97);
 }
 
 .btn-turnos {
@@ -2001,7 +2011,6 @@ input:focus, select:focus, textarea:focus {
   background-color: #1EBE5D;
 }
 
-/* En Computadoras (Escritorio / Tablets) */
 @media (min-width: 768px) {
   .fixed-bottom-bar {
     width: auto;
@@ -2024,12 +2033,6 @@ input:focus, select:focus, textarea:focus {
   }
 }
 
-/* ============================================
-   MODAL FIX v2 — Clínica Passo
-   Soluciona: logo gigante + botones que tapan
-   ============================================ */
-
-/* --- BACKDROP: bottom sheet en móvil --- */
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -2038,7 +2041,7 @@ input:focus, select:focus, textarea:focus {
   height: 100%;
   background: rgba(6, 21, 43, 0.75);
   backdrop-filter: blur(6px);
-  z-index: 1000;
+  z-index: 999999;
   display: flex;
   align-items: flex-end;
   justify-content: center;

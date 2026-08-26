@@ -146,7 +146,11 @@ function openTurnoModal(specialty = '') {
   if (modal) {
     modal.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
-    if (actionBar) actionBar.style.display = 'none';
+    document.body.classList.add('modal-open');
+    if (actionBar) {
+      actionBar.classList.add('hidden-by-modal');
+      actionBar.style.setProperty('display', 'none', 'important');
+    }
     if (window.lucide) window.lucide.createIcons();
   }
 }
@@ -157,7 +161,11 @@ function closeTurnoModal() {
   if (modal) {
     modal.classList.add('hidden');
     document.body.style.overflow = '';
-    if (actionBar) actionBar.style.display = '';
+    document.body.classList.remove('modal-open');
+    if (actionBar) {
+      actionBar.classList.remove('hidden-by-modal');
+      actionBar.style.removeProperty('display');
+    }
   }
 }
 
