@@ -69,7 +69,7 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   
   <!-- Estilos Personalizados -->
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=2.5">
 </head>
 <body>
 
@@ -1014,7 +1014,21 @@
     <span id="toastMessage">Dirección copiada al portapapeles</span>
   </div>
 
-  <!-- Script JS -->
-  <script src="app.js"></script>
+  <!-- Script JS con version cache-buster -->
+  <script src="app.js?v=2.5"></script>
+  <script>
+    // Verificación constante: si el modal de turnos está abierto, oculta la barra inferior inmediatamente
+    setInterval(function() {
+      var modal = document.getElementById('turnoModal');
+      var bar = document.getElementById('mobileActionBar');
+      if (modal && bar) {
+        if (!modal.classList.contains('hidden')) {
+          bar.style.setProperty('display', 'none', 'important');
+        } else {
+          bar.style.removeProperty('display');
+        }
+      }
+    }, 100);
+  </script>
 </body>
 </html>
