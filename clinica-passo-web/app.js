@@ -8,8 +8,9 @@
 // ==========================================================================
 const CLINICA_CONFIG = {
   // Formato internacional de Argentina: 549 + 11 + número de celular sin el 15
-  whatsappNumber: '5491122467973', // Número de WhatsApp para Turnos y Consultas
-  telefonoGuardia: '011 4264-1654',
+  whatsappNumber: '5491139511478', // Número de WhatsApp para Turnos y Consultas
+  telefonoGuardia: '1142641652',   // Guardia — línea principal
+  telefonoGuardia2: '1142640056',  // Guardia — línea alternativa
   direccion: 'Av. Eva Perón 3097, B1832 Temperley, Provincia de Buenos Aires'
 };
 
@@ -126,6 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function openTurnoModal(specialty = '') {
   const modal = document.getElementById('turnoModal');
+  const actionBar = document.getElementById('mobileActionBar');
   const specialtySelect = document.getElementById('modalSpecialty');
   const feedback = document.getElementById('modalFeedback');
 
@@ -144,15 +146,18 @@ function openTurnoModal(specialty = '') {
   if (modal) {
     modal.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
+    if (actionBar) actionBar.style.display = 'none';
     if (window.lucide) window.lucide.createIcons();
   }
 }
 
 function closeTurnoModal() {
   const modal = document.getElementById('turnoModal');
+  const actionBar = document.getElementById('mobileActionBar');
   if (modal) {
     modal.classList.add('hidden');
     document.body.style.overflow = '';
+    if (actionBar) actionBar.style.display = '';
   }
 }
 

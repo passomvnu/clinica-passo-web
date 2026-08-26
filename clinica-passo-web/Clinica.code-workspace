@@ -1,10 +1,10 @@
 {
 	"folders": [
 		{
-			"path": "../../../../Clinica"
+			"path": "."
 		},
 		{
-			"path": "."
+			"path": "../../../../Desktop/clinica-passo-backend"
 		}
 	],
 	"settings": {}
