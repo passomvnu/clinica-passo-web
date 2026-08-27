@@ -47,13 +47,46 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 3. Navbar Sticky con sombra al hacer scroll
+  // 3. Navbar Sticky & Scrollspy para línea azul activa en cada sección
   const mainNav = document.getElementById('mainNav');
+  const desktopNavLinks = document.querySelectorAll('.nav-link');
+  const sections = document.querySelectorAll('section[id], header[id], main[id]');
+
+  // Cambio de pestaña activa inmediato al hacer clic
+  desktopNavLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      desktopNavLinks.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+    });
+  });
+
+  // Seguimiento dinámico al scrollear (Scrollspy)
   window.addEventListener('scroll', () => {
     if (window.scrollY > 20) {
       mainNav.classList.add('scrolled');
     } else {
       mainNav.classList.remove('scrolled');
+    }
+
+    let currentSectionId = '';
+    const scrollPos = window.scrollY + 140;
+
+    sections.forEach(section => {
+      const top = section.offsetTop;
+      const height = section.offsetHeight;
+      if (scrollPos >= top && scrollPos < top + height) {
+        currentSectionId = section.getAttribute('id');
+      }
+    });
+
+    if (currentSectionId) {
+      desktopNavLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href === `#${currentSectionId}`) {
+          desktopNavLinks.forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+        }
+      });
     }
   });
 
@@ -173,8 +206,10 @@ function closeTurnoModal() {
 function handleModalSubmit(event) {
   event.preventDefault();
   const name = document.getElementById('modalName').value.trim();
+  const dni = document.getElementById('modalDni') ? document.getElementById('modalDni').value.trim() : '';
   const phone = document.getElementById('modalPhone').value.trim();
   const insurance = document.getElementById('modalInsurance').value.trim() || 'Particular / A consultar';
+  const affiliateNumber = document.getElementById('modalAffiliateNumber') ? document.getElementById('modalAffiliateNumber').value.trim() : '';
   const specialty = document.getElementById('modalSpecialty').value;
   const notes = document.getElementById('modalNotes').value.trim() || 'Sin observaciones adicionales';
 
@@ -183,17 +218,29 @@ function handleModalSubmit(event) {
 
   if (submitBtn) {
     submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i data-lucide="loader-2"></i> Conectando con WhatsApp...';
+    submitBtn.innerHTML = '<i data-lucide="loader-2" class="spin"></i> Conectando con WhatsApp...';
     if (window.lucide) window.lucide.createIcons();
   }
 
   // Construir mensaje estructurado para WhatsApp
-  const message = 
+  let message = 
     `🏥 *SOLICITUD DE TURNO — CLÍNICA PASSO S.A.*\n\n` +
-    `👤 *Paciente:* ${name}\n` +
-    `📞 *Teléfono:* ${phone}\n` +
+    `👤 *Paciente:* ${name}\n`;
+
+  if (dni) {
+    message += `🪪 *DNI:* ${dni}\n`;
+  }
+
+  message +=
+    `📞 *Teléfono / WhatsApp:* ${phone}\n` +
     `🩺 *Especialidad:* ${specialty}\n` +
-    `💳 *Obra Social / Prepaga:* ${insurance}\n` +
+    `💳 *Obra Social / Prepaga:* ${insurance}\n`;
+
+  if (affiliateNumber) {
+    message += `🔢 *N° de Beneficio / Afiliado:* ${affiliateNumber}\n`;
+  }
+
+  message +=
     `📝 *Preferencia / Consulta:* ${notes}\n\n` +
     `_Enviado desde el sitio web de Clínica Passo S.A._`;
 
@@ -218,7 +265,10 @@ function handleModalSubmit(event) {
     setTimeout(() => {
       closeTurnoModal();
       event.target.reset();
-      if (submitBtn) submitBtn.innerHTML = '<i data-lucide="send"></i> Confirmar Solicitud por WhatsApp';
+      if (submitBtn) {
+        submitBtn.innerHTML = '<i data-lucide="message-circle"></i> Confirmar Turno por WhatsApp';
+        if (window.lucide) window.lucide.createIcons();
+      }
     }, 2500);
   }, 600);
 }
