@@ -69,7 +69,7 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   
   <!-- Estilos Personalizados -->
-  <link rel="stylesheet" href="styles.css?v=5.0">
+  <link rel="stylesheet" href="styles.css?v=6.0">
 </head>
 <body>
 
@@ -99,11 +99,8 @@
         </li>
       </ul>
 
-      <!-- Botón CTA a la derecha & toggle móvil -->
+      <!-- Espacio libre en PC / Toggle móvil para responsive -->
       <div class="nav-actions">
-        <button type="button" onclick="openTurnoModal()" class="btn btn-primary btn-sm nav-cta-btn">
-          <i data-lucide="calendar"></i> Pedir Turno
-        </button>
         <button class="mobile-toggle-btn" id="menuToggle" aria-label="Abrir menú de navegación">
           <i data-lucide="menu" id="menuIcon"></i>
         </button>
@@ -888,6 +885,18 @@
     </a>
   </div>
 
+  <!-- BOTÓN FLOTANTE WHATSAPP MINIMALISTA PARA PC (ESCRITORIO) -->
+  <a href="https://wa.me/5491139511478?text=Hola%20Cl%C3%ADnica%20Passo,%20quisiera%20consultar%20por%20un%20turno" 
+     target="_blank" 
+     rel="noopener noreferrer" 
+     class="desktop-whatsapp-bubble" 
+     aria-label="Contactar por WhatsApp"
+     title="Escribinos por WhatsApp">
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 6.46 17.5 2 12.04 2ZM12.04 20.15C10.56 20.15 9.11 19.76 7.85 19.01L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 14.99 3.81 13.47 3.81 11.91C3.81 7.37 7.5 3.68 12.04 3.68C14.24 3.68 16.31 4.54 17.86 6.09C19.41 7.64 20.27 9.71 20.27 11.91C20.27 16.46 16.58 20.15 12.04 20.15ZM16.55 14.41C16.3 14.28 15.09 13.69 14.86 13.61C14.63 13.52 14.47 13.48 14.3 13.73C14.13 13.98 13.66 14.54 13.51 14.7C13.37 14.87 13.22 14.89 12.97 14.76C12.72 14.64 11.92 14.38 10.97 13.53C10.23 12.87 9.73 12.06 9.58 11.81C9.43 11.56 9.57 11.42 9.69 11.3C9.8 11.19 9.94 11.01 10.06 10.87C10.18 10.73 10.23 10.63 10.31 10.46C10.39 10.29 10.35 10.15 10.29 10.02C10.23 9.9 9.73 8.68 9.53 8.17C9.33 7.68 9.13 7.74 8.97 7.73L8.49 7.72C8.32 7.72 8.06 7.78 7.83 8.03C7.61 8.28 6.98 8.87 6.98 10.07C6.98 11.27 7.85 12.43 7.97 12.59C8.09 12.75 9.7 15.24 12.16 16.3C12.75 16.55 13.2 16.7 13.56 16.82C14.15 17.01 14.69 16.98 15.11 16.92C15.58 16.85 16.55 16.33 16.76 15.75C16.96 15.17 16.96 14.67 16.9 14.57C16.84 14.47 16.69 14.41 16.55 14.41Z"/>
+    </svg>
+  </a>
+
   <!-- MODAL DE SOLICITUD DE TURNOS -->
   <div class="modal-backdrop hidden" id="turnoModal">
     <div class="modal-box">
@@ -976,7 +985,7 @@
   </div>
 
   <!-- Script JS con version cache-buster -->
-  <script src="app.js?v=5.0"></script>
+  <script src="app.js?v=6.0"></script>
   <script>
     // Verificación constante: si el modal de turnos está abierto, oculta la barra inferior inmediatamente
     setInterval(function() {

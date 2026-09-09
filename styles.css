@@ -292,6 +292,7 @@ button, input, select, textarea {
   align-items: center;
   gap: 0.85rem;
   text-decoration: none;
+  min-width: 220px;
 }
 
 .brand-logo-img {
@@ -393,14 +394,10 @@ button, input, select, textarea {
   gap: 0.75rem;
 }
 
-.nav-cta-btn {
-  display: none;
-  box-shadow: 0 2px 8px rgba(0, 31, 209, 0.2);
-}
-
-@media (min-width: 768px) {
-  .nav-cta-btn {
-    display: inline-flex;
+@media (min-width: 992px) {
+  .nav-actions {
+    min-width: 220px; /* Balancea simétricamente con el logo a la izquierda */
+    justify-content: flex-end;
   }
 }
 
@@ -1897,26 +1894,62 @@ body.modal-open .fixed-bottom-bar,
   background-color: #1EBE5D;
 }
 
+/* Ocultar barra fija en pantallas de escritorio (PC) */
 @media (min-width: 768px) {
   .fixed-bottom-bar {
-    width: auto;
-    left: auto;
-    right: 24px;
-    bottom: 24px;
-    background: transparent;
-    box-shadow: none;
-    padding: 0;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 12px;
+    display: none !important;
   }
-  
-  .btn-action {
-    flex: initial;
-    min-width: 170px;
-    padding: 12px 20px;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+}
+
+/* ==========================================================================
+   BOTÓN FLOTANTE WHATSAPP MINIMALISTA (PC / ESCRITORIO)
+   ========================================================================== */
+.desktop-whatsapp-bubble {
+  display: none;
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 58px;
+  height: 58px;
+  background: #25D366;
+  color: #FFFFFF;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 18px rgba(37, 211, 102, 0.45), 0 2px 6px rgba(0, 0, 0, 0.12);
+  z-index: 999;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.25s ease;
+}
+
+.desktop-whatsapp-bubble svg {
+  width: 30px;
+  height: 30px;
+  fill: #FFFFFF;
+  color: #FFFFFF;
+}
+
+.desktop-whatsapp-bubble:hover {
+  transform: scale(1.12);
+  box-shadow: 0 8px 26px rgba(37, 211, 102, 0.65);
+  color: #FFFFFF;
+}
+
+.desktop-whatsapp-bubble:active {
+  transform: scale(0.95);
+}
+
+@media (min-width: 768px) {
+  .desktop-whatsapp-bubble {
+    display: flex;
   }
+}
+
+body.modal-open .desktop-whatsapp-bubble {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 .modal-backdrop {
