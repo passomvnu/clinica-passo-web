@@ -69,7 +69,7 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   
   <!-- Estilos Personalizados -->
-  <link rel="stylesheet" href="styles.css?v=6.0">
+  <link rel="stylesheet" href="styles.css?v=7.0">
 </head>
 <body>
 
@@ -446,7 +446,7 @@
             <h3>Servicios de Diagnóstico</h3>
             <p>Estudios complementarios, diagnóstico por imágenes y análisis para el soporte rápido en guardia e internación.</p>
             <ul class="service-features">
-              <li><i data-lucide="check"></i> <strong>Tomografía computada propia</strong> (Tomógrafo en sede)</li>
+              <li><i data-lucide="check"></i> Tomografía</li>
               <li><i data-lucide="check"></i> Radiología digital</li>
               <li><i data-lucide="check"></i> Laboratorio de análisis clínicos de urgencia</li>
               <li><i data-lucide="check"></i> Electrocardiogramas y monitoreo cardíaco</li>
@@ -576,8 +576,8 @@
               <div class="care-contact-box">
                 <h4>¿Tenés alguna consulta o sugerencia?</h4>
                 <p>Estamos a tu disposición para orientarte antes de tu visita.</p>
-                <a href="tel:01142641654" class="btn btn-primary btn-sm w-full">
-                  <i data-lucide="phone"></i> Llamar al011 4264-1652
+                <a href="tel:01142641652" class="btn btn-primary btn-sm w-full">
+                  <i data-lucide="phone"></i> Llamar al 011 4264-1652
                 </a>
               </div>
             </div>
@@ -586,119 +586,7 @@
       </div>
     </section>
 
-    <!-- FORMULARIO DE SOLICITUD DE TURNOS / CONTACTO -->
-    <section class="turnos-section" id="turnos">
-      <div class="container">
-        <div class="turnos-container-box">
-          <div class="turnos-info">
-            <div class="section-tag tag-blue">Atención Programada</div>
-            <h2>Solicitá tu Turno o Envianos tu Consulta</h2>
-            <p>Completá el formulario para coordinar tu turno en consultorios externos o resolver tus dudas. Nuestro equipo de recepción te responderá a la brevedad.</p>
-            
-            <div class="turnos-contact-list">
-              <div class="contact-point">
-                <i data-lucide="phone-incoming"></i>
-                <div>
-                  <strong>Central Telefónica:</strong>
-                  <span>011 4264-1652</span>
-                </div>
-              </div>
-              <div class="contact-point">
-                <i data-lucide="map-pin"></i>
-                <div>
-                  <strong>Dirección:</strong>
-                  <span>Av. Eva Perón 3097, Temperley</span>
-                </div>
-              </div>
-              <div class="contact-point">
-                <i data-lucide="clock"></i>
-                <div>
-                  <strong>Horarios:</strong>
-                  <span>Guardia 24 hs | Consultorios según especialista</span>
-                </div>
-              </div>
-            </div>
 
-            <div class="urgency-warning">
-              <i data-lucide="alert-triangle"></i>
-              <span><strong>Importante:</strong> Si se trata de una urgencia médica en curso, no utilices el formulario. Llamá de inmediato al <strong>011 4264-1652</strong> o concurrí directamente a la guardia.</span>
-            </div>
-          </div>
-
-          <div class="turnos-form-card">
-            <h3>Formulario de Contacto / Turnos</h3>
-            <form id="appointmentForm" onsubmit="handleFormSubmit(event)">
-              <div class="form-group">
-                <label for="formName">Nombre y Apellido *</label>
-                <div class="input-with-icon">
-                  <i data-lucide="user"></i>
-                  <input type="text" id="formName" name="nombre" required placeholder="Ej. María González">
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="formPhone">Teléfono / WhatsApp *</label>
-                  <div class="input-with-icon">
-                    <i data-lucide="phone"></i>
-                    <input type="tel" id="formPhone" name="telefono" required placeholder="Ej. 11 5555-4444">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="formEmail">Correo Electrónico</label>
-                  <div class="input-with-icon">
-                    <i data-lucide="mail"></i>
-                    <input type="email" id="formEmail" name="email" placeholder="nombre@correo.com">
-                  </div>
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="formSpecialty">Especialidad requerida *</label>
-                  <div class="input-with-icon">
-                    <i data-lucide="stethoscope"></i>
-                    <select id="formSpecialty" name="especialidad" required>
-                      <option value="">Seleccionar especialidad...</option>
-                      <option value="Cirugía General">Cirugía General</option>
-                      <option value="Traumatología">Traumatología y Ortopedia</option>
-                      <option value="Urología">Urología</option>
-                      <option value="Ginecología">Ginecología</option>
-                      <option value="Clínica Médica">Clínica Médica</option>
-                      <option value="Cardiología">Cardiología / Prequirúrgico</option>
-                      <option value="Diagnóstico por Imágenes / Tomografía">Diagnóstico por Imágenes / Tomografía</option>
-                      <option value="Internación / UTI">Consulta de Internación / UTI</option>
-                      <option value="Otra Consulta">Otra consulta médica</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="formInsurance">Obra Social / Prepaga</label>
-                  <div class="input-with-icon">
-                    <i data-lucide="shield"></i>
-                    <input type="text" id="formInsurance" name="cobertura" placeholder="Ej. OSDE, PAMI, IOMA, Particular">
-                  </div>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label for="formMessage">Mensaje o motivo de la consulta</label>
-                <textarea id="formMessage" name="mensaje" rows="3" placeholder="Contanos brevemente qué día o franja horaria preferís..."></textarea>
-              </div>
-
-              <button type="submit" class="btn btn-whatsapp btn-lg w-full" id="submitBtn">
-                <i data-lucide="message-circle"></i> Enviar Solicitud por WhatsApp
-              </button>
-
-              <div class="form-feedback hidden" id="formFeedback">
-                <i data-lucide="check-circle-2"></i>
-                <p><strong>¡Abriendo WhatsApp!</strong> Se preparó tu solicitud de turno para enviarla a recepción.</p>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- CÓMO LLEGAR & MAPA INTERACTIVO -->
     <section class="location-section" id="como-llegar">
@@ -988,7 +876,7 @@
   </div>
 
   <!-- Script JS con version cache-buster -->
-  <script src="app.js?v=6.0"></script>
+  <script src="app.js?v=7.0"></script>
   <script>
     // Verificación constante: si el modal de turnos está abierto, oculta la barra inferior inmediatamente
     setInterval(function() {
