@@ -158,20 +158,94 @@ document.addEventListener('DOMContentLoaded', () => {
 // FUNCIONES GLOBALES DE MODAL & TURNOS
 // ==========================================
 
-function openTurnoModal(specialty = '') {
+const ESPECIALIDADES_LIST = [
+  "Cirugía General",
+  "Traumatología y Ortopedia",
+  "Urología",
+  "Ginecología",
+  "Clínica Médica",
+  "Cardiología / Prequirúrgico",
+  "Internación / UTI",
+  "Otra Especialidad"
+];
+
+const ESTUDIOS_LIST = [
+  "Tomografía",
+  "Radiología Digital (Rayos X)",
+  "Laboratorio de Análisis Clínicos",
+  "Electrocardiograma y Monitoreo Cardíaco",
+  "Ecografía General",
+  "Otro Estudio Complementario"
+];
+
+function openTurnoModal(param = '') {
   const modal = document.getElementById('turnoModal');
   const actionBar = document.getElementById('mobileActionBar');
   const specialtySelect = document.getElementById('modalSpecialty');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalSubtitle = document.getElementById('modalSubtitle');
+  const specialtyLabel = document.getElementById('modalSpecialtyLabel');
+  const notesLabel = document.getElementById('modalNotesLabel');
+  const notesTextarea = document.getElementById('modalNotes');
+  const submitBtnText = document.getElementById('modalSubmitBtnText');
   const feedback = document.getElementById('modalFeedback');
 
   if (feedback) feedback.classList.add('hidden');
-  
-  if (specialtySelect && specialty) {
-    for (let i = 0; i < specialtySelect.options.length; i++) {
-      if (specialtySelect.options[i].text.toLowerCase().includes(specialty.toLowerCase()) || 
-          specialtySelect.options[i].value.toLowerCase().includes(specialty.toLowerCase())) {
-        specialtySelect.selectedIndex = i;
-        break;
+
+  const isEstudio = param && (
+    param.toLowerCase().includes('diagnóst') || 
+    param.toLowerCase().includes('diagnost') || 
+    param.toLowerCase().includes('estudio') || 
+    param.toLowerCase().includes('tomograf') || 
+    param.toLowerCase().includes('laboratorio') || 
+    param.toLowerCase().includes('rayos') || 
+    param.toLowerCase().includes('radiolog')
+  );
+
+  if (isEstudio) {
+    if (modalTitle) modalTitle.textContent = 'Solicitar Estudio de Diagnóstico';
+    if (modalSubtitle) modalSubtitle.textContent = 'Completá los datos para coordinar tu estudio (Tomografía, Laboratorio, Rayos X, etc.).';
+    if (specialtyLabel) specialtyLabel.textContent = 'Estudio Solicitado *';
+    if (notesLabel) notesLabel.textContent = 'Detalle de la orden médica o consulta';
+    if (notesTextarea) notesTextarea.placeholder = 'Ej. Indicá si contás con orden médica, indicación clínica o preferencia horaria...';
+    if (submitBtnText) submitBtnText.textContent = 'Consultar Estudio por WhatsApp';
+
+    if (specialtySelect) {
+      specialtySelect.innerHTML = '<option value="">Seleccionar estudio...</option>' + 
+        ESTUDIOS_LIST.map(e => `<option value="${e}">${e}</option>`).join('');
+      
+      let matched = false;
+      for (let i = 0; i < specialtySelect.options.length; i++) {
+        if (param && specialtySelect.options[i].value.toLowerCase().includes(param.toLowerCase())) {
+          specialtySelect.selectedIndex = i;
+          matched = true;
+          break;
+        }
+      }
+      if (!matched && param.toLowerCase().includes('tomograf')) {
+        specialtySelect.selectedIndex = 1;
+      }
+    }
+  } else {
+    if (modalTitle) modalTitle.textContent = 'Solicitar Turno Médico';
+    if (modalSubtitle) modalSubtitle.textContent = 'Completá los datos y te confirmaremos tu turno por WhatsApp.';
+    if (specialtyLabel) specialtyLabel.textContent = 'Especialidad Requerida *';
+    if (notesLabel) notesLabel.textContent = 'Preferencia de días/horarios o consulta';
+    if (notesTextarea) notesTextarea.placeholder = 'Ej. Preferencia por la mañana o especialista...';
+    if (submitBtnText) submitBtnText.textContent = 'Confirmar Turno por WhatsApp';
+
+    if (specialtySelect) {
+      specialtySelect.innerHTML = '<option value="">Seleccionar especialidad...</option>' + 
+        ESPECIALIDADES_LIST.map(e => `<option value="${e}">${e}</option>`).join('') +
+        '<option value="Estudios de Diagnóstico (Tomografía, Laboratorio, RX)">Estudios de Diagnóstico (Tomografía, Laboratorio, RX)</option>';
+
+      if (param) {
+        for (let i = 0; i < specialtySelect.options.length; i++) {
+          if (specialtySelect.options[i].value.toLowerCase().includes(param.toLowerCase())) {
+            specialtySelect.selectedIndex = i;
+            break;
+          }
+        }
       }
     }
   }
@@ -212,8 +286,10 @@ function handleModalSubmit(event) {
   const affiliateNumber = document.getElementById('modalAffiliateNumber') ? document.getElementById('modalAffiliateNumber').value.trim() : '';
   const specialty = document.getElementById('modalSpecialty').value;
   const notes = document.getElementById('modalNotes').value.trim() || 'Sin observaciones adicionales';
+  const modalTitle = document.getElementById('modalTitle');
 
   const feedback = document.getElementById('modalFeedback');
+  const feedbackText = document.getElementById('modalFeedbackText');
   const submitBtn = event.target.querySelector('button[type="submit"]');
 
   if (submitBtn) {
@@ -222,9 +298,18 @@ function handleModalSubmit(event) {
     if (window.lucide) window.lucide.createIcons();
   }
 
+  const isEstudioMsg = (modalTitle && modalTitle.textContent.toLowerCase().includes('estudio')) || 
+                        specialty.toLowerCase().includes('tomograf') || 
+                        specialty.toLowerCase().includes('laboratorio') || 
+                        specialty.toLowerCase().includes('radiolog') || 
+                        specialty.toLowerCase().includes('estudio');
+
+  let headerTitle = isEstudioMsg ? '🔬 *SOLICITUD DE ESTUDIO / DIAGNÓSTICO — CLÍNICA PASSO S.A.*' : '🏥 *SOLICITUD DE TURNO MÉDICO — CLÍNICA PASSO S.A.*';
+  let fieldLabel = isEstudioMsg ? '🔬 *Estudio Solicitado:*' : '🩺 *Especialidad:*';
+
   // Construir mensaje estructurado para WhatsApp
   let message = 
-    `🏥 *SOLICITUD DE TURNO — CLÍNICA PASSO S.A.*\n\n` +
+    `${headerTitle}\n\n` +
     `👤 *Paciente:* ${name}\n`;
 
   if (dni) {
@@ -233,7 +318,7 @@ function handleModalSubmit(event) {
 
   message +=
     `📞 *Teléfono / WhatsApp:* ${phone}\n` +
-    `🩺 *Especialidad:* ${specialty}\n` +
+    `${fieldLabel} ${specialty}\n` +
     `💳 *Obra Social / Prepaga:* ${insurance}\n`;
 
   if (affiliateNumber) {
@@ -241,7 +326,7 @@ function handleModalSubmit(event) {
   }
 
   message +=
-    `📝 *Preferencia / Consulta:* ${notes}\n\n` +
+    `📝 *Observaciones / Orden médica:* ${notes}\n\n` +
     `_Enviado desde el sitio web de Clínica Passo S.A._`;
 
   const waUrl = `https://wa.me/${CLINICA_CONFIG.whatsappNumber}?text=${encodeURIComponent(message)}`;
@@ -249,7 +334,9 @@ function handleModalSubmit(event) {
   setTimeout(() => {
     if (feedback) {
       feedback.classList.remove('hidden');
-      feedback.innerHTML = '<i data-lucide="check-circle-2"></i> <p><strong>¡Abriendo WhatsApp!</strong> Enviando los datos de tu turno a recepción...</p>';
+      if (feedbackText) {
+        feedbackText.innerHTML = '<strong>¡Abriendo WhatsApp!</strong> Enviando tu solicitud a recepción...';
+      }
       if (window.lucide) window.lucide.createIcons();
     }
     
@@ -266,7 +353,8 @@ function handleModalSubmit(event) {
       closeTurnoModal();
       event.target.reset();
       if (submitBtn) {
-        submitBtn.innerHTML = '<i data-lucide="message-circle"></i> Confirmar Turno por WhatsApp';
+        const defaultBtnText = isEstudioMsg ? 'Consultar Estudio por WhatsApp' : 'Confirmar Turno por WhatsApp';
+        submitBtn.innerHTML = `<i data-lucide="message-circle"></i> <span id="modalSubmitBtnText">${defaultBtnText}</span>`;
         if (window.lucide) window.lucide.createIcons();
       }
     }, 2500);

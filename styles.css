@@ -1048,17 +1048,20 @@ button, input, select, textarea {
   justify-content: center;
 }
 
-.red-badge { background: #FEE2E2; color: #DC2626; }
-.blue-badge { background: #E0F2FE; color: var(--primary-royal); }
-.teal-badge { background: #CCFBF1; color: #0D9488; }
-.pink-badge { background: #FCE7F3; color: #DB2777; }
+.red-badge { background: #FEE2E2; color: #DC2626; border: 1px solid #FECACA; }
+.blue-badge { background: #EFF6FF; color: var(--primary-royal); border: 1px solid #DBEAFE; }
+.cyan-badge { background: #ECFEFF; color: #0891B2; border: 1px solid #CFFAFE; }
+.teal-badge { background: #F0FDFA; color: #0D9488; border: 1px solid #CCFBF1; }
+.pink-badge { background: #FDF2F8; color: #DB2777; border: 1px solid #FCE7F3; }
+.emerald-badge { background: #ECFDF5; color: #059669; border: 1px solid #D1FAE5; }
+.indigo-badge { background: #EEF2FF; color: #4F46E5; border: 1px solid #E0E7FF; }
 
 .service-tag {
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  padding: 0.25rem 0.65rem;
+  padding: 0.3rem 0.75rem;
   border-radius: var(--radius-full);
   background: var(--bg-card-alt);
   color: var(--text-muted);
@@ -1067,15 +1070,19 @@ button, input, select, textarea {
 .service-tag.tag-emergency {
   background: #FEE2E2;
   color: #DC2626;
+  border: 1px solid #FECACA;
 }
 
 .service-tag.tag-uti {
   background: #FEF3C7;
   color: #D97706;
+  border: 1px solid #FDE68A;
 }
 
 .service-card h3 {
   font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-heading);
   margin-bottom: 0.65rem;
 }
 
@@ -1088,52 +1095,102 @@ button, input, select, textarea {
 
 .service-features {
   list-style: none;
-  margin-bottom: 1.75rem;
+  margin-bottom: 1.5rem;
   flex-grow: 1;
 }
 
 .service-features li {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.5rem;
   font-size: 0.85rem;
   color: var(--text-main);
-  margin-bottom: 0.45rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
 }
 
-.service-features li i {
+.service-features li i, .service-features li svg {
   color: var(--success-green);
   width: 16px;
   height: 16px;
   flex-shrink: 0;
+  margin-top: 2px;
 }
 
 .service-footer {
-  padding-top: 1rem;
+  padding-top: 1.25rem;
   border-top: 1px solid var(--border-light);
+  margin-top: auto;
 }
 
 .service-action-link {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 0.45rem;
+  justify-content: center;
+  width: 100%;
+  gap: 0.5rem;
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.9rem;
-  color: var(--primary-royal);
-  background: none;
-  border: none;
+  font-size: 0.88rem;
+  color: #334155;
+  background: #F1F5F9;
+  border: 1px solid #E2E8F0;
+  border-radius: var(--radius-lg);
   cursor: pointer;
-  padding: 0;
+  padding: 0.65rem 1rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
 }
 
 .service-action-link:hover {
-  color: var(--primary-navy);
-  transform: translateX(3px);
+  background: #E2E8F0;
+  color: #0F172A;
+  border-color: #CBD5E1;
+  transform: translateY(-2px);
+}
+
+.service-action-link i, .service-action-link svg {
+  width: 16px;
+  height: 16px;
+  color: #64748B;
+  transition: color 0.2s ease;
+}
+
+.service-action-link:hover i, .service-action-link:hover svg {
+  color: var(--primary-royal);
 }
 
 .service-action-link.emergency-link {
-  color: var(--emergency-red);
+  background: #FEF2F2;
+  color: #B91C1C;
+  border-color: #FEE2E2;
+}
+
+.service-action-link.emergency-link:hover {
+  background: #FEE2E2;
+  color: #991B1B;
+  border-color: #FECACA;
+}
+
+.service-action-link.emergency-link i, .service-action-link.emergency-link svg {
+  color: #DC2626;
+}
+
+.service-action-link.uti-link {
+  background: #EFF6FF;
+  color: #1D4ED8;
+  border-color: #DBEAFE;
+  font-weight: 700;
+}
+
+.service-action-link.uti-link:hover {
+  background: #DBEAFE;
+  color: #1E40AF;
+  border-color: #BFDBFE;
+}
+
+.service-action-link.uti-link i, .service-action-link.uti-link svg {
+  color: #2563EB;
 }
 
 /* ==========================================================================
