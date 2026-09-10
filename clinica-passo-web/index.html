@@ -69,7 +69,7 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   
   <!-- Estilos Personalizados -->
-  <link rel="stylesheet" href="styles.css?v=6.0">
+  <link rel="stylesheet" href="styles.css?v=8.0">
 </head>
 <body>
 
@@ -311,8 +311,8 @@
               <li><i data-lucide="check"></i> Derivación directa a internación o UTI</li>
             </ul>
             <div class="service-footer">
-              <a href="tel:01142641654" class="service-action-link emergency-link">
-                Llamar a Guardia <i data-lucide="phone"></i>
+              <a href="tel:01142641652" class="service-action-link emergency-link">
+                Llamar a Guardia: 011 4264-1652 <i data-lucide="phone"></i>
               </a>
             </div>
           </div>
@@ -340,7 +340,7 @@
           <!-- Servicio 3: Traumatología y Ortopedia -->
           <div class="service-card" data-category="quirurgicas">
             <div class="service-card-header">
-              <div class="service-icon blue-badge"><i data-lucide="bone"></i></div>
+              <div class="service-icon cyan-badge"><i data-lucide="bone"></i></div>
               <span class="service-tag">Quirúrgica / Consultorio</span>
             </div>
             <h3>Traumatología y Ortopedia</h3>
@@ -400,7 +400,7 @@
           <!-- Servicio 6: Unidad de Terapia Intensiva (UTI) -->
           <div class="service-card highlight-card" data-category="quirurgicas">
             <div class="service-card-header">
-              <div class="service-icon red-badge"><i data-lucide="bed"></i></div>
+              <div class="service-icon blue-badge"><i data-lucide="bed"></i></div>
               <span class="service-tag tag-uti">Cuidados Críticos</span>
             </div>
             <h3>Unidad de Terapia Intensiva (UTI)</h3>
@@ -411,7 +411,7 @@
               <li><i data-lucide="check"></i> Equipo de intensivistas y enfermería especializada</li>
             </ul>
             <div class="service-footer">
-              <a href="#uti-infraestructura" class="service-action-link">
+              <a href="#uti-infraestructura" class="service-action-link uti-link">
                 Conocer infraestructura <i data-lucide="arrow-right"></i>
               </a>
             </div>
@@ -420,7 +420,7 @@
           <!-- Servicio 7: Consultorios Médicos Polivalentes -->
           <div class="service-card" data-category="consultorios">
             <div class="service-card-header">
-              <div class="service-icon teal-badge"><i data-lucide="clipboard-list"></i></div>
+              <div class="service-icon emerald-badge"><i data-lucide="clipboard-list"></i></div>
               <span class="service-tag">Consultorio</span>
             </div>
             <h3>Clínica Médica y Especialidades</h3>
@@ -440,7 +440,7 @@
           <!-- Servicio 8: Diagnóstico y Laboratorio de Apoyo -->
           <div class="service-card" data-category="consultorios">
             <div class="service-card-header">
-              <div class="service-icon blue-badge"><i data-lucide="flask-conical"></i></div>
+              <div class="service-icon indigo-badge"><i data-lucide="flask-conical"></i></div>
               <span class="service-tag">Diagnóstico</span>
             </div>
             <h3>Servicios de Diagnóstico</h3>
@@ -787,15 +787,15 @@
     </svg>
   </a>
 
-  <!-- MODAL DE SOLICITUD DE TURNOS -->
+  <!-- MODAL DE SOLICITUD DE TURNOS Y ESTUDIOS -->
   <div class="modal-backdrop hidden" id="turnoModal">
     <div class="modal-box">
       <div class="modal-header">
         <div class="modal-title-group">
           <img src="assets/logo.jpg" alt="Logo de Clínica Passo" class="modal-logo-img">
           <div>
-            <h3>Solicitar Turno Médico</h3>
-            <p>Completá los datos y te confirmaremos por WhatsApp.</p>
+            <h3 id="modalTitle">Solicitar Turno Médico</h3>
+            <p id="modalSubtitle">Completá los datos y te confirmaremos por WhatsApp.</p>
           </div>
         </div>
         <button class="modal-close-btn" onclick="closeTurnoModal()" aria-label="Cerrar modal">
@@ -833,7 +833,7 @@
           </div>
 
           <div class="form-group">
-            <label for="modalSpecialty">Especialidad Requerida *</label>
+            <label for="modalSpecialty" id="modalSpecialtyLabel">Especialidad Requerida *</label>
             <select id="modalSpecialty" required>
               <option value="">Seleccionar especialidad...</option>
               <option value="Cirugía General">Cirugía General</option>
@@ -842,27 +842,30 @@
               <option value="Ginecología">Ginecología</option>
               <option value="Clínica Médica">Clínica Médica</option>
               <option value="Cardiología">Cardiología / Prequirúrgico</option>
-              <option value="Diagnóstico por Imágenes / Tomografía">Diagnóstico por Imágenes / Tomografía</option>
+              <option value="Tomografía">Tomografía</option>
+              <option value="Radiología Digital">Radiología Digital</option>
+              <option value="Laboratorio de Análisis Clínicos">Laboratorio de Análisis Clínicos</option>
+              <option value="Electrocardiograma">Electrocardiograma</option>
               <option value="Internación / UTI">Internación / UTI</option>
-              <option value="Otra Consulta">Otra especialidad</option>
+              <option value="Otra Consulta">Otra especialidad / Consulta</option>
             </select>
           </div>
 
           <div class="form-group">
-            <label for="modalNotes">Preferencia de días/horarios o consulta</label>
-            <textarea id="modalNotes" rows="2" placeholder="Ej. Preferencia por la mañana"></textarea>
+            <label for="modalNotes" id="modalNotesLabel">Preferencia de días/horarios o consulta</label>
+            <textarea id="modalNotes" rows="2" placeholder="Ej. Preferencia de horario o indicación del estudio..."></textarea>
           </div>
 
           <div class="modal-footer-btns">
             <button type="button" class="btn btn-outline" onclick="closeTurnoModal()">Cancelar</button>
-            <button type="submit" class="btn btn-whatsapp">
-              <i data-lucide="message-circle"></i> Confirmar Turno por WhatsApp
+            <button type="submit" class="btn btn-whatsapp" id="modalSubmitBtn">
+              <i data-lucide="message-circle"></i> <span id="modalSubmitBtnText">Confirmar Turno por WhatsApp</span>
             </button>
           </div>
 
           <div class="modal-feedback hidden" id="modalFeedback">
             <i data-lucide="check-circle-2"></i>
-            <p><strong>¡Abriendo WhatsApp!</strong> Enviando los datos de tu turno a recepción...</p>
+            <p id="modalFeedbackText"><strong>¡Abriendo WhatsApp!</strong> Enviando tu solicitud a recepción...</p>
           </div>
         </form>
       </div>
@@ -876,7 +879,7 @@
   </div>
 
   <!-- Script JS con version cache-buster -->
-  <script src="app.js?v=6.0"></script>
+  <script src="app.js?v=8.0"></script>
   <script>
     // Verificación constante: si el modal de turnos está abierto, oculta la barra inferior inmediatamente
     setInterval(function() {
