@@ -159,12 +159,21 @@ document.addEventListener('DOMContentLoaded', () => {
 // ==========================================
 
 const ESPECIALIDADES_LIST = [
-  "Cirugía General",
-  "Traumatología y Ortopedia",
+  "Cardiología",
   "Urología",
   "Ginecología",
+  "Cirugía Ginecológica",
+  "Neurología",
+  "Cirugía General",
+  "Oncología",
+  "Flebología",
+  "Nutrición",
+  "Traumatología",
+  "Gastroenterología",
+  "DBT (Diabetes)",
+  "Nefrología",
+  "Endocrinología",
   "Clínica Médica",
-  "Cardiología / Prequirúrgico",
   "Internación / UTI",
   "Otra Especialidad"
 ];
