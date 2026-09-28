@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Portal de pacientes — Clínica Passo</title>
+  <meta name="description" content="Tus turnos, estudios, laboratorios y epicrisis de Clínica Passo.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#001FD1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Clínica Passo">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=1">
+</head>
+<body>
+  <div class="app" id="app">
+    <header class="barra" id="barra">
+      <button type="button" class="barra-volver hidden" id="barraVolver" aria-label="Volver"></button>
+      <a class="barra-marca" id="barraMarca" href="../" title="Ir a clinicapasso.com.ar">
+        <img src="../assets/logo.jpg" alt="" class="barra-logo" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'barra-logo barra-logo-letra',textContent:'P'}))">
+        <span class="barra-nombre">Clínica Passo</span>
+      </a>
+      <h1 class="barra-titulo hidden" id="barraTitulo"></h1>
+    </header>
+
+    <main class="vista" id="vista" tabindex="-1">
+      <div class="cargando"><span class="spinner"></span></div>
+    </main>
+
+    <nav class="nav hidden" id="nav" aria-label="Secciones">
+      <a href="#/inicio" data-nav="inicio"><span data-ico="house"></span><span>Inicio</span></a>
+      <a href="#/turnos" data-nav="turnos"><span data-ico="calendar"></span><span>Turnos</span></a>
+      <a href="#/estudios" data-nav="estudios"><span data-ico="file-text"></span><span>Estudios</span></a>
+      <a href="#/perfil" data-nav="perfil"><span data-ico="user-round"></span><span>Mi cuenta</span></a>
+    </nav>
+  </div>
+
+  <div class="toast hidden" id="toast" role="status" aria-live="polite"></div>
+  <div class="capa hidden" id="capa"></div>
+
+  <noscript><p style="padding:24px;font-family:sans-serif">Para usar el portal de pacientes de Clínica Passo necesitás activar JavaScript en el navegador.</p></noscript>
+
+  <script src="iconos.js?v=1"></script>
+  <script src="app.js?v=1"></script>
+</body>
+</html>
