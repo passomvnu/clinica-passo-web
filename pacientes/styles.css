@@ -1,5 +1,5 @@
 /* ==========================================================================
-   APP DEL PACIENTE — CLÍNICA PASSO
+   PORTAL DE PACIENTES — CLÍNICA PASSO
    Misma paleta y tipografías que el panel. Pensada primero para el celular.
    ========================================================================== */
 :root {
@@ -291,3 +291,19 @@ details.pasados[open] summary .ic { transform: rotate(90deg); }
   .solo-impresion { display: block !important; }
 }
 .solo-impresion { display: none; }
+
+/* ---------- Pedir turno: horarios libres ---------- */
+.horas { display: flex; flex-direction: column; gap: 14px; padding: 14px; border: 1.5px solid var(--border); border-radius: 12px; background: var(--card); }
+.horas-msg { margin: 0; color: var(--muted); font-size: 15px; display: flex; align-items: flex-start; gap: 8px; }
+.horas-msg.aviso { color: var(--yellow); font-weight: 600; }
+.horas-msg svg { width: 18px; height: 18px; flex: none; margin-top: 2px; }
+.horas-grupo > span { display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 8px; }
+.horas-chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); gap: 8px; }
+.hora {
+  min-height: 46px; border-radius: 10px; border: 1.5px solid var(--border); background: var(--card);
+  font: inherit; font-size: 16px; font-weight: 600; color: var(--text-dark); cursor: pointer;
+}
+.hora:hover { border-color: var(--primary-soft); }
+.hora:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--primary-soft); }
+.hora.activo { background: var(--primary); border-color: var(--primary); color: #fff; }
+.suave { color: var(--muted); font-weight: 400; }

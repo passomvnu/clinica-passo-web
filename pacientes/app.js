@@ -325,9 +325,10 @@ function htmlTurno(t, { conAcciones = true } = {}) {
   const e = ESTADOS[t.estado] || ESTADOS.pendiente;
   const pasado = !esProximo(t);
   const pedido = esPedidoSinConfirmar(t);
-  const cuando = pedido
-    ? `<div class="turno-linea">${icono('clock')} Preferencia: ${esc(franjaDe(t) || 'Indistinto')}</div>`
-    : `<div class="turno-linea">${icono('clock')} ${esc(fmtHora(d))} hs</div>`;
+  // Pedidos viejos (antes de elegir horario) guardaban solo la preferencia mañana/tarde
+  const cuando = pedido && franjaDe(t)
+    ? `<div class="turno-linea">${icono('clock')} Preferencia: ${esc(franjaDe(t))}</div>`
+    : `<div class="turno-linea">${icono('clock')} ${esc(fmtHora(d))} hs${pedido ? ' <span class="suave">(a confirmar)</span>' : ''}</div>`;
   const comentario = (String(t.pedido || '').match(/Comentario del paciente: (.*)$/) || [])[1];
   return `<article class="tarjeta turno ${pasado ? 'pasado' : ''}">
     <div class="turno-dia"><b>${d.getDate()}</b><span>${esc(MESES_C[d.getMonth()])}</span></div>
@@ -336,7 +337,7 @@ function htmlTurno(t, { conAcciones = true } = {}) {
       <div class="turno-linea">${esc(capital(DIAS[d.getDay()]))} ${d.getDate()} de ${esc(MESES[d.getMonth()])}${d.getFullYear() !== new Date().getFullYear() ? ' de ' + d.getFullYear() : ''}</div>
       ${cuando}
       ${t.medico ? `<div class="turno-linea">${icono('stethoscope')} ${esc(t.medico)}</div>` : ''}
-      ${pedido ? `<div class="turno-nota">Pediste este turno desde la web. Recepción te va a confirmar el día y la hora por email.${comentario ? `<br><em>"${esc(comentario)}"</em>` : ''}</div>` : ''}
+      ${pedido ? `<div class="turno-nota">Pediste este turno desde la web. Recepción te lo va a confirmar por email.${comentario ? `<br><em>"${esc(comentario)}"</em>` : ''}</div>` : ''}
       <div class="turno-pie">
         <span class="chip chip-${esc(t.estado)}">${icono(e.ico)} ${esc(pedido ? 'Esperando confirmación' : e.txt)}</span>
         ${conAcciones && puedeCancelar(t) ? `<button class="btn-cancelar" data-cancelar="${esc(t.id)}">Cancelar turno</button>` : ''}
@@ -460,42 +461,84 @@ async function vistaTurnos() {
   } catch (err) { errorPantalla(err); }
 }
 
+const NOMBRES_DIAS = ['domingos', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábados'];
+function listaDias(dias) {
+  const n = [1, 2, 3, 4, 5, 6, 0].filter(d => dias.includes(d)).map(d => NOMBRES_DIAS[d]);
+  return n.length > 1 ? `${n.slice(0, -1).join(', ')} y ${n[n.length - 1]}` : n[0] || '';
+}
+
 async function vistaPedir() {
   barra({ titulo: 'Pedir turno', volver: '#/turnos' }); nav('turnos');
   cargando();
   try {
     const op = await cargarOpciones();
     pintar(`
-      <p class="bajada" style="margin-top:8px">Contanos qué necesitás y cuándo te queda mejor. Recepción te confirma el día y la hora por email.</p>
+      <p class="bajada" style="margin-top:8px">Elegí la especialidad, el día y un horario libre. Recepción te confirma el turno por email.</p>
       <form id="fPedir" novalidate>
         <label class="campo"><span>Especialidad</span>
           <select class="input" id="esp"><option value="">Elegí una especialidad</option>${op.especialidades.map(e => `<option>${esc(e)}</option>`).join('')}</select></label>
         <label class="campo"><span>Médico (opcional)</span>
-          <select class="input" id="med"><option value="">Cualquier médico disponible</option>${op.medicos.map(m => `<option value="${esc(m.id)}">${esc(m.nombre)}</option>`).join('')}</select></label>
-        <label class="campo"><span>¿Qué día preferís?</span>
+          <select class="input" id="med"><option value="">Cualquier médico disponible</option>${op.medicos.map(m => `<option value="${esc(m.id)}">${esc(m.nombre)}</option>`).join('')}</select>
+          <small class="ayuda" id="medDias"></small></label>
+        <label class="campo"><span>¿Qué día?</span>
           <input class="input" type="date" id="fecha" min="${esc(op.desde)}" max="${esc(op.hasta)}" value="${esc(op.desde)}"></label>
-        <div class="campo"><span>¿En qué horario?</span>
-          <div class="segmentado" id="franja">${Object.entries(op.franjas).map(([k, v]) => `<button type="button" data-v="${esc(k)}" class="${k === 'indistinto' ? 'activo' : ''}">${esc(v)}</button>`).join('')}</div></div>
+        <div class="campo"><span>Horarios libres</span>
+          <div class="horas" id="horas" aria-live="polite"><p class="horas-msg">Elegí la especialidad para ver los horarios.</p></div></div>
         <label class="campo"><span>Comentario (opcional)</span>
           <textarea class="input" id="coment" maxlength="300" placeholder="Ej: control anual, traigo estudios, primera consulta…"></textarea></label>
-        <button class="btn btn-primario" type="submit">${icono('calendar-plus')} Enviar pedido</button>
+        <button class="btn btn-primario" type="submit">${icono('calendar-plus')} Pedir este turno</button>
       </form>`);
-    let franja = 'indistinto';
-    document.querySelectorAll('#franja button').forEach(b => b.onclick = () => {
-      franja = b.dataset.v;
-      document.querySelectorAll('#franja button').forEach(x => x.classList.toggle('activo', x === b));
-    });
+
+    let hora = '';
+    let pedidoN = 0;
+    const cajaHoras = $('#horas');
+    const cargarHoras = async () => {
+      hora = '';
+      const especialidad = $('#esp').value, medico_id = $('#med').value, fecha = $('#fecha').value;
+      const medico = op.medicos.find(m => String(m.id) === String(medico_id));
+      $('#medDias').textContent = medico && medico.dias && medico.dias.length ? `Atiende los ${listaDias(medico.dias)}.` : '';
+      if (!especialidad) { cajaHoras.innerHTML = '<p class="horas-msg">Elegí la especialidad para ver los horarios.</p>'; return; }
+      if (!fecha) { cajaHoras.innerHTML = '<p class="horas-msg">Elegí el día.</p>'; return; }
+      const n = ++pedidoN;
+      cajaHoras.innerHTML = '<p class="horas-msg">Buscando horarios…</p>';
+      try {
+        const q = new URLSearchParams({ especialidad, fecha });
+        if (medico_id) q.set('medico_id', medico_id);
+        const d = await api(`/mi/horarios?${q}`);
+        if (n !== pedidoN) return;
+        if (!d.horarios.length) {
+          cajaHoras.innerHTML = `<p class="horas-msg aviso">${icono('calendar-x')} ${esc(d.motivo || 'No quedan horarios libres ese día. Probá con otra fecha.')}</p>`;
+          return;
+        }
+        const grupo = (titulo, lista) => lista.length ? `<div class="horas-grupo"><span>${titulo}</span><div class="horas-chips">${lista.map(h => `<button type="button" class="hora" data-h="${esc(h)}">${esc(h)}</button>`).join('')}</div></div>` : '';
+        const mins = (h) => Number(h.slice(0, 2)) * 60 + Number(h.slice(3, 5));
+        cajaHoras.innerHTML = grupo('Mañana', d.horarios.filter(h => mins(h) < 780)) + grupo('Tarde', d.horarios.filter(h => mins(h) >= 780));
+        cajaHoras.querySelectorAll('.hora').forEach(b => b.onclick = () => {
+          hora = b.dataset.h;
+          cajaHoras.querySelectorAll('.hora').forEach(x => { x.classList.toggle('activo', x === b); x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+        });
+      } catch (err) {
+        if (n === pedidoN && !err.sesion) cajaHoras.innerHTML = `<p class="horas-msg aviso">${esc(err.message)}</p>`;
+      }
+    };
+    ['#esp', '#med', '#fecha'].forEach(sel => $(sel).addEventListener('change', cargarHoras));
+
     const f = $('#fPedir');
     f.onsubmit = async (e) => {
       e.preventDefault(); limpiarError(f);
-      const body = { especialidad: $('#esp').value, medico_id: $('#med').value || null, fecha: $('#fecha').value, franja, comentario: $('#coment').value.trim() };
+      const body = { especialidad: $('#esp').value, medico_id: $('#med').value || null, fecha: $('#fecha').value, hora, comentario: $('#coment').value.trim() };
       if (!body.especialidad) return mostrarError(f, 'Elegí una especialidad.');
-      if (!body.fecha) return mostrarError(f, 'Elegí el día que preferís.');
+      if (!body.fecha) return mostrarError(f, 'Elegí el día.');
+      if (!body.hora) return mostrarError(f, 'Elegí un horario de la lista.');
       try {
         await conBoton($('button[type=submit]', f), () => api('/mi/turnos', { method: 'POST', body }));
         await cargarTurnos(true);
-        irA('#/turnos', { tipo: 'ok', texto: '¡Pedido enviado! Recepción te va a confirmar el día y la hora por email.' });
-      } catch (err) { if (!err.sesion) mostrarError(f, err.message); }
+        irA('#/turnos', { tipo: 'ok', texto: `¡Pedido enviado para las ${body.hora} hs! Recepción te lo va a confirmar por email.` });
+      } catch (err) {
+        if (err.sesion) return;
+        mostrarError(f, err.message);
+        if (/disponible/.test(err.message)) cargarHoras();     // alguien lo tomó recién: se actualiza la lista
+      }
     };
   } catch (err) { errorPantalla(err); }
 }
