@@ -69,7 +69,7 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   
   <!-- Estilos Personalizados -->
-  <link rel="stylesheet" href="styles.css?v=8.0">
+  <link rel="stylesheet" href="styles.css?v=8.1">
 </head>
 <body>
 
@@ -93,6 +93,11 @@
         <li><a href="#guia-paciente" class="nav-link">Guía al Paciente</a></li>
         <li><a href="#como-llegar" class="nav-link">Cómo Llegar</a></li>
         <li class="mobile-cta-item">
+          <a href="pacientes/" class="btn btn-outline btn-sm w-full">
+            <i data-lucide="circle-user-round"></i> Portal de pacientes: iniciar sesión
+          </a>
+        </li>
+        <li class="mobile-cta-item">
           <a href="tel:01142641652" class="btn btn-emergency btn-sm w-full">
             <i data-lucide="phone-call"></i> Guardia 24 hs: 011 4264-1652
           </a>
@@ -101,6 +106,9 @@
 
       <!-- Espacio libre en PC / Toggle móvil para responsive -->
       <div class="nav-actions">
+        <a href="pacientes/" class="btn btn-primary btn-sm btn-iniciar-sesion" aria-label="Iniciar sesión en el portal de pacientes">
+          <i data-lucide="circle-user-round"></i><span>Iniciar sesión</span>
+        </a>
         <button class="mobile-toggle-btn" id="menuToggle" aria-label="Abrir menú de navegación">
           <i data-lucide="menu" id="menuIcon"></i>
         </button>

@@ -2119,3 +2119,25 @@ body.modal-open .desktop-whatsapp-bubble {
   gap: 0.75rem;
   margin-top: 1.25rem;
 }
+
+/* ==========================================================================
+   BOTÓN "INICIAR SESIÓN" — lleva al portal de pacientes (/pacientes)
+   ========================================================================== */
+.btn-iniciar-sesion {
+  white-space: nowrap;
+  text-decoration: none;
+  box-shadow: none;
+}
+.btn-iniciar-sesion svg { width: 18px; height: 18px; }
+.btn-iniciar-sesion:hover { transform: none; }
+
+@media (max-width: 991px) {
+  .nav-actions { gap: 0.4rem; }
+}
+@media (max-width: 600px) {
+  /* En el celular queda como un ícono redondo al lado del menú */
+  .btn-iniciar-sesion { width: 42px; height: 42px; padding: 0; border-radius: 50%; }
+  .btn-iniciar-sesion span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .btn-iniciar-sesion svg { width: 22px; height: 22px; }
+  .brand-logo { min-width: 0; }
+}
