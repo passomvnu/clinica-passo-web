@@ -1,915 +1,2370 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script>
+window.addEventListener('error', function(e) {
+  alert('JS Error: ' + e.message + ' at ' + e.filename + ':' + e.lineno);
+});
+window.addEventListener('unhandledrejection', function(e) {
+  alert('Promise Error: ' + e.reason);
+});
+</script>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clínica Passo S.A.</title>
-  <meta name="description" content="Institución médica polivalente en Temperley. Guardia médica 24 hs, Unidad de Terapia Intensiva (UTI), cirugías de alta complejidad, traumatología, urología, ginecología y consultorios externos.">
-  <meta name="keywords" content="Clinica Passo, Clinica Passo Temperley, Guardia 24 hs Temperley, Cirugia Temperley, Traumatologia Zona Sur, UTI Temperley, clinicapasso.com.ar">
-  <link rel="icon" type="image/jpeg" href="assets/logo.jpg">
-  <link rel="apple-touch-icon" href="assets/logo.jpg">
-  <link rel="apple-touch-icon-precomposed" href="assets/logo.jpg">
-  <link rel="manifest" href="manifest.json">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#101838">
   
-  <!-- Configuración de pantalla de inicio para iPhone / Android -->
-  <meta name="apple-mobile-web-app-title" content="Clínica Passo">
-  <meta name="application-name" content="Clínica Passo">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="theme-color" content="#001FD1">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Clínica Passo S.A. — Excelencia Médica y Calidez Humana">
-  <meta property="og:description" content="Guardia Médica 24 hs, Terapia Intensiva y Especialidades Quirúrgicas en Temperley. Av. Eva Perón 3097. Tel:011 4264-1652">
-  <meta property="og:image" content="assets/logo.jpg">
-  <meta property="og:locale" content="es_AR">
-
-  <!-- Schema.org JSON-LD para SEO Local y Médico -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "MedicalClinic",
-    "name": "Clínica Passo S.A.",
-    "url": "https://clinicapasso.com.ar",
-    "logo": "assets/logo.jpg",
-    "description": "Institución médica polivalente con guardia médica 24 hs, Unidad de Terapia Intensiva (UTI), y trayectoria en especialidades quirúrgicas y consultorios.",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Av. Eva Perón 3097",
-      "addressLocality": "Temperley",
-      "addressRegion": "Provincia de Buenos Aires",
-      "postalCode": "B1832",
-      "addressCountry": "AR"
-    },
-    "telephone": "+541142641654",
-    "openingHoursSpecification": {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": [
-        "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
-      ],
-      "opens": "00:00",
-      "closes": "23:59"
-    },
-    "medicalSpecialty": [
-      "Emergency",
-      "IntensiveCare",
-      "Surgery",
-      "Traumatology",
-      "Urology",
-      "Gynecology"
-    ]
-  }
-  </script>
-
+  <title>Gestión Clínica — Clínica Passo S.A.</title>
+  <link rel="icon" type="image/jpeg" href="assets/logo.jpg?v=34.0">
+  <link rel="shortcut icon" type="image/jpeg" href="assets/logo.jpg?v=34.0">
+  <link rel="apple-touch-icon" href="assets/logo.jpg?v=34.0">
+  
   <!-- Google Fonts & Lucide Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Barlow+Semi+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+  <script src="assets/lucide.min.js?v=1.48.0"></script>
   
-  <!-- Iconos Lucide CDN -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  
-  <!-- Estilos Personalizados -->
-  <link rel="stylesheet" href="styles.css?v=8.1">
+  <!-- Estilos del Panel -->
+  <link rel="stylesheet" href="styles.css?v=157.0">
 </head>
 <body>
 
-  <!-- NAVEGACIÓN PRINCIPAL CENTRADA CON LOGO OFICIAL -->
-  <nav class="main-nav" id="mainNav">
-    <div class="container nav-container">
-      
-      <!-- Logo a la izquierda -->
-      <a href="#inicio" class="brand-logo" aria-label="Clínica Passo S.A. Inicio">
-        <img src="assets/logo.jpg" alt="Logo Oficial Clínica Passo" class="brand-logo-img">
-        <div class="logo-text">
-          <span class="logo-title">CLÍNICA <strong>PASSO</strong></span>
-          <span class="logo-subtitle">Institución Médica Polivalente</span>
+  <!-- ======================================================== -->
+  <!-- PANTALLA DE SEGURIDAD & ACCESO RESTRINGIDO (LOCK SCREEN) -->
+  <!-- ======================================================== -->
+  <div class="lock-screen-backdrop" id="loginScreen">
+    
+    <div class="lock-form-centered">
+      <div class="lock-header-modern">
+        <div class="lock-brand">
+          <img src="assets/logo.jpg" alt="" class="lock-logo">
+          <span>Clínica Passo S.A.</span>
         </div>
-      </a>
-
-      <!-- Enlaces de Navegación centrados -->
-      <ul class="nav-links nav-links-centered" id="navLinks">
-        <li><a href="#inicio" class="nav-link active">Inicio</a></li>
-        <li><a href="#especialidades" class="nav-link">Especialidades</a></li>
-        <li><a href="#guia-paciente" class="nav-link">Guía al Paciente</a></li>
-        <li><a href="#como-llegar" class="nav-link">Cómo Llegar</a></li>
-        <li class="mobile-cta-item">
-          <a href="pacientes/" class="btn btn-outline btn-sm w-full">
-            <i data-lucide="circle-user-round"></i> Portal de pacientes: iniciar sesión
-          </a>
-        </li>
-        <li class="mobile-cta-item">
-          <a href="tel:01142641652" class="btn btn-emergency btn-sm w-full">
-            <i data-lucide="phone-call"></i> Guardia 24 hs: 011 4264-1652
-          </a>
-        </li>
-      </ul>
-
-      <!-- Espacio libre en PC / Toggle móvil para responsive -->
-      <div class="nav-actions">
-        <a href="pacientes/" class="btn btn-primary btn-sm btn-iniciar-sesion" aria-label="Iniciar sesión en el portal de pacientes">
-          <i data-lucide="circle-user-round"></i><span>Iniciar sesión</span>
-        </a>
-        <button class="mobile-toggle-btn" id="menuToggle" aria-label="Abrir menú de navegación">
-          <i data-lucide="menu" id="menuIcon"></i>
-        </button>
+        <h2>Acceso al Sistema</h2>
+        <p>Gestión y Administración Clínica.</p>
       </div>
 
-    </div>
-  </nav>
-
-  <main>
-    <!-- HERO SECTION MODERNA DE ALTO IMPACTO -->
-    <section class="hero-section" id="inicio">
-      <div class="hero-banner-wrapper">
-        <div class="container">
-          <div class="hero-banner-content">
-            <h1 class="hero-main-heading">
-              TU BIENESTAR ES<br>
-              NUESTRA PRIORIDAD.
-            </h1>
-            <p class="hero-main-subheading">
-              Atención médica de confianza y guardia las 24 horas.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- 3 TARJETAS FLOTANTES DE ACCIÓN RÁPIDA (100% FUNCIONALES) -->
-      <div class="hero-floating-bar">
-        <div class="container">
-          <div class="action-cards-grid">
-            
-            <!-- Tarjeta 1: Urgencias & Guardia (Llamado directo al tocar) -->
-            <a href="tel:01142641652" class="float-card card-urgencias" aria-label="Llamar directamente a Guardia y Urgencias 011 4264-1652">
-              <div class="float-card-icon icon-coral">
-                <i data-lucide="phone-call"></i>
-              </div>
-              <div class="float-card-info">
-                <span class="float-card-badge">URGENCIAS & GUARDIA</span>
-                <span class="float-card-label">Llamado directo 24 hs:</span>
-                <strong class="float-card-phone">011 4264-1652</strong>
-              </div>
-            </a>
-
-            <!-- Tarjeta 2: Consultorios Externos (Abre modal de turnos al tocar) -->
-            <div class="float-card card-turnos" onclick="openTurnoModal()" role="button" tabindex="0" aria-label="Gestionar turno online en consultorios externos">
-              <div class="float-card-icon icon-blue">
-                <i data-lucide="calendar"></i>
-              </div>
-              <div class="float-card-info">
-                <span class="float-card-badge">CONSULTORIOS EXTERNOS</span>
-                <span class="float-card-label">Turnos para especialidades |</span>
-                <button type="button" class="btn-float-turnos">
-                  <i data-lucide="calendar-check"></i> Gestionar turno online
-                </button>
-              </div>
-            </div>
-
-            <!-- Tarjeta 3: Dirección y Accesos (Abre Google Maps al tocar) -->
-            <a href="https://maps.google.com/?q=Clinica+Passo+Av.+Eva+Per%C3%B3n+3097+Temperley" target="_blank" rel="noopener noreferrer" class="float-card card-mapa" aria-label="Abrir dirección en Google Maps">
-              <div class="float-card-icon icon-green">
-                <i data-lucide="map-pin"></i>
-              </div>
-              <div class="float-card-info">
-                <span class="float-card-badge">DIRECCIÓN Y ACCESOS</span>
-                <span class="float-card-label">Av. Eva Perón 3097, Temperley |</span>
-                <span class="link-float-mapa">
-                  <i data-lucide="navigation"></i> Ver mapa y accesos
-                </span>
-              </div>
-            </a>
-
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TARJETAS DE PILARES DE ATENCIÓN -->
-    <section class="pillars-section">
-      <div class="container">
-        <div class="pillars-grid">
-          <div class="pillar-card">
-            <div class="pillar-icon bg-red-soft"><i data-lucide="heart-pulse"></i></div>
-            <h3>Guardia Médica 24 hs</h3>
-            <p>Equipo médico y de enfermería activo los 365 días del año para la rápida atención de cuadros agudos y emergencias.</p>
-          </div>
-          <div class="pillar-card">
-            <div class="pillar-icon bg-blue-soft"><i data-lucide="bed-double"></i></div>
-            <h3>Terapia Intensiva (UTI)</h3>
-            <p>Unidad de Cuidados Críticos equipada con monitorización multiparamétrica continua y médicos intensivistas.</p>
-          </div>
-          <div class="pillar-card">
-            <div class="pillar-icon bg-cyan-soft"><i data-lucide="scissors"></i></div>
-            <h3>Especialidades Quirúrgicas</h3>
-            <p>Cirugía general, traumatología, urología, ginecología y procedimientos de mediana y alta complejidad.</p>
-          </div>
-          <div class="pillar-card">
-            <div class="pillar-icon bg-teal-soft"><i data-lucide="users"></i></div>
-            <h3>Consultorios Externos</h3>
-            <p>Atención médica programada y seguimiento con calidez profesional en múltiples disciplinas médicas.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECCIÓN QUIÉNES SOMOS / INSTITUCIONAL -->
-    <section class="about-section" id="quienes-somos">
-      <div class="container about-grid">
-        <div class="about-visual">
-          <div class="about-image-wrapper">
-            <div class="about-brand-badge">
-              <img src="assets/logo.jpg" alt="Logo de Clínica Passo" class="about-logo-img">
-              <div>
-                <span class="brand-title">CLÍNICA PASSO S.A.</span>
-                <span class="brand-sub">Temperley · Buenos Aires</span>
-              </div>
-            </div>
-            <div class="about-image-overlay">
-              <div class="stat-badge">
-                <span class="stat-number">24/7</span>
-                <span class="stat-label">Guardia Ininterrumpida</span>
-              </div>
-            </div>
-            <div class="quote-card">
-              <i data-lucide="quote"></i>
-              <p>"Nuestro compromiso fundamental es brindar una medicina responsable, cercana y de sólida respuesta profesional en los momentos más delicados."</p>
-              <strong>— Dirección Médica Clínica Passo</strong>
-            </div>
+      <form id="formLogin" onsubmit="ejecutarAutenticacion(event)">
+        
+        <div class="form-group-modern mb-4">
+          <div class="password-input-wrap-modern split-input-style">
+            <input type="text" id="loginUsuario" class="lock-input-modern" placeholder="Tu usuario" required autocomplete="username" autocapitalize="none" spellcheck="false">
+            <span class="modern-static-label">Usuario</span>
           </div>
         </div>
 
-        <div class="about-content">
-          <div class="section-tag">Institucional</div>
-          <h2 class="section-title">Una institución de salud cercana, sólida y al servicio de la comunidad</h2>
-          <p class="lead-text">
-            Ubicada estratégicamente en <strong>Temperley</strong>, Clínica Passo S.A. es un centro médico polivalente comprometido con el cuidado de la salud de las familias de la Zona Sur del Gran Buenos Aires.
-          </p>
-          <p class="body-text">
-            Combinamos una amplia trayectoria médica con infraestructura preparada para dar respuesta tanto a situaciones de urgencia crítica como a cirugías programadas y consultas ambulatorias.
-          </p>
-
-          <div class="values-grid">
-            <div class="value-item">
-              <div class="value-icon"><i data-lucide="heart-handshake"></i></div>
-              <div>
-                <h4>Calidez Humana</h4>
-                <p>Priorizamos el trato empático y el acompañamiento constante a los pacientes y sus familias.</p>
-              </div>
-            </div>
-            <div class="value-item">
-              <div class="value-icon"><i data-lucide="award"></i></div>
-              <div>
-                <h4>Solidez Quirúrgica</h4>
-                <p>Cuerpo de cirujanos y especialistas con vasta experiencia y quirófanos acondicionados.</p>
-              </div>
-            </div>
-            <div class="value-item">
-              <div class="value-icon"><i data-lucide="shield"></i></div>
-              <div>
-                <h4>Seguridad y Protocolos</h4>
-                <p>Vigilancia médica constante, protocolos estrictos de asepsia y atención personalizada.</p>
-              </div>
-            </div>
-            <div class="value-item">
-              <div class="value-icon"><i data-lucide="clock"></i></div>
-              <div>
-                <h4>Disponibilidad Real</h4>
-                <p>Puertas abiertas y equipo disponible día y noche para cuando más lo necesitás.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="about-actions">
-            <a href="#especialidades" class="btn btn-primary">Conocer Especialidades</a>
-            <a href="#guia-paciente" class="btn btn-outline">Guía e Información de Visitas</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ESPECIALIDADES Y SERVICIOS MÉDICOS -->
-    <section class="services-section" id="especialidades">
-      <div class="container">
-        <div class="section-header text-center">
-          <div class="section-tag">Servicios Médicos</div>
-          <h2 class="section-title">Especialidades Quirúrgicas y Consultorios</h2>
-          <p class="section-desc">Contamos con un equipo interdisciplinario de profesionales enfocados en tu diagnóstico, tratamiento y recuperación.</p>
-          
-          <!-- Filtros interactivos -->
-          <div class="filter-tabs">
-            <button class="filter-tab active" data-filter="all">Todas las Especialidades</button>
-            <button class="filter-tab" data-filter="quirurgicas">Quirúrgicas y Críticas</button>
-            <button class="filter-tab" data-filter="consultorios">Consultorios y Diagnóstico</button>
-          </div>
-        </div>
-
-        <div class="services-grid" id="servicesGrid">
-          
-          <!-- Servicio 1: Guardia 24 hs -->
-          <div class="service-card" data-category="quirurgicas">
-            <div class="service-card-header">
-              <div class="service-icon red-badge"><i data-lucide="heart-pulse"></i></div>
-              <span class="service-tag tag-emergency">Permanente 24 hs</span>
-            </div>
-            <h3>Guardia Médica 24 Horas</h3>
-            <p>Atención médica continua para emergencias y urgencias clínicas y traumatológicas. Evaluación inmediata y soporte vital.</p>
-            <ul class="service-features">
-              <li><i data-lucide="check"></i> Guardia clínica de orientación continua</li>
-              <li><i data-lucide="check"></i> Shockroom y estabilización de urgencia</li>
-              <li><i data-lucide="check"></i> Derivación directa a internación o UTI</li>
-            </ul>
-            <div class="service-footer">
-              <a href="tel:01142641652" class="service-action-link emergency-link">
-                Llamar a Guardia: 011 4264-1652 <i data-lucide="phone"></i>
-              </a>
-            </div>
-          </div>
-
-          <!-- Servicio 2: Cirugía General -->
-          <div class="service-card" data-category="quirurgicas">
-            <div class="service-card-header">
-              <div class="service-icon blue-badge"><i data-lucide="activity"></i></div>
-              <span class="service-tag">Quirúrgica</span>
-            </div>
-            <h3>Cirugía General y Laparoscópica</h3>
-            <p>Procedimientos quirúrgicos programados y de urgencia con tecnología mínimamente invasiva y rápida recuperación.</p>
-            <ul class="service-features">
-              <li><i data-lucide="check"></i> Colecistectomía y apendicectomía laparoscópica</li>
-              <li><i data-lucide="check"></i> Cirugía de hernias y pared abdominal</li>
-              <li><i data-lucide="check"></i> Cirugías digestivas y de partes blandas</li>
-            </ul>
-            <div class="service-footer">
-              <button class="service-action-link" onclick="openTurnoModal('Cirugía General')">
-                Consultar turno <i data-lucide="calendar"></i>
-              </button>
-            </div>
-          </div>
-
-          <!-- Servicio 3: Traumatología y Ortopedia -->
-          <div class="service-card" data-category="quirurgicas">
-            <div class="service-card-header">
-              <div class="service-icon cyan-badge"><i data-lucide="bone"></i></div>
-              <span class="service-tag">Quirúrgica / Consultorio</span>
-            </div>
-            <h3>Traumatología y Ortopedia</h3>
-            <p>Tratamiento integral de lesiones óseas, fracturas, patologías articulares y afecciones de la columna y extremidades.</p>
-            <ul class="service-features">
-              <li><i data-lucide="check"></i> Urgencias traumatológicas y yesos</li>
-              <li><i data-lucide="check"></i> Artroscopías y reemplazos articulares</li>
-              <li><i data-lucide="check"></i> Tratamiento de lesiones deportivas y fracturas</li>
-            </ul>
-            <div class="service-footer">
-              <button class="service-action-link" onclick="openTurnoModal('Traumatología')">
-                Consultar turno <i data-lucide="calendar"></i>
-              </button>
-            </div>
-          </div>
-
-          <!-- Servicio 4: Urología -->
-          <div class="service-card" data-category="quirurgicas">
-            <div class="service-card-header">
-              <div class="service-icon teal-badge"><i data-lucide="droplet"></i></div>
-              <span class="service-tag">Quirúrgica / Consultorio</span>
-            </div>
-            <h3>Urología General y Quirúrgica</h3>
-            <p>Diagnóstico y tratamiento de afecciones del sistema urinario masculino y femenino, patologías prostáticas y renales.</p>
-            <ul class="service-features">
-              <li><i data-lucide="check"></i> Cirugía endoscópica y urológica</li>
-              <li><i data-lucide="check"></i> Tratamiento de litiasis renal (cálculos)</li>
-              <li><i data-lucide="check"></i> Control prostático y salud masculina</li>
-            </ul>
-            <div class="service-footer">
-              <button class="service-action-link" onclick="openTurnoModal('Urología')">
-                Consultar turno <i data-lucide="calendar"></i>
-              </button>
-            </div>
-          </div>
-
-          <!-- Servicio 5: Ginecología -->
-          <div class="service-card" data-category="consultorios">
-            <div class="service-card-header">
-              <div class="service-icon pink-badge"><i data-lucide="heart"></i></div>
-              <span class="service-tag">Consultorio / Quirúrgica</span>
-            </div>
-            <h3>Ginecología y Salud de la Mujer</h3>
-            <p>Atención médica preventiva, control anual, diagnóstico ginecológico y cirugías ginecológicas especializadas.</p>
-            <ul class="service-features">
-              <li><i data-lucide="check"></i> Controles anuales (PAP y Colposcopía)</li>
-              <li><i data-lucide="check"></i> Planificación familiar y ginecología preventiva</li>
-              <li><i data-lucide="check"></i> Cirugía ginecológica mínimamente invasiva</li>
-            </ul>
-            <div class="service-footer">
-              <button class="service-action-link" onclick="openTurnoModal('Ginecología')">
-                Consultar turno <i data-lucide="calendar"></i>
-              </button>
-            </div>
-          </div>
-
-          <!-- Servicio 6: Unidad de Terapia Intensiva (UTI) -->
-          <div class="service-card highlight-card" data-category="quirurgicas">
-            <div class="service-card-header">
-              <div class="service-icon blue-badge"><i data-lucide="bed"></i></div>
-              <span class="service-tag tag-uti">Cuidados Críticos</span>
-            </div>
-            <h3>Unidad de Terapia Intensiva (UTI)</h3>
-            <p>Infraestructura de alta complejidad para la recuperación de pacientes postquirúrgicos y pacientes con cuadros clínicos críticos.</p>
-            <ul class="service-features">
-              <li><i data-lucide="check"></i> Monitorización 24 hs multiparamétrica</li>
-              <li><i data-lucide="check"></i> Asistencia respiratoria mecánica</li>
-              <li><i data-lucide="check"></i> Equipo de intensivistas y enfermería especializada</li>
-            </ul>
-            <div class="service-footer">
-              <a href="#uti-infraestructura" class="service-action-link uti-link">
-                Conocer infraestructura <i data-lucide="arrow-right"></i>
-              </a>
-            </div>
-          </div>
-
-          <!-- Servicio 7: Consultorios Médicos Polivalentes -->
-          <div class="service-card" data-category="consultorios">
-            <div class="service-card-header">
-              <div class="service-icon emerald-badge"><i data-lucide="clipboard-list"></i></div>
-              <span class="service-tag">Consultorio</span>
-            </div>
-            <h3>Clínica Médica y Especialidades</h3>
-            <p>Consultorios externos para el chequeo de rutina, prevención y seguimiento continuo de patologías crónicas.</p>
-            <ul class="service-features">
-              <li><i data-lucide="check"></i> Clínica médica general</li>
-              <li><i data-lucide="check"></i> Cardiología y evaluación prequirúrgica</li>
-              <li><i data-lucide="check"></i> Control de medicación y certificados</li>
-            </ul>
-            <div class="service-footer">
-              <button class="service-action-link" onclick="openTurnoModal('Clínica Médica')">
-                Consultar turno <i data-lucide="calendar"></i>
-              </button>
-            </div>
-          </div>
-
-          <!-- Servicio 8: Diagnóstico y Laboratorio de Apoyo -->
-          <div class="service-card" data-category="consultorios">
-            <div class="service-card-header">
-              <div class="service-icon indigo-badge"><i data-lucide="flask-conical"></i></div>
-              <span class="service-tag">Diagnóstico</span>
-            </div>
-            <h3>Servicios de Diagnóstico</h3>
-            <p>Estudios complementarios, diagnóstico por imágenes y análisis para el soporte rápido en guardia e internación.</p>
-            <ul class="service-features">
-              <li><i data-lucide="check"></i> Tomografía</li>
-              <li><i data-lucide="check"></i> Radiología digital</li>
-              <li><i data-lucide="check"></i> Laboratorio de análisis clínicos de urgencia</li>
-              <li><i data-lucide="check"></i> Electrocardiogramas y monitoreo cardíaco</li>
-            </ul>
-            <div class="service-footer">
-              <button class="service-action-link" onclick="openTurnoModal('Diagnóstico')">
-                Consultar estudios <i data-lucide="calendar"></i>
-              </button>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- SECCIÓN UTI & QUIRÓFANOS (INFRAESTRUCTURA) -->
-    <section class="uti-section" id="uti-infraestructura">
-      <div class="container">
-        <div class="uti-banner">
-          <div class="uti-banner-content">
-            <div class="section-tag tag-white">Complejidad Médica</div>
-            <h2>Unidad de Terapia Intensiva & Quirófanos</h2>
-            <p>
-              Clínica Passo S.A. cuenta con quirófanos totalmente equipados y una Unidad de Terapia Intensiva (UTI) preparada para brindar soporte vital continuo y seguimiento estricto en cirugías de alta complejidad y emergencias médicas.
-            </p>
-            <div class="uti-highlights">
-              <div class="uti-highlight-item">
-                <i data-lucide="check-circle-2"></i>
-                <span>Monitoreo invasivo y no invasivo continuo las 24 horas</span>
-              </div>
-              <div class="uti-highlight-item">
-                <i data-lucide="check-circle-2"></i>
-                <span>Respaldo de generadores de energía de emergencia grado médico</span>
-              </div>
-              <div class="uti-highlight-item">
-                <i data-lucide="check-circle-2"></i>
-                <span>Personal de enfermería de cuidados críticos permanente</span>
-              </div>
-              <div class="uti-highlight-item">
-                <i data-lucide="check-circle-2"></i>
-                <span>Control estricto de asepsia y protocolos de bioseguridad</span>
-              </div>
-            </div>
-            <div class="uti-banner-cta">
-              <a href="tel:01142641654" class="btn btn-emergency">
-                <i data-lucide="phone"></i> Contacto de Urgencias:011 4264-1652
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- GUÍA AL PACIENTE Y FAMILIARES (ABORDANDO PREOCUPACIONES DE RESEÑAS) -->
-    <section class="patient-guide-section" id="guia-paciente">
-      <div class="container">
-        <div class="section-header text-center">
-          <div class="section-tag">Transparencia y Atención</div>
-          <h2 class="section-title">Guía para Pacientes y Familiares</h2>
-          <p class="section-desc">Información clara sobre el funcionamiento de nuestra guardia, normas de visita a internación y preparación de consultas.</p>
-        </div>
-
-        <div class="guide-grid">
-          <!-- Columna 1: Acordeón de Preguntas Frecuentes -->
-          <div class="guide-faq-column">
-            <div class="accordion" id="guideAccordion">
-              
-              <div class="accordion-item active">
-                <button class="accordion-header" aria-expanded="true">
-                  <span><i data-lucide="clock"></i> ¿Cómo funciona el Triage y orden de atención en Guardia?</span>
-                  <i data-lucide="chevron-down" class="accordion-icon"></i>
-                </button>
-                <div class="accordion-body">
-                  <p>En la guardia médica las atenciones se priorizan según la <strong>gravedad clínica del cuadro (Triage médico)</strong> y no por orden de llegada. Los cuadros que comprometen la vida tienen atención inmediata. Te agradecemos la comprensión para cuidar juntos la salud de todos.</p>
-                </div>
-              </div>
-
-              <div class="accordion-item">
-                <button class="accordion-header" aria-expanded="false">
-                  <span><i data-lucide="users"></i> Horarios y Normas de Visita (Internación y UTI)</span>
-                  <i data-lucide="chevron-down" class="accordion-icon"></i>
-                </button>
-                <div class="accordion-body">
-                  <p>Para asegurar el descanso y la recuperación de los pacientes internados, así como las condiciones de bioseguridad requeridas:</p>
-                  <ul>
-                    <li><strong>Piso de Internación:</strong> Se permite un acompañante permanente por habitación y visitas en franjas horarias programadas.</li>
-                    <li><strong>Terapia Intensiva (UTI):</strong> Informes médicos diarios y visitas en horarios estrictos asignados por el equipo médico para resguardar la tranquilidad de la unidad.</li>
-                  </ul>
-                </div>
-              </div>
-
-              <div class="accordion-item">
-                <button class="accordion-header" aria-expanded="false">
-                  <span><i data-lucide="file-text"></i> ¿Qué documentación debo presentar?</span>
-                  <i data-lucide="chevron-down" class="accordion-icon"></i>
-                </button>
-                <div class="accordion-body">
-                  <p>Para cualquier atención por guardia o consultorio, por favor presentá:</p>
-                  <ul>
-                    <li>DNI o documento de identidad del paciente.</li>
-                    <li>Carnet de Obra Social o Prepaga (físico o digital).</li>
-                    <li>Orden médica o autorización si corresponde a tu cobertura.</li>
-                  </ul>
-                </div>
-              </div>
-
-              <div class="accordion-item">
-                <button class="accordion-header" aria-expanded="false">
-                  <span><i data-lucide="credit-card"></i> Obras Sociales y Prepagas</span>
-                  <i data-lucide="chevron-down" class="accordion-icon"></i>
-                </button>
-                <div class="accordion-body">
-                  <p>Trabajamos con una amplia cartilla de obras sociales, prepagas y planes de atención particular. Ante cualquier consulta sobre coberturas específicas para cirugías o internación, comunicate telefónicamente al <strong>011 4264-1652</strong>.</p>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          <!-- Columna 2: Tarjeta de Compromiso Humano -->
-          <div class="guide-card-column">
-            <div class="human-care-card">
-              <div class="care-icon"><i data-lucide="heart-handshake"></i></div>
-              <h3>Nuestro Compromiso con Vos</h3>
-              <p>Sabemos que acudir a un centro médico implica momentos de angustia e incertidumbre. Todo nuestro equipo humano —médicos, enfermeros, administrativos y maestranza— trabaja día a día para brindarte una atención respetuosa, transparente y cálida.</p>
-              
-              <div class="care-contact-box">
-                <h4>¿Tenés alguna consulta o sugerencia?</h4>
-                <p>Estamos a tu disposición para orientarte antes de tu visita.</p>
-                <a href="tel:01142641652" class="btn btn-primary btn-sm w-full">
-                  <i data-lucide="phone"></i> Llamar al 011 4264-1652
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-
-
-    <!-- CÓMO LLEGAR & MAPA INTERACTIVO -->
-    <section class="location-section" id="como-llegar">
-      <div class="container">
-        <div class="section-header text-center">
-          <div class="section-tag">Ubicación y Accesos</div>
-          <h2 class="section-title">Cómo Llegar a la Institución</h2>
-          <p class="section-desc">Fácil acceso desde distintos puntos de la Zona Sur del Gran Buenos Aires.</p>
-        </div>
-
-        <div class="location-grid">
-          <!-- Columna Info de Llegada -->
-          <div class="location-info-card">
-            <div class="loc-header">
-              <i data-lucide="map-pin" class="loc-pin-icon"></i>
-              <div>
-                <h3>Clínica Passo S.A.</h3>
-                <p class="address-text">Av. Eva Perón 3097, B1832 Temperley<br>Provincia de Buenos Aires, Argentina</p>
-              </div>
-            </div>
-
-            <div class="transport-options">
-              <h4><i data-lucide="bus"></i> Líneas de Colectivo Cercanas</h4>
-              <p>Líneas que circulan o conectan con Av. Eva Perón (ex Pasco) y alrededores:</p>
-              <div class="bus-tags">
-                <span class="bus-badge">Línea 278</span>
-                <span class="bus-badge">Línea 266</span>
-                <span class="bus-badge">Línea 338 (Costera)</span>
-                <span class="bus-badge">Línea 160</span>
-                <span class="bus-badge">Línea 74</span>
-              </div>
-            </div>
-
-            <div class="access-routes">
-              <h4><i data-lucide="car"></i> Accesos en Auto / Ambulancia</h4>
-              <p>Acceso directo por <strong>Av. Eva Perón</strong> (arteria principal este-oeste de conexión Temperley - Quilmes - Lomas de Zamora). Fácil detención para ascenso y descenso de pacientes en puerta principal.</p>
-            </div>
-
-            <div class="location-actions">
-              <a href="https://maps.google.com/?q=Av.+Eva+Per%C3%B3n+3097,+Temperley,+Provincia+de+Buenos+Aires" target="_blank" rel="noopener noreferrer" class="btn btn-primary w-full">
-                <i data-lucide="external-link"></i> Abrir en Google Maps
-              </a>
-              <button class="btn btn-outline w-full" onclick="copyAddressToClipboard()">
-                <i data-lucide="copy"></i> Copiar Dirección
-              </button>
-            </div>
-          </div>
-
-          <!-- Columna Mapa Interactivo Embebido -->
-          <div class="location-map-card">
-            <div class="map-wrapper">
-              <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3278.483984712534!2d-58.37525282425391!3d-34.77093207289568!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95a32d184eb430e3%3A0xe9f798e1f574d754!2sAv.%20Eva%20Per%C3%B3n%203097%2C%20B1832%20Temperley%2C%20Provincia%20de%20Buenos%20Aires!5e0!3m2!1ses!2sar!4v1710000000000!5m2!1ses!2sar" 
-                width="100%" 
-                height="100%" 
-                style="border:0;" 
-                allowfullscreen="" 
-                loading="lazy" 
-                referrerpolicy="no-referrer-when-downgrade"
-                title="Ubicación de Clínica Passo S.A. en Google Maps">
-              </iframe>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- FOOTER INSTITUCIONAL CON LOGO -->
-  <footer class="main-footer">
-    <div class="container footer-grid">
-      
-      <!-- Columna 1: Identidad -->
-      <div class="footer-col brand-col">
-        <div class="footer-logo">
-          <img src="assets/logo.jpg" alt="Logo de Clínica Passo" class="footer-logo-img">
-          <div>
-            <span class="logo-title text-white">CLÍNICA <strong>PASSO S.A.</strong></span>
-            <span class="logo-subtitle text-slate-400">Institución Médica Polivalente</span>
-          </div>
-        </div>
-        <p class="footer-desc">
-          Más de dos décadas brindando atención médica, quirúrgica y de urgencias con calidez y excelencia en Temperley y la Zona Sur del Gran Buenos Aires.
-        </p>
-        <div class="footer-social-links">
-          <a href="https://www.instagram.com/clinicapasso/" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Instagram @clinicapasso">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-          </a>
-          <a href="tel:01142641652" class="social-btn" aria-label="Llamar por Teléfono">
-            <i data-lucide="phone"></i>
-          </a>
-        </div>
-      </div>
-
-      <!-- Columna 2: Enlaces Rápidos -->
-      <div class="footer-col">
-        <h4 class="footer-heading">Secciones</h4>
-        <ul class="footer-links">
-          <li><a href="#inicio"><i data-lucide="chevron-right"></i> Inicio</a></li>
-          <li><a href="#quienes-somos"><i data-lucide="chevron-right"></i> Quiénes Somos</a></li>
-          <li><a href="#especialidades"><i data-lucide="chevron-right"></i> Especialidades Médicas</a></li>
-          <li><a href="#uti-infraestructura"><i data-lucide="chevron-right"></i> Terapia Intensiva (UTI)</a></li>
-          <li><a href="#guia-paciente"><i data-lucide="chevron-right"></i> Guía al Paciente</a></li>
-          <li><a href="#como-llegar"><i data-lucide="chevron-right"></i> Cómo Llegar</a></li>
-        </ul>
-      </div>
-
-      <!-- Columna 3: Especialidades -->
-      <div class="footer-col">
-        <h4 class="footer-heading">Servicios Clave</h4>
-        <ul class="footer-links">
-          <li><a href="#especialidades"><i data-lucide="chevron-right"></i> Guardia Médica 24 hs</a></li>
-          <li><a href="#especialidades"><i data-lucide="chevron-right"></i> Cirugía General</a></li>
-          <li><a href="#especialidades"><i data-lucide="chevron-right"></i> Traumatología y Ortopedia</a></li>
-          <li><a href="#especialidades"><i data-lucide="chevron-right"></i> Urología</a></li>
-          <li><a href="#especialidades"><i data-lucide="chevron-right"></i> Ginecología</a></li>
-          <li><a href="#especialidades"><i data-lucide="chevron-right"></i> Consultorios Externos</a></li>
-        </ul>
-      </div>
-
-      <!-- Columna 4: Contacto y Guardia -->
-      <div class="footer-col">
-        <h4 class="footer-heading">Contacto y Urgencias</h4>
-        <div class="footer-contact-item">
-          <i data-lucide="phone-call" class="text-red"></i>
-          <div>
-            <strong>Guardia 24 hs (Línea Fija):</strong>
-            <a href="tel:01142641652" class="footer-phone-highlight">011  4264-1652</a>
-          </div>
-        </div>
-        <div class="footer-contact-item">
-          <i data-lucide="message-circle" class="text-green"></i>
-          <div>
-            <strong>WhatsApp Turnos:</strong>
-            <a href="https://wa.me/5491139511478" target="_blank" rel="noopener noreferrer" class="footer-phone-highlight text-green">11 3951-1478</a>
-          </div>
-        </div>
-        <div class="footer-contact-item">
-          <i data-lucide="map-pin" class="text-cyan"></i>
-          <div>
-            <strong>Dirección:</strong>
-            <span>Av. Eva Perón 3097, B1832 Temperley, Buenos Aires</span>
-          </div>
-        </div>
-        <div class="footer-contact-item">
-          <i data-lucide="clock" class="text-green"></i>
-          <div>
-            <strong>Horario:</strong>
-            <span>Abierto las 24 horas (365 días)</span>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Barra Inferior de Derechos -->
-    <div class="footer-bottom">
-      <div class="container footer-bottom-flex">
-        <p>© 2026 Clínica Passo S.A. Todos los derechos reservados. Temperley, Buenos Aires.</p>
-        <p class="site-referencia"><a href="https://clinicapasso.com.ar" style="color: inherit; text-decoration: none;">clinicapasso.com.ar</a> | <a href="https://www.instagram.com/clinicapasso/" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">Instagram: @clinicapasso</a></p>
-      </div>
-    </div>
-  </footer>
-
-  <!-- BARRA FIJA INFERIOR OPTIMIZADA PARA MÓVILES (IPHONE / ANDROID / NETLIFY) -->
-  <div class="fixed-bottom-bar" id="mobileActionBar">
-    <button class="btn-action btn-turnos" onclick="openTurnoModal()" aria-label="Solicitar Turno Médico">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
-        <line x1="16" x2="16" y1="2" y2="6"/>
-        <line x1="8" x2="8" y1="2" y2="6"/>
-        <line x1="3" x2="10" y1="10" y2="10"/>
-      </svg>
-      <span>Pedir Turno</span>
-    </button>
-    <a href="https://wa.me/5491139511478?text=Hola%20Cl%C3%ADnica%20Passo,%20quisiera%20consultar%20por%20un%20turno" 
-       target="_blank" 
-       rel="noopener noreferrer" 
-       class="btn-action btn-whatsapp" 
-       aria-label="Escribir por WhatsApp">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
-      </svg>
-      <span>WhatsApp</span>
-    </a>
-  </div>
-
-  <!-- BOTÓN FLOTANTE WHATSAPP MINIMALISTA PARA PC (ESCRITORIO) -->
-  <a href="https://wa.me/5491139511478?text=Hola%20Cl%C3%ADnica%20Passo,%20quisiera%20consultar%20por%20un%20turno" 
-     target="_blank" 
-     rel="noopener noreferrer" 
-     class="desktop-whatsapp-bubble" 
-     aria-label="Contactar por WhatsApp"
-     title="Escribinos por WhatsApp">
-    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 6.46 17.5 2 12.04 2ZM12.04 20.15C10.56 20.15 9.11 19.76 7.85 19.01L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 14.99 3.81 13.47 3.81 11.91C3.81 7.37 7.5 3.68 12.04 3.68C14.24 3.68 16.31 4.54 17.86 6.09C19.41 7.64 20.27 9.71 20.27 11.91C20.27 16.46 16.58 20.15 12.04 20.15ZM16.55 14.41C16.3 14.28 15.09 13.69 14.86 13.61C14.63 13.52 14.47 13.48 14.3 13.73C14.13 13.98 13.66 14.54 13.51 14.7C13.37 14.87 13.22 14.89 12.97 14.76C12.72 14.64 11.92 14.38 10.97 13.53C10.23 12.87 9.73 12.06 9.58 11.81C9.43 11.56 9.57 11.42 9.69 11.3C9.8 11.19 9.94 11.01 10.06 10.87C10.18 10.73 10.23 10.63 10.31 10.46C10.39 10.29 10.35 10.15 10.29 10.02C10.23 9.9 9.73 8.68 9.53 8.17C9.33 7.68 9.13 7.74 8.97 7.73L8.49 7.72C8.32 7.72 8.06 7.78 7.83 8.03C7.61 8.28 6.98 8.87 6.98 10.07C6.98 11.27 7.85 12.43 7.97 12.59C8.09 12.75 9.7 15.24 12.16 16.3C12.75 16.55 13.2 16.7 13.56 16.82C14.15 17.01 14.69 16.98 15.11 16.92C15.58 16.85 16.55 16.33 16.76 15.75C16.96 15.17 16.96 14.67 16.9 14.57C16.84 14.47 16.69 14.41 16.55 14.41Z"/>
-    </svg>
-  </a>
-
-  <!-- MODAL DE SOLICITUD DE TURNOS Y ESTUDIOS -->
-  <div class="modal-backdrop hidden" id="turnoModal">
-    <div class="modal-box">
-      <div class="modal-header">
-        <div class="modal-title-group">
-          <img src="assets/logo.jpg" alt="Logo de Clínica Passo" class="modal-logo-img">
-          <div>
-            <h3 id="modalTitle">Solicitar Turno Médico</h3>
-            <p id="modalSubtitle">Completá los datos y te confirmaremos por WhatsApp.</p>
-          </div>
-        </div>
-        <button class="modal-close-btn" onclick="closeTurnoModal()" aria-label="Cerrar modal">
-          <i data-lucide="x"></i>
-        </button>
-      </div>
-
-      <div class="modal-body">
-        <form id="modalAppointmentForm" onsubmit="handleModalSubmit(event)">
-          <div class="form-group">
-            <label for="modalName">Nombre y Apellido *</label>
-            <input type="text" id="modalName" required placeholder="Tu nombre completo">
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="modalDni">DNI / Documento *</label>
-              <input type="text" id="modalDni" required placeholder="Ej. 35123456" inputmode="numeric">
-            </div>
-            <div class="form-group">
-              <label for="modalPhone">Teléfono / WhatsApp *</label>
-              <input type="tel" id="modalPhone" required placeholder="Ej. 11 4444-5555">
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="modalInsurance">Obra Social / Prepaga</label>
-              <input type="text" id="modalInsurance" placeholder="Ej. PAMI, IOMA, OSDE, Particular...">
-            </div>
-            <div class="form-group">
-              <label for="modalAffiliateNumber">N° de Beneficio / Afiliado</label>
-              <input type="text" id="modalAffiliateNumber" placeholder="Ej. N° de carnet PAMI / IOMA">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="modalSpecialty" id="modalSpecialtyLabel">Especialidad Requerida *</label>
-            <select id="modalSpecialty" required>
-              <option value="">Seleccionar especialidad...</option>
-              <option value="Cardiología">Cardiología</option>
-              <option value="Urología">Urología</option>
-              <option value="Ginecología">Ginecología</option>
-              <option value="Cirugía Ginecológica">Cirugía Ginecológica</option>
-              <option value="Neurología">Neurología</option>
-              <option value="Cirugía General">Cirugía General</option>
-              <option value="Oncología">Oncología</option>
-              <option value="Flebología">Flebología</option>
-              <option value="Nutrición">Nutrición</option>
-              <option value="Traumatología">Traumatología</option>
-              <option value="Gastroenterología">Gastroenterología</option>
-              <option value="DBT (Diabetes)">DBT (Diabetes)</option>
-              <option value="Nefrología">Nefrología</option>
-              <option value="Endocrinología">Endocrinología</option>
-              <option value="Clínica Médica">Clínica Médica</option>
-              <option value="Tomografía">Tomografía</option>
-              <option value="Radiología Digital">Radiología Digital</option>
-              <option value="Laboratorio de Análisis Clínicos">Laboratorio de Análisis Clínicos</option>
-              <option value="Electrocardiograma">Electrocardiograma</option>
-              <option value="Internación / UTI">Internación / UTI</option>
-              <option value="Otra Consulta">Otra especialidad / Consulta</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="modalNotes" id="modalNotesLabel">Preferencia de días/horarios o consulta</label>
-            <textarea id="modalNotes" rows="2" placeholder="Ej. Preferencia de horario o indicación del estudio..."></textarea>
-          </div>
-
-          <div class="modal-footer-btns">
-            <button type="button" class="btn btn-outline" onclick="closeTurnoModal()">Cancelar</button>
-            <button type="submit" class="btn btn-whatsapp" id="modalSubmitBtn">
-              <i data-lucide="message-circle"></i> <span id="modalSubmitBtnText">Confirmar Turno por WhatsApp</span>
+        <div class="form-group-modern mb-6 relative">
+          <div class="password-input-wrap-modern split-input-style">
+            <input type="password" id="loginPassword" class="lock-input-modern" placeholder="••••••••" required autocomplete="current-password">
+            <span class="modern-static-label">Contraseña</span>
+            <button type="button" class="btn-toggle-pwd-modern" onclick="toggleVisibilidadClave()" title="Mostrar u ocultar contraseña">
+              <i data-lucide="eye" id="eyeIcon"></i>
             </button>
           </div>
+        </div>
 
-          <div class="modal-feedback hidden" id="modalFeedback">
-            <i data-lucide="check-circle-2"></i>
-            <p id="modalFeedbackText"><strong>¡Abriendo WhatsApp!</strong> Enviando tu solicitud a recepción...</p>
+        <div id="loginErrorMsg" class="login-alert hidden">
+          <i data-lucide="alert-triangle"></i>
+          <span id="loginErrorText">Clave incorrecta. Acceso denegado.</span>
+        </div>
+
+        <div id="lockoutTimerMsg" class="login-alert lockout hidden">
+          <i data-lucide="lock"></i>
+          <span id="lockoutTimerText">Acceso bloqueado temporalmente por seguridad.</span>
+        </div>
+
+        <button type="submit" class="btn-login-submit-modern" id="btnLoginSubmit">
+          Ingresar al Panel
+        </button>
+      </form>
+    </div>
+
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- PANEL PRINCIPAL (SE MUESTRA TRAS DESBLOQUEO) -->
+  <!-- ======================================================== -->
+  <div class="admin-layout hidden" id="adminLayout">
+    
+    <!-- OVERLAY PARA MÓVILES AL ABRIR EL MENÚ -->
+    <div class="sidebar-overlay hidden" id="sidebarOverlay" onclick="toggleMobileSidebar()"></div>
+
+    <!-- SIDEBAR DE NAVEGACIÓN -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="assets/logo.jpg" alt="Logo Clínica Passo" class="sidebar-logo">
+        <div class="sidebar-brand-text">
+          <h2>CLÍNICA PASSO</h2>
+          <span id="sidebarRoleLabel">Panel de Gestión</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-tab="calendario-tab" id="navCalendarioBtn">
+          <i data-lucide="calendar"></i>
+          <span>Calendario</span>
+        </button>
+        <button class="nav-item hidden" data-tab="agenda-tab" id="navAgendaBtn">
+          <i data-lucide="calendar-clock"></i>
+          <span id="navAgendaTexto">Agenda médica</span>
+        </button>
+        <button class="nav-item" data-tab="pacientes-tab" id="navPacientesBtn">
+          <i data-lucide="users"></i>
+          <span>Pacientes</span>
+        </button>
+        <button class="nav-item" data-tab="historias-tab" id="navHistoriasBtn">
+          <i data-lucide="clipboard-plus"></i>
+          <span>Historias Clínicas</span>
+        </button>
+        <button class="nav-item" data-tab="internacion-tab" id="navInternacionBtn">
+          <i data-lucide="bed-double"></i>
+          <span>Internación</span>
+        </button>
+        <button class="nav-item hidden" data-tab="rayos-tab" id="navRayosBtn">
+          <i data-lucide="scan-line"></i>
+          <span>Rayos</span>
+        </button>
+        <button class="nav-item hidden" data-tab="guardia-tab" id="navGuardiaBtn">
+          <i data-lucide="armchair"></i>
+          <span>Turnos</span>
+        </button>
+        <button class="nav-item hidden" data-tab="admin-tab" id="navAdminBtn">
+          <i data-lucide="shield-check"></i>
+          <span>Administración</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="api-status-card">
+          <div class="api-status-indicator">
+            <span class="status-dot" id="statusDot"></span>
+            <strong id="statusText">Conectando...</strong>
+          </div>
+          <span class="api-url-label" id="apiUrlLabel">Render API</span>
+        </div>
+
+        <button type="button" class="user-profile-badge user-profile-btn" onclick="abrirMiCuenta()" title="Mi cuenta: datos, permisos y contraseña">
+          <div class="user-avatar" id="userAvatarIcon"><i data-lucide="user-check"></i></div>
+          <div class="user-info">
+            <strong id="userProfileNombre">—</strong>
+            <span><b id="userProfileId" class="user-id-chip">ID —</b> <span id="userProfileRole">—</span></span>
+          </div>
+        </button>
+
+        <button class="btn-logout" onclick="cerrarSesion()" title="Bloquear terminal y cerrar sesión">
+          <i data-lucide="log-out"></i> Bloquear Terminal / Salir
+        </button>
+      </div>
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main-content">
+      
+      <!-- TOP BAR SUPERIOR CON BOTÓN MENÚ MÓVIL -->
+      <header class="top-header">
+        <div class="header-left-wrap">
+          <button class="btn-menu-mobile" id="mobileMenuBtn" onclick="toggleMobileSidebar()" aria-label="Abrir Menú">
+            <i data-lucide="menu"></i>
+          </button>
+          <div class="header-title-wrap">
+            <h1 id="pageTitle">Calendario</h1>
+            <p id="currentDateText">Cargando fecha...</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button type="button" class="btn btn-secondary btn-notif hidden" id="btnNotif" onclick="toggleNotificaciones()" title="Notificaciones" aria-label="Notificaciones" aria-haspopup="dialog">
+            <i data-lucide="bell"></i><span class="notif-badge hidden" id="notifBadge">0</span>
+          </button>
+          <button class="btn btn-secondary" onclick="refreshCurrentTab()" title="Actualizar datos">
+            <i data-lucide="refresh-cw" id="refreshIcon"></i> <span class="btn-label">Actualizar</span>
+          </button>
+          <div class="dropdown-wrapper" id="btnGroupCargarDocumento" style="display:none; position: relative;">
+            <button class="btn btn-primary" onclick="toggleDropdownDocumento(event)" title="Cargar nuevo documento">
+              <i data-lucide="plus-circle"></i> Cargar<span class="btn-label"> Documento</span> <i data-lucide="chevron-down" style="width:14px; margin-left:2px;"></i>
+            </button>
+            <div class="dropdown-menu-docs" id="menuCargarDocumento">
+              <a href="#" data-doc-tipo="hc" onclick="event.preventDefault(); toggleDropdownDocumento(event); openModalNuevaEvolucion();"><i data-lucide="file-text"></i> Historia Clínica (H.C.)</a>
+              <a href="#" data-doc-tipo="consultorio" onclick="event.preventDefault(); toggleDropdownDocumento(event); openModalEvolucionConsultorio();"><i data-lucide="clipboard-pen"></i> Evolución</a>
+              <a href="#" data-doc-tipo="indicaciones" onclick="event.preventDefault(); toggleDropdownDocumento(event); openModalPlanilla('indicaciones');"><i data-lucide="pill"></i> Indicaciones Médicas</a>
+              <a href="#" data-doc-tipo="enfermeria" onclick="event.preventDefault(); toggleDropdownDocumento(event); openModalPlanilla('enfermeria');"><i data-lucide="heart-pulse"></i> Evolución Enfermería</a>
+              <a href="#" data-doc-tipo="laboratorio" onclick="event.preventDefault(); toggleDropdownDocumento(event); openModalLaboratorio();"><i data-lucide="microscope"></i> Laboratorio</a>
+              <a href="#" data-doc-tipo="foja" onclick="event.preventDefault(); toggleDropdownDocumento(event); openModalFoja();"><i data-lucide="scissors"></i> Foja Quirúrgica</a>
+              <a href="#" data-doc-tipo="epicrisis" onclick="event.preventDefault(); toggleDropdownDocumento(event); openModalPlanilla('epicrisis');"><i data-lucide="file-check-2"></i> Epicrisis</a>
+              <div class="dropdown-sep" data-doc-tipo="adjunto"></div>
+              <a href="#" data-doc-tipo="adjunto" onclick="event.preventDefault(); toggleDropdownDocumento(event); openModalAdjunto();"><i data-lucide="paperclip"></i> Adjuntar archivo</a>
+            </div>
+          </div>
+          <button class="btn btn-primary" id="mainActionBtn" style="display:none">
+            <i data-lucide="plus"></i> Nuevo Turno
+          </button>
+        </div>
+      </header>
+
+      <!-- TAB 0: CALENDARIO / DASHBOARD MENSUAL -->
+      <section class="tab-pane active" id="calendario-tab">
+        <div class="calendar-section-wrap">
+          
+          <!-- Barra Superior de Controles del Calendario -->
+          <div class="calendar-controls-bar">
+            <!-- Selector de Mes -->
+            <div class="calendar-month-selector">
+              <button class="btn-cal-nav" onclick="cambiarMesCalendario(-1)" title="Mes anterior">
+                <i data-lucide="chevron-left"></i>
+              </button>
+              <span class="calendar-month-title" id="calCurrentMonthLabel">Agosto 2026</span>
+              <button class="btn-cal-nav" onclick="cambiarMesCalendario(1)" title="Mes siguiente">
+                <i data-lucide="chevron-right"></i>
+              </button>
+            </div>
+
+            <!-- Leyenda de Especialidades -->
+            <div class="calendar-legend-bar">
+              <span class="legend-titulo">Especialidades</span>
+              <span class="legend-chip" style="--spec:#A8385F;">
+                <span class="dot"></span> Ginecología
+              </span>
+              <span class="legend-chip" style="--spec:#B83A3A;">
+                <span class="dot"></span> Cardiología
+              </span>
+              <span class="legend-chip" style="--spec:#B07A1E;">
+                <span class="dot"></span> Traumatología
+              </span>
+              <span class="legend-chip" style="--spec:#2A35B5;">
+                <span class="dot"></span> Cirugía Gral.
+              </span>
+              <span class="legend-chip" style="--spec:#12837F;">
+                <span class="dot"></span> Urología
+              </span>
+              <span class="legend-chip" style="--spec:#4F6B8F;">
+                <span class="dot"></span> Clínica Médica
+              </span>
+            </div>
+
+            <!-- Total de Turnos -->
+            <div style="font-size: 0.85rem; color: var(--text-muted);">
+              Total del Mes: <strong id="calMonthTotalCount" style="color: var(--primary); font-weight: 800;">0 Turnos</strong>
+            </div>
+          </div>
+
+          <!-- Días de la Semana -->
+          <div class="calendar-weekdays-grid">
+            <div>Lun</div>
+            <div>Mar</div>
+            <div>Mié</div>
+            <div>Jue</div>
+            <div>Vie</div>
+            <div class="sat">Sáb</div>
+            <div class="sun">Dom</div>
+          </div>
+
+          <!-- Grilla Mensual de Tarjetas de Días -->
+          <div id="calendarMonthlyGrid" class="calendar-monthly-grid">
+            <!-- Renderizado dinámicamente -->
+          </div>
+
+        
+          </div>
+      </section>
+
+      <!-- TAB 1: PACIENTES & BÚSQUEDA DNI / EMAIL -->
+      <section class="tab-pane" id="pacientes-tab">
+        
+        <div class="table-toolbar">
+          <div class="toolbar-left">
+            <div class="search-input-box large">
+              <i data-lucide="search"></i>
+              <input type="text" id="pacientesSearchInput" placeholder="Buscar paciente por DNI o Apellido..." onkeyup="handlePacientesSearch()">
+            </div>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table" id="pacientesTable">
+            <thead>
+              <tr>
+                <th>Paciente & Email</th>
+                <th>DNI</th>
+                <th>Teléfono</th>
+                <th>Obra Social / Prepaga</th>
+                <th>N° Afiliado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="pacientesTableBody">
+              <tr>
+                <td colspan="6" class="text-center loading-row">
+                  <i data-lucide="loader-2" class="spin"></i> Cargando pacientes...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TAB 3: HISTORIAS CLÍNICAS (EXCLUSIVO Mí‰DICOS) -->
+      <section class="tab-pane" id="historias-tab">
+        
+        <div class="historias-layout">
+          <!-- Columna Izquierda: Selección de Paciente -->
+          <div class="historias-sidebar-card">
+            <h3><i data-lucide="user-search"></i> Seleccionar Paciente</h3>
+            <p>Buscá un paciente por DNI para ver antecedentes o cargar evolución:</p>
+            
+            <div class="search-input-box w-full mb-3">
+              <i data-lucide="search"></i>
+              <input type="text" id="historiaDniSearch" placeholder="Buscar paciente por DNI..." onkeyup="searchPacienteParaHistoria()" inputmode="numeric">
+            </div>
+
+            <div id="historiaPacienteInfoCard" class="patient-selected-box hidden">
+              <div class="patient-header-mini">
+                <strong id="historiaNombrePaciente">Juan Pérez</strong>
+                <span id="historiaDniPaciente">DNI: 35.123.456</span>
+              </div>
+              <div class="patient-meta-mini" style="display: flex; flex-direction: column; gap: 8px; margin-top: 15px; padding: 12px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px;">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <i data-lucide="shield" style="width: 16px; height: 16px; color: var(--primary);"></i>
+                  <span id="historiaObraSocial" style="font-weight: 600; font-size: 0.9rem; color: var(--text-dark);">OSDE 210</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <i data-lucide="credit-card" style="width: 16px; height: 16px; color: var(--text-muted);"></i>
+                  <span id="historiaAfiliado" style="font-size: 0.85rem; color: var(--text-muted);">N° 12345678</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Columna Derecha: Timeline del Historial Médico -->
+          <div class="historias-content-card">
+            <div class="timeline-header" style="display: flex; justify-content: space-between; align-items: center;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <h3><i data-lucide="clipboard-list"></i> Historial Clínico & Antecedentes</h3>
+                <span class="badge" id="historiaTotalCount">0 registros</span>
+              </div>
+              <button class="btn btn-outline" id="btnImprimirTodaHC" onclick="imprimirTodaHistoriaClinica()" style="display: none; padding: 6px 12px; font-size: 0.85rem;">
+                <i data-lucide="printer"></i> Imprimir Todo
+              </button>
+            </div>
+
+            
+            <div class="timeline-filters" id="historiasFilters" style="display: none; gap: 8px; margin-bottom: 15px; flex-wrap: wrap;">
+              <button class="filter-btn active" onclick="filtrarHistorial('todos', this)">Todos</button>
+              <button class="filter-btn" data-doc-tipo="consultorio" onclick="filtrarHistorial('consultorio', this)"><i data-lucide="clipboard-pen" style="width:14px;height:14px;"></i> Evoluciones</button>
+              <button class="filter-btn" data-doc-tipo="hc" onclick="filtrarHistorial('hc', this)"><i data-lucide="file-text" style="width:14px;height:14px;"></i> Historias (H.C.)</button>
+              <button class="filter-btn" data-doc-tipo="laboratorio" onclick="filtrarHistorial('laboratorio', this)"><i data-lucide="microscope" style="width:14px;height:14px;"></i> Laboratorios</button>
+              <button class="filter-btn" data-doc-tipo="indicaciones" onclick="filtrarHistorial('indicaciones', this)"><i data-lucide="pill" style="width:14px;height:14px;"></i> Indicaciones</button>
+              <button class="filter-btn" data-doc-tipo="enfermeria" onclick="filtrarHistorial('enfermeria', this)"><i data-lucide="heart-pulse" style="width:14px;height:14px;"></i> Enfermería</button>
+              <button class="filter-btn" data-doc-tipo="epicrisis" onclick="filtrarHistorial('epicrisis', this)"><i data-lucide="file-check-2" style="width:14px;height:14px;"></i> Epicrisis</button>
+              <button class="filter-btn" data-doc-tipo="foja" onclick="filtrarHistorial('foja', this)"><i data-lucide="scissors" style="width:14px;height:14px;"></i> Cirugías</button>
+              <button class="filter-btn" data-doc-tipo="adjunto" onclick="filtrarHistorial('adjunto', this)"><i data-lucide="paperclip" style="width:14px;height:14px;"></i> Adjuntos</button>
+            </div>
+            <div class="timeline-container" id="historiasTimeline">
+              <div class="empty-state-box">
+                <i data-lucide="user-check"></i>
+                <h4>Seleccioná un paciente para ver su historial médico</h4>
+                <p>Escribí el DNI en el buscador de la izquierda.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    
+      <!-- ========================================== -->
+      <!-- PESTAÑA: INTERNACIÓN                        -->
+      <!-- (Las habitaciones y camas se generan desde app.js: renderInternacion) -->
+      <!-- ========================================== -->
+      <section class="tab-pane" id="internacion-tab">
+        <div class="internacion-dashboard">
+
+          <div class="internacion-toolbar">
+            <div>
+              <h2 style="font-family: var(--font-heading); font-size: 1.2rem; color: var(--text-dark); margin:0;">Planilla de Internación Clínica</h2>
+              <p id="internacionResumen" style="margin:0; font-size:0.85rem; color:var(--text-muted);">Gestión de camas, ingresos y altas.</p>
+            </div>
+            <div class="internacion-toolbar-actions">
+              <div class="internacion-search">
+                <i data-lucide="search"></i>
+                <input type="search" id="internacionBuscar" placeholder="Buscar paciente, DNI o cama..." autocomplete="off">
+                <button type="button" id="internacionBuscarLimpiar" class="internacion-search-clear hidden" title="Limpiar búsqueda"><i data-lucide="x"></i></button>
+              </div>
+              <select id="internacionFiltroEstado" class="internacion-filter-select" title="Filtrar camas">
+                <option value="todas">Todas las camas</option>
+                <option value="ocupadas">Solo ocupadas</option>
+                <option value="libres">Solo libres</option>
+              </select>
+              <button type="button" class="btn btn-secondary" id="internacionToggleTodo" title="Desplegar / colapsar todas las habitaciones">
+                <i data-lucide="chevrons-down"></i> <span>Desplegar todo</span>
+              </button>
+              <button type="button" class="btn btn-outline" id="internacionImprimirBtn" title="Imprimir planilla de internación">
+                <i data-lucide="printer"></i> Imprimir
+              </button>
+            </div>
+          </div>
+
+          <div id="internacionAvisoConexion" class="internacion-aviso hidden" role="status"></div>
+
+          <div class="internacion-grid" id="internacionGrid">
+            <!-- Generado dinámicamente por renderInternacion() -->
+          </div>
+
+          <div class="internacion-observaciones">
+            <div class="internacion-obs-head">
+              <h3>Observaciones Generales</h3>
+              <span id="internacionObsEstado" class="internacion-obs-estado">Se guardan automáticamente</span>
+            </div>
+            <textarea id="internacionObsTextarea" placeholder="Escribí aquí observaciones del turno o novedades generales de internación..."></textarea>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- PESTAÑA: TURNOS (sala de espera del día: llegada, "Que pase", finalizar) -->
+      <!-- ========================================== -->
+      <section class="tab-pane" id="guardia-tab">
+        <div class="guardia-grid">
+          <div class="guardia-card">
+            <div class="guardia-card-head">
+              <div>
+                <h3><i data-lucide="armchair"></i> Sala de espera</h3>
+                <p id="guardiaResumen">Pacientes de hoy.</p>
+              </div>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="cargarSalaEspera()"><i data-lucide="refresh-cw"></i> Actualizar</button>
+            </div>
+            <!-- Consultorio del día: lo que anuncia la pantalla de la sala al tocar "Que pase" -->
+            <form class="consultorio-bar hidden" id="consultorioBar" onsubmit="guardarConsultorio(event)">
+              <div class="consultorio-bar-titulo">
+                <i data-lucide="door-open"></i>
+                <label for="consultorioInput">Hoy atiendo en</label>
+              </div>
+              <div class="consultorio-chips" id="consultorioChips"></div>
+              <div class="consultorio-bar-campo">
+                <input type="text" id="consultorioInput" maxlength="40" placeholder="Ej. Consultorio 1" autocomplete="off">
+                <button type="submit" class="btn btn-primary btn-sm" id="consultorioGuardarBtn"><i data-lucide="check"></i> Guardar</button>
+              </div>
+              <p class="consultorio-estado" id="consultorioEstado">Es lo que muestra la pantalla de la sala cuando llamás a un paciente.</p>
+            </form>
+            <div id="guardiaLista" class="guardia-lista"></div>
+          </div>
+          <div class="guardia-card" id="guardiaInternadosCard">
+            <div class="guardia-card-head">
+              <div>
+                <h3><i data-lucide="bed-double"></i> Internados</h3>
+                <p>La planilla completa está en la pestaña <strong>Internación</strong>.</p>
+              </div>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('navInternacionBtn').click()"><i data-lucide="arrow-right"></i> Ver planilla</button>
+            </div>
+            <div id="guardiaInternados" class="guardia-lista"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- PESTAÑA: RAYOS (placas del día de los internados) -->
+      <!-- ========================================== -->
+      <section class="tab-pane" id="rayos-tab">
+        <div class="guardia-card">
+          <div class="guardia-card-head">
+            <div>
+              <h3><i data-lucide="scan-line"></i> Placas del día</h3>
+              <p id="rayosResumen">Pacientes internados y si ya tienen la placa de hoy.</p>
+            </div>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="cargarRayos()"><i data-lucide="refresh-cw"></i> Actualizar</button>
+          </div>
+          <div class="timeline-filters" id="rayosFiltros" style="display: flex;">
+            <button type="button" class="filter-btn active" onclick="filtrarRayos('todos', this)">Todos</button>
+            <button type="button" class="filter-btn" onclick="filtrarRayos('faltan', this)"><i data-lucide="alert-circle" style="width:14px;height:14px;"></i> Faltan hoy</button>
+            <button type="button" class="filter-btn" onclick="filtrarRayos('hechas', this)"><i data-lucide="check-circle-2" style="width:14px;height:14px;"></i> Hechas hoy</button>
+          </div>
+          <div id="rayosLista" class="guardia-lista"></div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- PESTAÑA: ADMINISTRACIÓN (usuarios y auditoría) -->
+      <!-- ========================================== -->
+      <!-- AGENDA DE LOS MÉDICOS: días y horarios de atención -->
+      <section class="tab-pane" id="agenda-tab">
+        <div class="admin-card agenda-card">
+          <div class="admin-card-head">
+            <div>
+              <h3 id="agendaTitulo">Mi agenda</h3>
+              <p>Marcá qué días y en qué horario atendés, y cuánto dura cada turno. Con esto se arman los horarios que se ofrecen al dar un turno (en el panel y en la web de pacientes) y no se pueden dar dos turnos encimados.</p>
+            </div>
+            <div class="agenda-medico-sel hidden" id="agendaMedicoWrap">
+              <label for="agendaMedicoSelect">Médico</label>
+              <select id="agendaMedicoSelect" onchange="cargarAgendaMedico(this.value)"></select>
+            </div>
+          </div>
+          <div id="agendaSemana" class="agenda-semana"><p class="agenda-vacio">Cargando…</p></div>
+          <div class="agenda-pie">
+            <span class="agenda-resumen" id="agendaResumen"></span>
+            <button type="button" class="btn btn-primary" id="btnGuardarAgenda" onclick="guardarAgenda()"><i data-lucide="save"></i> Guardar horarios</button>
+          </div>
+        </div>
+
+        <div class="admin-card agenda-card">
+          <div class="admin-card-head">
+            <div>
+              <h3>Días sin atención</h3>
+              <p>Vacaciones, congresos o cualquier día que no atiendas. Esos días no se ofrecen turnos.</p>
+            </div>
+          </div>
+          <form class="agenda-bloqueo-form" id="formBloqueo" onsubmit="agregarBloqueo(event)">
+            <div class="form-group"><label for="bloqDesde">Desde</label><input type="date" id="bloqDesde" required></div>
+            <div class="form-group"><label for="bloqHasta">Hasta</label><input type="date" id="bloqHasta"></div>
+            <div class="form-group agenda-bloqueo-motivo"><label for="bloqMotivo">Motivo (opcional)</label><input type="text" id="bloqMotivo" maxlength="120" placeholder="Ej.: vacaciones"></div>
+            <button type="submit" class="btn btn-secondary" id="btnAgregarBloqueo"><i data-lucide="calendar-off"></i> Agregar</button>
+          </form>
+          <div id="agendaBloqueos" class="agenda-bloqueos"></div>
+        </div>
+      </section>
+
+      <section class="tab-pane" id="admin-tab">
+        <div class="admin-tabs">
+          <button type="button" class="filter-btn active" data-admin-vista="usuarios" onclick="mostrarVistaAdmin('usuarios')"><i data-lucide="users"></i> Usuarios</button>
+          <button type="button" class="filter-btn" data-admin-vista="auditoria" onclick="mostrarVistaAdmin('auditoria')"><i data-lucide="scroll-text"></i> Auditoría</button>
+          <button type="button" class="filter-btn" data-admin-vista="pantalla" onclick="mostrarVistaAdmin('pantalla')"><i data-lucide="tv"></i> Pantalla de la sala</button>
+        </div>
+
+        <div id="adminVistaUsuarios" class="admin-card">
+          <div class="admin-card-head">
+            <div>
+              <h3>Usuarios del sistema</h3>
+              <p>Cada persona entra con su usuario. Los usuarios no se borran: se desactivan.</p>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="abrirModalUsuario()"><i data-lucide="user-plus"></i> Nuevo usuario</button>
+          </div>
+          <div class="table-container"><table class="data-table admin-tabla">
+            <thead><tr><th>ID</th><th>Nombre</th><th>Usuario</th><th>Perfil</th><th>Estado</th><th>Último ingreso</th><th></th></tr></thead>
+            <tbody id="adminUsuariosBody"></tbody>
+          </table></div>
+        </div>
+
+        <div id="adminVistaAuditoria" class="admin-card hidden">
+          <div class="admin-card-head">
+            <div>
+              <h3>Auditoría</h3>
+              <p>Últimos 300 movimientos: ingresos, cargas, ediciones, archivos y cambios de usuarios.</p>
+            </div>
+            <div class="admin-filtros">
+              <select id="auditFiltroUsuario" onchange="cargarAuditoria()"><option value="">Todos los usuarios</option></select>
+              <button type="button" class="btn btn-secondary" onclick="cargarAuditoria()"><i data-lucide="refresh-cw"></i></button>
+            </div>
+          </div>
+          <div id="auditLista" class="audit-lista"></div>
+        </div>
+        <div id="adminVistaPantalla" class="admin-card hidden">
+          <div class="admin-card-head">
+            <div>
+              <h3>Pantalla de la sala de espera</h3>
+              <p>Cuando un médico toca <strong>"Que pase"</strong>, el paciente aparece en la tele de la sala con su consultorio. Estado: <strong id="pantallaEstado">—</strong></p>
+            </div>
+          </div>
+
+          <div id="pantallaSinClave" class="pantalla-pasos hidden">
+            <p><strong>Falta un paso en el servidor:</strong></p>
+            <ol>
+              <li>En <strong>Render → tu servicio → Environment</strong>, agregá la variable <code>PANTALLA_CLAVE</code> con una clave larga (mínimo 12 caracteres, ej. <code>sala-passo-2026-k7Qz9x</code>).</li>
+              <li>Guardá y esperá que Render termine de actualizar.</li>
+              <li>Volvé a esta pantalla: acá va a aparecer el link para abrir en la tele.</li>
+            </ol>
+          </div>
+
+          <div id="pantallaConClave" class="hidden">
+            <div class="hc-fila-2">
+              <div class="form-group"><label for="pantallaModo">Cómo mostrar el nombre</label>
+                <select id="pantallaModo" onchange="actualizarLinkPantalla()">
+                  <option value="completo">Apellido y nombre (López, Ana)</option>
+                  <option value="inicial">Apellido e inicial (López, A.) — más privado</option>
+                </select>
+              </div>
+              <div class="form-group"><label>&nbsp;</label>
+                <label class="usr-activo"><input type="checkbox" id="pantallaVoz" onchange="actualizarLinkPantalla()"> Además, anunciar el nombre en voz alta (si la tele lo soporta)</label>
+              </div>
+            </div>
+            <div class="form-group"><label>Link para abrir en la tele</label><div class="pantalla-link" id="pantallaLink"></div></div>
+            <div class="pantalla-botones">
+              <button type="button" class="btn btn-secondary" onclick="copiarLinkPantalla()"><i data-lucide="copy"></i> Copiar link</button>
+              <button type="button" class="btn btn-primary" onclick="abrirPantalla()"><i data-lucide="external-link"></i> Probar pantalla</button>
+            </div>
+            <div class="pantalla-pasos">
+              <p><strong>En el Smart TV:</strong></p>
+              <ol>
+                <li>Abrí el <strong>navegador</strong> de la tele y entrá al link (conviene guardarlo en favoritos).</li>
+                <li>Apretá <strong>OK</strong> en el control: activa el sonido y la pantalla completa.</li>
+                <li>Dejala así. Se actualiza sola cada 4 segundos; no necesita usuario.</li>
+              </ol>
+              <p class="cuenta-ayuda">El link tiene la clave de la pantalla: no lo compartas fuera de la clínica. Si se filtra, cambiá <code>PANTALLA_CLAVE</code> en Render y volvé a abrir el link nuevo en la tele.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODALES DE CREACIÓN & EDICIÓN -->
+  <!-- ======================================================== -->
+
+  <!-- MODAL: NUEVO TURNO -->
+  <div class="modal-backdrop hidden" id="modalTurno">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3><i data-lucide="calendar-plus"></i> Agendar Nuevo Turno</h3>
+        <button class="modal-close" onclick="closeModal('modalTurno')"><i data-lucide="x"></i></button>
+      </div>
+      <form id="formNuevoTurno" onsubmit="guardarNuevoTurno(event)">
+        <div class="modal-body">
+          
+          <div class="form-group mb-3">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <label style="margin: 0; font-weight: 700;">Buscar Paciente (por DNI o Nombre) *</label>
+              <a href="#" onclick="openModalNuevoPacienteFromTurno(event)" style="font-size: 0.78rem; color: var(--primary); text-decoration: none; font-weight: 700;">
+                + Registrar nuevo paciente
+              </a>
+            </div>
+
+            <!-- Campo oculto con el ID del paciente para el form -->
+            <input type="hidden" id="turnoPacienteSelect" required>
+
+            <!-- Buscador y selector de pacientes -->
+            <div class="patient-picker-wrap" id="patientPickerWrap">
+              <div class="patient-search-box" id="patientSearchBoxWrap">
+                <i data-lucide="search" class="search-icon"></i>
+                <input type="text" id="turnoPacienteSearch" placeholder="🔍 Escribí el DNI o Apellido del paciente..." autocomplete="off" oninput="filtrarPacientesParaTurno(this.value)" onfocus="mostrarListaPacientesTurno()">
+              </div>
+
+              <!-- Tarjeta de Paciente Seleccionado -->
+              <div id="patientSelectedCard" class="patient-selected-card hidden">
+                <div class="patient-card-left">
+                  <i data-lucide="user-check" class="patient-icon"></i>
+                  <div>
+                    <strong id="selectedPatientName">Nombre Paciente</strong>
+                    <div class="selected-patient-meta" id="selectedPatientMeta">DNI: 00000000 Â· Obra Social</div>
+                  </div>
+                </div>
+                <button type="button" class="btn btn-outline btn-sm" onclick="deseleccionarPacienteTurno()" title="Buscar otro paciente">
+                  Cambiar
+                </button>
+              </div>
+
+              <!-- Lista desplegable de sugerencias -->
+              <div id="patientDropdownList" class="patient-dropdown-list hidden"></div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Especialidad *</label>
+              <select id="turnoEspecialidad" required>
+                <option value="">Seleccionar especialidad...</option>
+                <option value="Cardiología">Cardiología</option>
+                <option value="Urología">Urología</option>
+                <option value="Ginecología">Ginecología</option>
+                <option value="Cirugía Ginecológica">Cirugía Ginecológica</option>
+                <option value="Neurología">Neurología</option>
+                <option value="Cirugía General">Cirugía General</option>
+                <option value="Oncología">Oncología</option>
+                <option value="Flebología">Flebología</option>
+                <option value="Nutrición">Nutrición</option>
+                <option value="Traumatología">Traumatología</option>
+                <option value="Gastroenterología">Gastroenterología</option>
+                <option value="DBT (Diabetes)">DBT (Diabetes)</option>
+                <option value="Nefrología">Nefrología</option>
+                <option value="Endocrinología">Endocrinología</option>
+                <option value="Clínica Médica">Clínica Médica</option>
+                <option value="Guardia 24 hs">Guardia Médica 24 hs</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Médico / Profesional</label>
+              <select id="turnoMedicoId">
+                <option value="">Sin asignar</option>
+              </select>
+              <small class="campo-ayuda" id="turnoMedicoAyuda">El turno le aparece solo a este médico, en su calendario y en su sala de espera.</small>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Fecha y Hora del Turno *</label>
+              <input type="datetime-local" id="turnoFecha" required>
+            </div>
+            <div class="form-group">
+              <label>Estado Inicial</label>
+              <select id="turnoEstado">
+                <option value="pendiente" selected>Pendiente</option>
+                <option value="confirmado">Confirmado</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group horarios-grupo">
+            <label>Horarios del día</label>
+            <div class="horarios-box" id="turnoHorarios"><p class="horarios-msg">Elegí la fecha para ver los horarios libres.</p></div>
+          </div>
+
+          <div class="form-group">
+            <label>Notas o Indicaciones Previas</label>
+            <textarea id="turnoNotas" rows="2" placeholder="Observaciones para recepción o indicaciones para el paciente..."></textarea>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modalTurno')">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btnGuardarTurno">
+            <i data-lucide="calendar-plus"></i> Agendar Turno
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: REPROGRAMAR TURNO -->
+  <div class="modal-backdrop hidden" id="modalReprogramar">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3><i data-lucide="calendar-clock"></i> Reprogramar turno</h3>
+        <button class="modal-close" type="button" onclick="closeModal('modalReprogramar')"><i data-lucide="x"></i></button>
+      </div>
+      <form id="formReprogramar" onsubmit="guardarReprogramacion(event)">
+        <div class="modal-body">
+          <div class="reprog-resumen" id="reprogResumen"></div>
+          <div class="form-row">
+            <div class="form-group" id="reprogMedicoGrupo">
+              <label for="reprogMedico">Médico</label>
+              <select id="reprogMedico" onchange="cargarHorariosReprog()"></select>
+            </div>
+            <div class="form-group">
+              <label for="reprogFecha">Fecha *</label>
+              <input type="date" id="reprogFecha" required onchange="cargarHorariosReprog()">
+            </div>
+          </div>
+          <div class="form-group horarios-grupo">
+            <label>Horario *</label>
+            <div class="horarios-box" id="reprogHorarios"><p class="horarios-msg">Elegí la fecha para ver los horarios libres.</p></div>
+            <details class="horario-manual" id="reprogManual">
+              <summary>Otro horario (sobreturno)</summary>
+              <input type="time" id="reprogHoraManual" step="300" oninput="elegirHoraReprog(this.value, true)">
+            </details>
+          </div>
+          <label class="check-linea"><input type="checkbox" id="reprogConfirmar" checked> Dejarlo confirmado</label>
+          <label class="check-linea" id="reprogAvisarLinea"><input type="checkbox" id="reprogAvisar" checked> Mandarle el turno por email al paciente</label>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modalReprogramar')">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btnGuardarReprog"><i data-lucide="check"></i> Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- PANEL DE NOTIFICACIONES -->
+  <div class="notif-overlay hidden" id="notifOverlay" onclick="cerrarNotificaciones()"></div>
+  <aside class="notif-panel" id="notifPanel" role="dialog" aria-label="Notificaciones" aria-hidden="true">
+    <header class="notif-head">
+      <div>
+        <h3><i data-lucide="bell"></i> Notificaciones</h3>
+        <p id="notifSub">Pedidos y cambios de turnos</p>
+      </div>
+      <button type="button" class="modal-close" onclick="cerrarNotificaciones()" aria-label="Cerrar"><i data-lucide="x"></i></button>
+    </header>
+    <div class="notif-filtros">
+      <button type="button" class="filter-btn active" data-notif-filtro="todas" onclick="filtrarNotificaciones('todas')">Todas</button>
+      <button type="button" class="filter-btn" data-notif-filtro="sin_leer" onclick="filtrarNotificaciones('sin_leer')">Sin leer</button>
+      <button type="button" class="filter-btn" data-notif-filtro="pedidos" onclick="filtrarNotificaciones('pedidos')">Pedidos por confirmar</button>
+      <button type="button" class="notif-leer-todas" id="btnLeerTodas" onclick="leerTodasNotificaciones()"><i data-lucide="check-check"></i> Marcar todas leídas</button>
+    </div>
+    <div class="notif-lista" id="notifLista"></div>
+  </aside>
+
+  <!-- MODAL: REGISTRAR PACIENTE -->
+  <div class="modal-backdrop hidden" id="modalPaciente">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3><i data-lucide="user-plus"></i> Registrar Nuevo Paciente</h3>
+        <button class="modal-close" onclick="closeModal('modalPaciente')"><i data-lucide="x"></i></button>
+      </div>
+      <form id="formNuevoPaciente" onsubmit="guardarNuevoPaciente(event)">
+        <div class="modal-body">
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nombre *</label>
+              <input type="text" id="pacienteNombre" required placeholder="Ej. María">
+            </div>
+            <div class="form-group">
+              <label>Apellido *</label>
+              <input type="text" id="pacienteApellido" required placeholder="Ej. González">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>DNI / Documento *</label>
+              <input type="text" id="pacienteDni" required placeholder="Sin puntos (ej. 35123456)">
+            </div>
+            <div class="form-group">
+              <label>Fecha de Nacimiento</label>
+              <input type="date" id="pacienteFechaNac">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Teléfono / WhatsApp</label>
+              <input type="tel" id="pacienteTelefono" placeholder="Ej. 11 4444-5555">
+            </div>
+            <div class="form-group">
+              <label>Correo Electrónico (Para Notificaciones) *</label>
+              <input type="email" id="pacienteEmail" placeholder="paciente@correo.com">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Obra Social / Prepaga</label>
+              <input type="text" id="pacienteObraSocial" placeholder="Ej. OSDE, PAMI, IOMA, Particular">
+            </div>
+            <div class="form-group">
+              <label>N° de Afiliado</label>
+              <input type="text" id="pacienteNroAfiliado" placeholder="Ej. 210-98765432-1">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div style="grid-column: 1 / -1; margin-top: 5px;">
+              <a href="#" onclick="event.preventDefault(); document.getElementById('familiarSection').style.display = 'grid'; this.style.display = 'none';" style="font-size: 0.85rem; font-weight: 600; color: var(--primary); display: inline-flex; align-items: center; gap: 5px;">
+                <i data-lucide="user-plus" style="width:16px;height:16px;"></i> + Añadir acompañante / familiar (Opcional)
+              </a>
+            </div>
+          </div>
+          <div id="familiarSection" class="form-row" style="display: none; background: #F8FAFC; padding: 15px; border-radius: 8px; border: 1px dashed #CBD5E1; margin-top: 5px; gap: 15px;">
+            <div class="form-group">
+              <label>Nombre del Familiar</label>
+              <input type="text" id="pacienteAcompNombre" placeholder="Ej. Carlos (Hijo)">
+            </div>
+            <div class="form-group">
+              <label>Teléfono del Familiar</label>
+              <input type="tel" id="pacienteAcompTel" placeholder="Ej. 11 2222-3333">
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modalPaciente')">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btnGuardarPaciente">
+            <i data-lucide="save"></i> Registrar Paciente
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: EDITAR DATOS DEL PACIENTE (SHADCN DIALOG STYLE) -->
+  <div class="modal-backdrop hidden" id="modalEditarPaciente">
+    <div class="modal-box shadcn-dialog">
+      <div class="shadcn-dialog-header">
+        <div>
+          <h3 class="shadcn-dialog-title">Editar Perfil</h3>
+          <p class="shadcn-dialog-description">Realizá cambios al perfil del paciente. Hacé clic en guardar cuando termines.</p>
+        </div>
+        <button class="shadcn-dialog-close" onclick="closeModal('modalEditarPaciente')">
+          <i data-lucide="x"></i>
+          <span class="sr-only">Cerrar</span>
+        </button>
+      </div>
+      <form id="formEditarPaciente" onsubmit="guardarEdicionPaciente(event)">
+        <input type="hidden" id="editPacienteId">
+        <div class="shadcn-dialog-body">
+          
+          <div class="shadcn-grid-row">
+            <label for="editPacienteNombre" class="shadcn-label text-right">Nombre</label>
+            <input type="text" id="editPacienteNombre" class="shadcn-input col-span-3" required defaultValue="Pedro Duarte">
+          </div>
+          
+          <div class="shadcn-grid-row">
+            <label for="editPacienteApellido" class="shadcn-label text-right">Apellido</label>
+            <input type="text" id="editPacienteApellido" class="shadcn-input col-span-3" required>
+          </div>
+          
+          <div class="shadcn-grid-row">
+            <label for="editPacienteDni" class="shadcn-label text-right">DNI</label>
+            <input type="text" id="editPacienteDni" class="shadcn-input col-span-3" required>
+          </div>
+
+          <div class="shadcn-grid-row">
+            <label for="editPacienteFechaNac" class="shadcn-label text-right">Nacimiento</label>
+            <input type="date" id="editPacienteFechaNac" class="shadcn-input col-span-3">
+          </div>
+
+          <div class="shadcn-grid-row">
+            <label for="editPacienteTelefono" class="shadcn-label text-right">Teléfono</label>
+            <input type="tel" id="editPacienteTelefono" class="shadcn-input col-span-3">
+          </div>
+
+          <div class="shadcn-grid-row">
+            <label for="editPacienteEmail" class="shadcn-label text-right">Email</label>
+            <input type="email" id="editPacienteEmail" class="shadcn-input col-span-3">
+          </div>
+
+          <div class="shadcn-grid-row">
+            <label for="editPacienteObraSocial" class="shadcn-label text-right">Obra Social</label>
+            <input type="text" id="editPacienteObraSocial" class="shadcn-input col-span-3">
+          </div>
+
+          <div class="shadcn-grid-row">
+            <label for="editPacienteNroAfiliado" class="shadcn-label text-right">N° Afiliado</label>
+            <input type="text" id="editPacienteNroAfiliado" class="shadcn-input col-span-3">
+          </div>
+
+          <div style="margin-top: 15px; text-align: center;" id="familiarToggleEditContainer">
+            <a href="#" onclick="event.preventDefault(); document.getElementById('familiarSectionEdit').style.display = 'block'; this.style.display = 'none';" style="font-size: 0.85rem; font-weight: 600; color: var(--primary); display: inline-flex; align-items: center; gap: 5px;">
+              <i data-lucide="user-plus" style="width:16px;height:16px;"></i> + Añadir / Editar familiar
+            </a>
+          </div>
+
+          <div id="familiarSectionEdit" style="display: none; background: #F8FAFC; padding: 15px; border-radius: 8px; border: 1px dashed #CBD5E1; margin-top: 10px;">
+            <div class="shadcn-grid-row" style="margin-bottom: 10px;">
+              <label for="editPacienteAcompNombre" class="shadcn-label text-right" style="font-size:0.8rem; line-height:1.2;">Familiar</label>
+              <input type="text" id="editPacienteAcompNombre" class="shadcn-input col-span-3" placeholder="Nombre (Ej. Carlos)">
+            </div>
+            <div class="shadcn-grid-row">
+              <label for="editPacienteAcompTel" class="shadcn-label text-right" style="font-size:0.8rem; line-height:1.2;">Tel. Fam.</label>
+              <input type="text" id="editPacienteAcompTel" class="shadcn-input col-span-3" placeholder="Teléfono del familiar">
+            </div>
+          </div>
+
+        </div>
+        <div class="shadcn-dialog-footer">
+          <button type="submit" class="shadcn-btn-primary" id="btnGuardarEdicionPaciente">
+            Guardar cambios
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: CARGAR PLANILLA DE EVOLUCIÓN MÉDICA / CONSULTORIO -->
+  <!-- ======================================================== -->
+  <div class="modal-backdrop hidden" id="modalEvolucionConsultorio">
+    <div class="modal-box large">
+      <div class="modal-header">
+        <div>
+          <h3><i data-lucide="clipboard-pen" style="color: var(--primary);"></i> Planilla de Evolución Médica (Consultorio)</h3>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin: 2px 0 0 0;">Atención Ambulatoria / Consultorio — Clínica Passo S.A.</p>
+        </div>
+        <button class="modal-close" onclick="closeModal('modalEvolucionConsultorio')"><i data-lucide="x"></i></button>
+      </div>
+      <form id="formEvolucionConsultorio" onsubmit="guardarEvolucionConsultorio(event)">
+        <div class="modal-body modal-scrollable">
+          
+          <!-- DATOS DEL PACIENTE PRECARGADOS (FORMATO DE LA PLANILLA) -->
+          <div class="patient-consultorio-summary-box">
+            <div class="summary-col">
+              <div><small>Paciente:</small> <strong id="consulNombrePaciente">-</strong></div>
+              <div><small>DNI:</small> <strong id="consulDniPaciente">-</strong></div>
+            </div>
+            <div class="summary-col">
+              <div><small>Obra Social:</small> <strong id="consulObraSocial">-</strong></div>
+              <div><small>N° Beneficio / Afiliado:</small> <strong id="consulNroAfiliado">-</strong></div>
+            </div>
+          </div>
+
+          <!-- DATOS DEL PROFESIONAL Y FECHA -->
+          <div class="form-row mt-2">
+            <div class="form-group">
+              <label>Médico Tratante *</label>
+              <input type="text" id="consulMedico" required placeholder="Ej. Dr. Alfonso Passo">
+            </div>
+            <div class="form-group">
+              <label>Especialidad</label>
+              <input type="text" id="consulEspecialidad" placeholder="Ej. Traumatología / Clínica / Cardiología">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>N° Matrícula (Opcional)</label>
+              <input type="text" id="consulMatricula" placeholder="Ej. MN 123456 / MP 7890">
+            </div>
+            <div class="form-group">
+              <label>Fecha y Hora de Atención *</label>
+              <input type="datetime-local" id="consulFechaHora" required>
+            </div>
+          </div>
+
+          <!-- CAMPO 1: EVOLUCIÓN (COMO EN EL MANUSCRITO) -->
+          <div class="form-section-title mt-2">
+            <i data-lucide="activity"></i> — Evolución Médica
+          </div>
+          <div class="form-group">
+            <label>Evolución Clínica del Paciente *</label>
+            <textarea id="consulEvolucion" rows="5" required placeholder="Detalle de la consulta, síntomas, examen clínico, evolución del cuadro..."></textarea>
+          </div>
+
+          <!-- CAMPO 2: INDICACIONES (COMO EN EL MANUSCRITO) -->
+          <div class="form-section-title mt-2">
+            <i data-lucide="file-check"></i> — Indicaciones & Tratamiento
+          </div>
+          <div class="form-group">
+            <label>Indicaciones Médicas / Recetas / Estudios Solicitados *</label>
+            <textarea id="consulIndicaciones" rows="4" required placeholder="Tratamiento prescrito, medicación, reposo, pedidos de laboratorio o interconsultas..."></textarea>
+          </div>
+
+          <!-- SECCIÓN: ADJUNTAR ARCHIVOS / FOTOS / ESTUDIOS -->
+          
+          <div class="form-section-title mt-2">
+            <i data-lucide="paperclip"></i> 5. Adjuntos
+          </div>
+          <div class="form-group">
+            <div class="adjuntos-compact">
+              <div class="adjuntos-actions">
+                <button type="button" class="btn-adjunto" onclick="document.getElementById('consulFileInput').click()">
+                  <i data-lucide="upload"></i> Subir archivo
+                </button>
+                <button type="button" class="btn-adjunto" onclick="toggleLinkInputConsul()">
+                  <i data-lucide="link"></i> Pegar link
+                </button>
+                <button type="button" class="btn-adjunto" onclick="pegarDesdePortapapelesConsul()">
+                  <i data-lucide="clipboard-paste"></i> Pegar imagen
+                </button>
+              </div>
+              <input type="file" id="consulFileInput" multiple accept="image/*,application/pdf" style="display: none;" onchange="handleFileUploadConsul(event)">
+              <div id="consulLinkInputWrap" class="link-input-wrap hidden">
+                <input type="text" id="consulLinkSingle" placeholder="Pegar link de RDA, Drive, portal..." class="shadcn-input" onkeydown="if(event.key==='Enter'){event.preventDefault();agregarLinkManualConsul();}">
+                <button type="button" class="btn-link-add" onclick="agregarLinkManualConsul()"><i data-lucide="plus"></i></button>
+              </div>
+              <textarea id="consulImagenes" style="display:none;"></textarea>
+              <div id="consulAttachedFilesList" class="attached-files-grid" style="margin-top: 15px;"></div>
+            </div>
+            <small style="color: var(--text-muted); font-size: 0.75rem; display: block; margin-top: 5px;">Fotos, PDFs, links de RDA o portales de diagnóstico.</small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modalEvolucionConsultorio')">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btnGuardarConsul">
+            <i data-lucide="save"></i> Guardar Evolución de Consultorio
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- ======================================================== -->
+  
+  <!-- ======================================================== -->
+  <!-- MODAL GENÉRICO: EPICRISIS / ENFERMERÍA / INDICACIONES     -->
+  <!-- (el contenido se arma desde app.js → PLANILLAS)           -->
+  <!-- ======================================================== -->
+  <div class="modal-backdrop hidden" id="modalPlanilla">
+    <div class="modal-box large">
+      <div class="modal-header">
+        <div>
+          <h3><span id="planillaIcono" class="pl-titulo-icono"></span> <span id="planillaTitulo">Planilla</span></h3>
+          <p id="planillaPaciente" style="font-size: 0.8rem; color: var(--text-muted); margin: 2px 0 0 0;"></p>
+        </div>
+        <button type="button" class="modal-close" onclick="cerrarModalPlanilla()"><i data-lucide="x"></i></button>
+      </div>
+      <form id="formPlanilla" novalidate>
+        <div class="modal-body modal-scrollable" id="planillaCuerpo"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="cerrarModalPlanilla()">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btnGuardarPlanilla"><i data-lucide="save"></i> Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: FOJA QUIRÚRGICA + ANESTESIA (frente y dorso)       -->
+  <!-- ======================================================== -->
+  <div class="modal-backdrop hidden" id="modalFoja">
+    <div class="modal-box large">
+      <div class="modal-header">
+        <div>
+          <h3><i data-lucide="scissors" style="color: var(--primary);"></i> <span id="fojaTituloModal">Foja Quirúrgica</span></h3>
+          <p id="fojaPaciente" style="font-size: 0.8rem; color: var(--text-muted); margin: 2px 0 0 0;"></p>
+        </div>
+        <button type="button" class="modal-close" onclick="cerrarModalFoja()"><i data-lucide="x"></i></button>
+      </div>
+
+      <div class="foja-tabs" role="tablist">
+        <button type="button" class="foja-tab is-active" data-foja-tab="cirugia" role="tab"><i data-lucide="scissors"></i> 1. Foja Quirúrgica</button>
+        <button type="button" class="foja-tab" data-foja-tab="anestesia" role="tab"><i data-lucide="activity"></i> 2. Anestesia</button>
+      </div>
+
+      <form id="formFoja" novalidate>
+        <div class="modal-body modal-scrollable">
+
+          <!-- ================= CARA 1: FOJA QUIRÚRGICA ================= -->
+          <div class="foja-panel" data-foja-panel="cirugia">
+            <div class="foja-grid-2">
+              <div class="form-group"><label for="fjHc">H.C. N°</label><input type="text" id="fjHc" maxlength="30"></div>
+              <div class="form-group"><label for="fjFecha">Fecha *</label><input type="date" id="fjFecha"></div>
+            </div>
+            <div class="foja-grid-2">
+              <div class="form-group"><label for="fjCirujano">Cirujano *</label><input type="text" id="fjCirujano" maxlength="100"></div>
+              <div class="form-group"><label for="fjAyud1">1er Ayudante</label><input type="text" id="fjAyud1" maxlength="100"></div>
+              <div class="form-group"><label for="fjAyud2">2do Ayudante</label><input type="text" id="fjAyud2" maxlength="100"></div>
+              <div class="form-group"><label for="fjAyud3">3er Ayudante</label><input type="text" id="fjAyud3" maxlength="100"></div>
+            </div>
+            <div class="foja-grid-2">
+              <div class="form-group"><label for="fjHoraInicio">Hora operación: comienzo</label><input type="time" id="fjHoraInicio"></div>
+              <div class="form-group"><label for="fjHoraFin">Término</label><input type="time" id="fjHoraFin"></div>
+            </div>
+
+            <div class="form-section-title mt-2"><i data-lucide="list-ordered"></i> Ordenamiento</div>
+            <div class="form-group"><label for="fjDxPre">1. Diagnóstico preoperatorio</label><textarea id="fjDxPre" rows="2" maxlength="1000"></textarea></div>
+            <div class="form-group"><label for="fjDxPost">2. Diagnóstico posoperatorio</label><textarea id="fjDxPost" rows="2" maxlength="1000"></textarea></div>
+            <div class="form-group"><label for="fjProcedimiento">3. Procedimiento quirúrgico *</label><textarea id="fjProcedimiento" rows="2" maxlength="1000"></textarea></div>
+            <div class="form-group"><label for="fjHallazgos">4. Operación y hallazgos</label><textarea id="fjHallazgos" rows="9" maxlength="8000" placeholder="Descripción de la técnica, hallazgos intraoperatorios, material enviado a anatomía patológica, drenajes, cierre..."></textarea></div>
+            <div class="form-group"><label for="fjFirmaCirujano">5. Firma (aclaración del cirujano)</label><input type="text" id="fjFirmaCirujano" maxlength="120" placeholder="Si queda vacío se usa el nombre del cirujano"></div>
+          </div>
+
+          <!-- ================= CARA 2: ANESTESIA ================= -->
+          <div class="foja-panel hidden" data-foja-panel="anestesia">
+            <div class="form-group"><label for="anVisita">Visita preanestésica</label><textarea id="anVisita" rows="3" maxlength="2000"></textarea></div>
+
+            <div class="foja-grid-4">
+              <div class="form-group"><label for="anServicio">Servicio</label><input type="text" id="anServicio" maxlength="60"></div>
+              <div class="form-group"><label for="anSala">Sala</label><input type="text" id="anSala" maxlength="30"></div>
+              <div class="form-group"><label for="anCama">Cama N°</label><input type="text" id="anCama" maxlength="20"></div>
+              <div class="form-group"><label for="anHora">Hora</label><input type="time" id="anHora"></div>
+              <div class="form-group"><label for="anEdad">Edad</label><input type="text" id="anEdad" maxlength="10"></div>
+              <div class="form-group"><label for="anSexo">Sexo</label>
+                <select id="anSexo"><option value="">—</option><option>F</option><option>M</option><option>X</option></select>
+              </div>
+              <div class="form-group"><label for="anPeso">Peso (kg)</label><input type="text" id="anPeso" maxlength="10" inputmode="decimal"></div>
+            </div>
+            <div class="form-group"><label for="anPremedicacion">Premedicación</label><input type="text" id="anPremedicacion" maxlength="300"></div>
+            <div class="form-group">
+              <label>Inducción</label>
+              <div class="foja-radios">
+                <label><input type="radio" name="anInduccion" value="Satisfactoria"> Satisfactoria</label>
+                <label><input type="radio" name="anInduccion" value="Prolongada"> Prolongada</label>
+                <label><input type="radio" name="anInduccion" value="Tormentosa"> Tormentosa</label>
+              </div>
+            </div>
+
+            <div class="form-section-title mt-2"><i data-lucide="heart-pulse"></i> Registro intraoperatorio</div>
+            <p class="foja-ayuda">Cada fila es una observación. Al imprimir se dibuja en la grilla como en la hoja (Pulso ○ · Resp. ● · Anestesia ✕ · Operación ⁞).</p>
+            <div class="foja-obs-wrap">
+              <table class="foja-obs-tabla">
+                <thead><tr><th>Hora</th><th>Pulso</th><th>Resp.</th><th>T.A.</th><th>Sat O₂</th><th>Fluidos</th><th>Evento</th><th></th></tr></thead>
+                <tbody id="anObsBody"></tbody>
+              </table>
+            </div>
+            <button type="button" class="btn btn-outline btn-sm" id="anObsAgregar"><i data-lucide="plus"></i> Agregar observación</button>
+
+            <div class="form-group mt-2"><label for="anAgentes">Agentes anestésicos</label><input type="text" id="anAgentes" maxlength="300"></div>
+            <div class="form-group"><label for="anMetodos">Métodos anestésicos</label><input type="text" id="anMetodos" maxlength="300"></div>
+            <div class="form-group"><label for="anRecuperacion">Recuperación</label><input type="text" id="anRecuperacion" maxlength="300"></div>
+            <div class="form-group"><label for="anObservaciones">Observaciones</label><textarea id="anObservaciones" rows="2" maxlength="2000"></textarea></div>
+            <div class="form-group"><label for="anAnestesista">Firma del anestesista (aclaración)</label><input type="text" id="anAnestesista" maxlength="120"></div>
+
+            <div class="form-section-title mt-2"><i data-lucide="droplet"></i> Hemoterapia</div>
+            <div class="foja-grid-4">
+              <div class="form-group"><label for="anSangre">Sangre (cm³)</label><input type="text" id="anSangre" maxlength="10" inputmode="numeric"></div>
+              <div class="form-group"><label for="anPlasma">Plasma (cm³)</label><input type="text" id="anPlasma" maxlength="10" inputmode="numeric"></div>
+              <div class="form-group"><label for="anSuero">Suero (cm³)</label><input type="text" id="anSuero" maxlength="10" inputmode="numeric"></div>
+              <div class="form-group"><label for="anOtro">Otro (cm³)</label><input type="text" id="anOtro" maxlength="10" inputmode="numeric"></div>
+            </div>
+            <div class="form-group"><label for="anHemoObs">Observaciones de hemoterapia</label><textarea id="anHemoObs" rows="2" maxlength="1000"></textarea></div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="cerrarModalFoja()">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btnGuardarFoja"><i data-lucide="save"></i> Guardar Foja Quirúrgica</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: ADJUNTAR DOCUMENTO (PDF / imagen / link externo)  -->
+  <!-- ======================================================== -->
+  <div class="modal-backdrop hidden" id="modalAdjunto">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div>
+          <h3><i data-lucide="paperclip" style="color: var(--primary);"></i> Adjuntar documento</h3>
+          <p id="adjPaciente" style="font-size: 0.8rem; color: var(--text-muted); margin: 2px 0 0 0;"></p>
+        </div>
+        <button type="button" class="modal-close" onclick="closeModal('modalAdjunto')"><i data-lucide="x"></i></button>
+      </div>
+      <form id="formAdjunto" novalidate>
+        <div class="modal-body">
+          <div id="adjDropzone" class="adj-dropzone">
+            <div id="adjDropzoneVacio" class="adj-dropzone-vacio">
+              <i data-lucide="upload-cloud"></i>
+              <strong>Arrastrá acá el PDF o la imagen</strong>
+              <span>o usá los botones de abajo · también podés pegar con Ctrl+V</span>
+            </div>
+            <div id="adjArchivos" class="adj-lista"></div>
+            <div class="adjuntos-actions">
+              <button type="button" class="btn-adjunto" onclick="document.getElementById('adjFileInput').click()">
+                <i data-lucide="upload"></i> Subir archivo
+              </button>
+              <button type="button" class="btn-adjunto" onclick="toggleLinkAdjunto()">
+                <i data-lucide="link"></i> Pegar link
+              </button>
+              <button type="button" class="btn-adjunto" onclick="pegarImagenAdjunto()">
+                <i data-lucide="clipboard-paste"></i> Pegar imagen
+              </button>
+            </div>
+            <input type="file" id="adjFileInput" multiple accept="image/*,application/pdf" style="display: none;">
+            <div id="adjLinkWrap" class="link-input-wrap hidden">
+              <input type="text" id="adjLinkInput" class="shadcn-input" placeholder="Link de RDA, Drive, portal del laboratorio..." onkeydown="if(event.key==='Enter'){event.preventDefault();agregarLinkAdjunto();}">
+              <button type="button" class="btn-link-add" onclick="agregarLinkAdjunto()"><i data-lucide="plus"></i></button>
+            </div>
+            <small class="adj-ayuda">PDF o imágenes, hasta 25 MB cada uno.</small>
+          </div>
+
+          <div class="form-group mt-2">
+            <label for="adjTitulo">Título *</label>
+            <input type="text" id="adjTitulo" maxlength="150" placeholder="Ej: Resonancia de rodilla derecha — Diagnóstico Maipú">
+          </div>
+          <div class="adj-fila">
+            <div class="form-group">
+              <label for="adjCategoria">Tipo</label>
+              <select id="adjCategoria">
+                <option>Estudio por imágenes</option>
+                <option>Laboratorio externo</option>
+                <option>Informe médico</option>
+                <option>Interconsulta</option>
+                <option>Receta / Indicación</option>
+                <option>Otro</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="adjFecha">Fecha del documento</label>
+              <input type="date" id="adjFecha">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="adjNotas">Notas (opcional)</label>
+            <textarea id="adjNotas" rows="2" maxlength="2000" placeholder="Quién lo envió, conclusión principal, etc."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modalAdjunto')">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btnGuardarAdjunto"><i data-lucide="save"></i> Guardar documento</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: CARGAR PLANILLA DE LABORATORIO -->
+  <!-- ======================================================== -->
+  <div class="modal-backdrop hidden" id="modalLaboratorio">
+    <div class="modal-box large modal-lab-box">
+      <div class="modal-header hide-on-print">
+        <div>
+          <h3><i data-lucide="microscope" style="color: var(--primary);"></i> Planilla de Laboratorio</h3>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin: 2px 0 0 0;">Completar datos e Imprimir Planilla Oficial</p>
+        </div>
+        <button class="modal-close" onclick="closeModal('modalLaboratorio')"><i data-lucide="x"></i></button>
+      </div>
+      <form id="formLaboratorio">
+        <div class="modal-body modal-scrollable" style="padding: 0;">
+          
+          <div id="printLabArea" class="lab-print-container">
+            <table class="lab-table" border="1" cellspacing="0" cellpadding="0">
+              <thead>
+                <tr>
+                  <th colspan="3" class="lab-header-left">
+                    <div class="lab-title">Clínica Passo S.A.</div>
+                    <div class="lab-subtitle">Servicio de Laboratorio</div>
+                  </th>
+                  <th colspan="2" class="lab-header-center">
+                    <div class="lab-logo-box">
+                      <img src="assets/logo.jpg?v=42.0" alt="Logo" style="height: 45px; width: auto; display: block; margin: 0 auto; object-fit: contain; mix-blend-mode: multiply;">
+                    </div>
+                  </th>
+                  <th colspan="4" class="lab-header-right">
+                    Labo: <input type="text" id="labDirector" class="lab-input-inline">
+                  </th>
+                </tr>
+                <tr class="lab-row-name">
+                  <th colspan="7" class="lab-patient-name" style="text-align: left; padding-left: 5px;">
+                    Apellido y Nombre: <span id="labNombrePacienteTxt" style="font-weight: bold; margin-left: 5px;"></span>
+                  </th>
+                  <th colspan="2" class="lab-patient-bed" style="text-align: left;">
+                    Cama: <input type="text" id="labCama" class="lab-input-inline">
+                  </th>
+                </tr>
+                <tr class="lab-dates-row">
+                  <th colspan="3" class="lab-fechas-label">FECHAS:</th>
+                  <th><input type="text" class="lab-date-input" placeholder="    /    /    "></th>
+                  <th><input type="text" class="lab-date-input" placeholder="    /    /    "></th>
+                  <th><input type="text" class="lab-date-input" placeholder="    /    /    "></th>
+                  <th><input type="text" class="lab-date-input" placeholder="    /    /    "></th>
+                  <th><input type="text" class="lab-date-input" placeholder="    /    /    "></th>
+                  <th><input type="text" class="lab-date-input" placeholder="    /    /    "></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td rowspan="12" class="lab-category-vertical"><b>H<br>E<br>M<br>O<br>G<br>R<br>A<br>M<br>A</b></td>
+                  <td class="lab-test-name">Hematocrito</td>
+                  <td class="lab-normal"></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">Eritrocitos</td>
+                  <td class="lab-normal"></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">M/ml</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">M/ml</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">M/ml</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">M/ml</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">M/ml</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">M/ml</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">Hemoglobina</td>
+                  <td class="lab-normal"></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">g%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">g%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">g%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">g%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">g%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">g%</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">Leucocitos</td>
+                  <td class="lab-normal"></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">m/ml</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">m/ml</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">m/ml</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">m/ml</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">m/ml</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">m/ml</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">N. en Cayado</td>
+                  <td class="lab-normal"></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">N. Segmentados</td>
+                  <td class="lab-normal"></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">Eosinófilos</td>
+                  <td class="lab-normal"></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">Basófilos</td>
+                  <td class="lab-normal"></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">Linfocitos</td>
+                  <td class="lab-normal"></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">Monocitos</td>
+                  <td class="lab-normal"></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">Plaquetas</td>
+                  <td class="lab-normal"></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">m/ml</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">m/ml</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">m/ml</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">m/ml</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">m/ml</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">m/ml</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">V.S.G.</td>
+                  <td class="lab-normal"></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mm</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mm</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mm</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mm</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mm</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mm</span></div></td>
+                </tr>
+                <tr>
+                  <td rowspan="5" class="lab-category-vertical"><b>Q<br>U<br>I<br>M<br>I<br>C<br>A</b></td>
+                  <td class="lab-test-name">Glucemia</td>
+                  <td class="lab-normal">70 - 110</td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg%</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">Urea</td>
+                  <td class="lab-normal">10 - 50</td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg%</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">Creatinina</td>
+                  <td class="lab-normal">0,60 - 1,30</td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg%</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">Ac. Urico</td>
+                  <td class="lab-normal">2 - 6</td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg%</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">Calcio</td>
+                  <td class="lab-normal">8,5 - 10,5</td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg/dl</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg/dl</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg/dl</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg/dl</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg/dl</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg/dl</span></div></td>
+                </tr>
+                <tr>
+                  <td rowspan="5" class="lab-category-vertical"><b>E<br>N<br>Z<br>I<br>M<br>A<br>S</b></td>
+                  <td class="lab-test-name">Amilasa</td>
+                  <td class="lab-normal">hasta 80</td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">yGT</td>
+                  <td class="lab-normal">9 - 42</td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">CPK</td>
+                  <td class="lab-normal">24 - 195</td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">LDH</td>
+                  <td class="lab-normal">230- 460</td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">CK-MB</td>
+                  <td class="lab-normal">hasta 25</td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                </tr>
+                <tr>
+                  <td rowspan="7" class="lab-category-vertical"><b>H<br>E<br>P<br>A<br>T<br>O</b></td>
+                  <td class="lab-test-name">TGO</td>
+                  <td class="lab-normal">hasta 35</td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">TGP</td>
+                  <td class="lab-normal">hasta 36</td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">FAL</td>
+                  <td class="lab-normal">65 - 300</td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">UI/l</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">B.T.</td>
+                  <td class="lab-normal">hasta 1,00</td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg/dl</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg/dl</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg/dl</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg/dl</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg/dl</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg/dl</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">B.D.</td>
+                  <td class="lab-normal">hasta 0,20</td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg/dl</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg/dl</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg/dl</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg/dl</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg/dl</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mg/dl</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">Prot. T.</td>
+                  <td class="lab-normal">6,1 - 7,9</td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">g/dl</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">g/dl</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">g/dl</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">g/dl</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">g/dl</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">g/dl</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">Albumina</td>
+                  <td class="lab-normal">3,5 - 4,8</td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">g/dl</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">g/dl</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">g/dl</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">g/dl</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">g/dl</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">g/dl</span></div></td>
+                </tr>
+                <tr>
+                  <td rowspan="3" class="lab-category-vertical"><b>I<br>O<br>N<br>O</b></td>
+                  <td class="lab-test-name">Sodio</td>
+                  <td class="lab-normal">130 - 143</td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">meq/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">meq/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">meq/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">meq/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">meq/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">meq/l</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">Potasio</td>
+                  <td class="lab-normal">3,30 - 5,10</td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">meq/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">meq/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">meq/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">meq/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">meq/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">meq/l</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">Cloro</td>
+                  <td class="lab-normal">95 - 110</td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">meq/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">meq/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">meq/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">meq/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">meq/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">meq/l</span></div></td>
+                </tr>
+                <tr>
+                  <td rowspan="3" class="lab-category-vertical"><b>C<br>O<br>A<br>G<br>.</b></td>
+                  <td class="lab-test-name">T.P.</td>
+                  <td class="lab-normal">70 - 100</td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">RIN</td>
+                  <td class="lab-normal">---------</td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">KPTT</td>
+                  <td class="lab-normal">25 - 45</td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">seg</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">seg</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">seg</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">seg</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">seg</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">seg</span></div></td>
+                </tr>
+                <tr>
+                  <td rowspan="7" class="lab-category-horizontal"><b>GASES<br>EN<br>SANGRE</b></td>
+                  <td class="lab-test-name">pH</td>
+                  <td class="lab-normal">7,35 - 7,45</td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">PO2</td>
+                  <td class="lab-normal">83 - 108</td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mm/Hg</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mm/Hg</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mm/Hg</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mm/Hg</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mm/Hg</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mm/Hg</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">PCO2</td>
+                  <td class="lab-normal">35 - 45</td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mm/Hg</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mm/Hg</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mm/Hg</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mm/Hg</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mm/Hg</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mm/Hg</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">HCO3</td>
+                  <td class="lab-normal">21 - 28</td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mmol/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mmol/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mmol/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mmol/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mmol/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mmol/l</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">TCO2</td>
+                  <td class="lab-normal">25 - 30</td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mmol/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mmol/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mmol/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mmol/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mmol/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mmol/l</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">EB</td>
+                  <td class="lab-normal">-2 - +3</td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mmol/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mmol/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mmol/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mmol/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mmol/l</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">mmol/l</span></div></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">SAT</td>
+                  <td class="lab-normal">90,0 - 99,9</td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                  <td class="lab-input-cell"><div class="lab-input-wrapper"><input type="text"><span class="lab-unit">%</span></div></td>
+                </tr>
+                <tr>
+                  <td rowspan="5" class="lab-category-horizontal"><b>SEDIMENTO<br>URINARIO</b></td>
+                  <td class="lab-test-name">Células</td>
+                  <td class="lab-normal"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">Leucocitos</td>
+                  <td class="lab-normal"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">Hematies</td>
+                  <td class="lab-normal"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">Piocitos</td>
+                  <td class="lab-normal"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                </tr>
+                <tr>
+                  <td class="lab-test-name">Mucus</td>
+                  <td class="lab-normal"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                  <td class="lab-input-cell"><input type="text"></td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+        <div class="modal-footer hide-on-print" style="display: flex; gap: 10px; justify-content: flex-end;">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modalLaboratorio')">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="btnGuardarLab" onclick="guardarLaboratorio(event)">
+            <i data-lucide="save"></i> Guardar Cambios
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: CARGAR HISTORIA CLÍNICA OFICIAL (COMPLETA FRENTE Y DORSO) -->
+  <div class="modal-backdrop hidden" id="modalEvolucion">
+    <div class="modal-box large modal-hc-box">
+      <div class="modal-header">
+        <div>
+          <h3><i data-lucide="file-text"></i> Cargar Historia Clínica Oficial (Frente y Dorso)</h3>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin: 2px 0 0 0;">Planilla Oficial Frente & Dorso — Clínica Passo S.A.</p>
+        </div>
+        <button class="modal-close" onclick="closeModal('modalEvolucion')"><i data-lucide="x"></i></button>
+      </div>
+      <form id="formNuevaEvolucion" onsubmit="guardarNuevaEvolucion(event)">
+        <div class="modal-body modal-scrollable">
+          
+          <!-- SECCIÓN 1: ADMISIÓN Y PROFESIONAL TRATANTE -->
+          <div class="form-section-title">
+            <i data-lucide="user-check"></i> 1. Admisión y Médico Tratante (Frente)
+          </div>
+
+          <div class="hc-fila-3">
+            <div class="form-group">
+              <label for="histNumeroHC">H.C. N°</label>
+              <input type="text" id="histNumeroHC" maxlength="30" placeholder="Si queda vacío se usa el DNI">
+            </div>
+            <div class="form-group">
+              <label for="histEdad">Edad</label>
+              <input type="text" id="histEdad" maxlength="12" inputmode="numeric" placeholder="Años">
+            </div>
+            <div class="form-group">
+              <label for="histSexo">Sexo</label>
+              <select id="histSexo">
+                <option value="">—</option>
+                <option value="F">F</option>
+                <option value="M">M</option>
+                <option value="X">X</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Médico Tratante *</label>
+              <input type="text" id="histMedico" required placeholder="Ej. Dr. Alfonso Passo">
+            </div>
+            <div class="form-group">
+              <label>Especialidad</label>
+              <input type="text" id="histEspecialidad" placeholder="Ej. Cardiología / Cirugía">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>N° Matrícula (Opcional)</label>
+              <input type="text" id="histMatricula" placeholder="Ej. MN 123456 / MP 7890">
+            </div>
+            <div class="form-group">
+              <label>Motivo de Egreso</label>
+              <select id="histMotivoEgreso">
+                <option value="ninguno" selected>-- En Curso / Sin Egreso --</option>
+                <option value="alta">Alta</option>
+                <option value="traslado">Traslado</option>
+                <option value="alta_transitoria">Alta Transitoria</option>
+                <option value="defuncion">Defunción</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Fecha y Hora de Ingreso</label>
+              <input type="datetime-local" id="histFechaHoraIngreso">
+            </div>
+            <div class="form-group">
+              <label>Fecha y Hora de Egreso (Opcional)</label>
+              <input type="datetime-local" id="histFechaHoraEgreso">
+            </div>
+          </div>
+
+          <!-- SECCIÓN 2: DIAGNÓSTICO Y ANTECEDENTES (FRENTE) -->
+          <div class="form-section-title mt-2">
+            <i data-lucide="clipboard"></i> 2. Diagnósticos y motivo de internación (frente)
+          </div>
+
+          <div class="form-group">
+            <label>Diagnóstico de Ingreso</label>
+            <textarea id="histDiagnosticoIngreso" rows="2" placeholder="Diagnóstico presuntivo de ingreso..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Diagnóstico de Egreso</label>
+            <textarea id="histDiagnosticoEgreso" rows="2" placeholder="Diagnóstico definitivo de egreso (si corresponde)..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Motivo de Internación *</label>
+            <textarea id="histMotivo" rows="2" required placeholder="Motivo de internación o consulta principal..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Enfermedad Actual</label>
+            <textarea id="histEnfermedadActual" rows="2" placeholder="Descripción de la enfermedad actual, cuadro clínico..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Medicación que recibe y dosis</label>
+            <textarea id="histMedicacion" rows="2" placeholder="Medicamentos, dosis y posología actual..."></textarea>
+          </div>
+
+          <!-- SECCIÓN 3: EXAMEN FÍSICO Y SIGNOS VITALES (DORSO) -->
+          <div class="form-section-title mt-2">
+            <i data-lucide="activity"></i> 3. Examen Físico y Signos Vitales (Dorso)
+          </div>
+
+          <div class="form-row-3">
+            <div class="form-group">
+              <label>Peso</label>
+              <input type="text" id="histPeso" placeholder="Ej. 75 kg">
+            </div>
+            <div class="form-group">
+              <label>Talla</label>
+              <input type="text" id="histTalla" placeholder="Ej. 175 cm">
+            </div>
+            <div class="form-group">
+              <label>Saturación</label>
+              <input type="text" id="histSaturacion" placeholder="Ej. 98%">
+            </div>
+          </div>
+
+          <div class="form-row-3">
+            <div class="form-group">
+              <label>Pulso</label>
+              <input type="text" id="histPulso" placeholder="Ej. 72 lpm">
+            </div>
+            <div class="form-group">
+              <label>T.A. (Tensión Arterial)</label>
+              <input type="text" id="histTA" placeholder="Ej. 120/80">
+            </div>
+            <div class="form-group">
+              <label>F.R. (Frec. Resp.)</label>
+              <input type="text" id="histFR" placeholder="Ej. 16 rpm">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Temp. Axilar</label>
+              <input type="text" id="histTempAxilar" placeholder="Ej. 36.5 Â°C">
+            </div>
+            <div class="form-group">
+              <label>Temp. Rectal</label>
+              <input type="text" id="histTempRectal" placeholder="Ej. 37.0 Â°C">
+            </div>
+          </div>
+
+          <!-- SECCIÓN 4: EVALUACIÓN POR SISTEMAS (DORSO) -->
+          <div class="form-section-title mt-2">
+            <i data-lucide="stethoscope"></i> 4. Evaluación por Sistemas y Estudios (Dorso)
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Examen Cardiovascular</label>
+              <textarea id="histCardiovascular" rows="2" placeholder="R1, R2 normofonéticos, sin soplos..."></textarea>
+            </div>
+            <div class="form-group">
+              <label>Aparato Respiratorio</label>
+              <textarea id="histRespiratorio" rows="2" placeholder="Buena entradía de aire bilateral..."></textarea>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Abdomen</label>
+              <textarea id="histAbdomen" rows="2" placeholder="Blando, depresible, indoloro..."></textarea>
+            </div>
+            <div class="form-group">
+              <label>Examen Urogenital</label>
+              <textarea id="histUrogenital" rows="2" placeholder="Sin particularidíades, puñopercusión negativa..."></textarea>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Examen Ginecológico</label>
+              <textarea id="histGinecologico" rows="2" placeholder="Evaluación ginecológica (si corresponde)..."></textarea>
+            </div>
+            <div class="form-group">
+              <label>Aparato Locomotor</label>
+              <textarea id="histLocomotor" rows="2" placeholder="Movilidíad conservadía, tono y trofismo..."></textarea>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Examen Neurológico</label>
+              <textarea id="histNeurologico" rows="2" placeholder="Lúcido, orientado en tiempo y espacio..."></textarea>
+            </div>
+            <div class="form-group">
+              <label>Radiografía de Tórax / LAB / ECG / TAC</label>
+              <textarea id="histEstudiosRx" rows="2" placeholder="Hallazgos de Rx, Laboratorio, ECG o TAC..."></textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Indicaciones de Ingreso / Tratamiento</label>
+            <textarea id="histIndicacionesIngreso" rows="2" placeholder="Indicaciones médicas, plan terapéutico..."></textarea>
+          </div>
+
+          <!-- SECCIÓN 5: ADJUNTOS (MINIMALISTA) -->
+          <div class="form-section-title mt-2">
+            <i data-lucide="paperclip"></i> 5. Adjuntos
+          </div>
+
+          <div class="form-group">
+            <div class="adjuntos-compact">
+              <div class="adjuntos-actions">
+                <button type="button" class="btn-adjunto" onclick="document.getElementById('histFileInput').click()">
+                  <i data-lucide="upload"></i> Subir archivo
+                </button>
+                <button type="button" class="btn-adjunto" onclick="toggleLinkInput()">
+                  <i data-lucide="link"></i> Pegar link
+                </button>
+                <button type="button" class="btn-adjunto" onclick="pegarDesdePortapapeles()">
+                  <i data-lucide="clipboard-paste"></i> Pegar imagen
+                </button>
+              </div>
+              <input type="file" id="histFileInput" multiple accept="image/*,application/pdf" style="display: none;" onchange="handleFileUpload(event)">
+              <div id="histLinkInputWrap" class="link-input-wrap hidden">
+                <input type="text" id="histLinkSingle" placeholder="Pegar link de RDA, Drive, portal..." onkeydown="if(event.key==='Enter'){event.preventDefault();agregarLinkManual();}">
+                <button type="button" class="btn-link-add" onclick="agregarLinkManual()"><i data-lucide="plus"></i></button>
+              </div>
+              <textarea id="histImagenes" style="display:none;"></textarea>
+              <div id="histAttachedFilesList" class="attached-files-grid"></div>
+            </div>
+            <small style="color: var(--text-muted); margin-top: 4px; display: block;">Fotos, PDFs, links de RDA o portales de diagnóstico.</small>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modalEvolucion')">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btnGuardarEvolucion">
+            <i data-lucide="save"></i> Guardar Historia Clínica Completa
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: VISOR VIRTUAL DE HISTORIA CLÍNICA COMPLETA -->
+  <div class="modal-backdrop hidden" id="modalVerHistoriaVirtual">
+    <div class="modal-box large modal-hc-viewer-box">
+      <div class="modal-header" style="background: #F8FAFC; border-bottom: 1px solid var(--border); padding: 1rem 1.5rem;">
+        <div>
+          <h3><i data-lucide="file-check" style="color: var(--primary);"></i> Visor de Historia Clínica Digital</h3>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin: 2px 0 0 0;" id="viewerHcSubtitle">Planilla Oficial Frente & Dorso</p>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <button type="button" class="btn btn-outline btn-sm" id="btnViewerImprimir" style="display: inline-flex; align-items: center; gap: 5px;">
+            <i data-lucide="printer"></i> Imprimir Oficial
+          </button>
+          <button class="modal-close" onclick="closeModal('modalVerHistoriaVirtual')"><i data-lucide="x"></i></button>
+        </div>
+      </div>
+      <div class="modal-body modal-scrollable" id="viewerHcContent" style="padding: 1.5rem; background: #F8FAFC;">
+        <!-- Contenido renderizado dinámicamente -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- DRAWER LATERAL DESLIZANTE DE DETALLE DEL DÍA -->
+  <!-- ======================================================== -->
+  <div id="dayDrawerOverlay" class="drawer-backdrop" onclick="cerrarDetalleDia()"></div>
+
+  <div id="dayDrawerPanel" class="drawer-content">
+    
+    <!-- Header del Drawer -->
+    <div class="drawer-header">
+      <div>
+        <div class="drawer-title-wrap">
+          <span class="drawer-dot"></span>
+          <h3 id="drawerDayTitle">Lunes 10 de Agosto</h3>
+        </div>
+        <p id="drawerTotalTurnos" class="drawer-subtitle">20 Turnos Programados</p>
+      </div>
+      <button class="drawer-close-btn" onclick="cerrarDetalleDia()" aria-label="Cerrar panel">
+        <i data-lucide="x"></i>
+      </button>
+    </div>
+
+    <!-- Pestañas de Filtro por Especialidad -->
+    <div id="drawerFilterTabs" class="drawer-filter-tabs">
+      <!-- Generado dinámicamente -->
+    </div>
+
+    <!-- Lista de Turnos y Pacientes -->
+    <div id="drawerAppointmentsList" class="drawer-body">
+      <!-- Generado dinámicamente -->
+    </div>
+
+    <!-- Footer del Drawer -->
+    <div class="drawer-footer" style="display: flex; gap: 10px;">
+      <button class="btn btn-primary" style="flex: 1;" onclick="abrirModalNuevoTurnoEnDia()">
+        <i data-lucide="plus"></i> Cargar Turno en este Día
+      </button>
+      <button class="btn btn-secondary" onclick="cerrarDetalleDia()">
+        Cerrar
+      </button>
+    </div>
+
+  </div>
+
+  <!-- TOAST NOTIFICACIONES -->
+  <div class="toast hidden" id="toast">
+    <i data-lucide="check-circle-2" id="toastIcon"></i>
+    <span id="toastMsg">Operación exitosa</span>
+  </div>
+
+  <!-- ÁREA DE IMPRESIÓN DE INTERNACIÓN (fuera del panel; solo visible al imprimir la planilla) -->
+  <div id="printInternacionLayout" class="print-only"></div>
+  <!-- ÁREA DE IMPRESIÓN (invisible en pantalla, visible solo al imprimir) -->
+  <div id="printArea" class="print-area"></div>
+
+  <!-- MODAL ASIGNAR / EDITAR PACIENTE EN CAMA -->
+  <div class="modal-backdrop hidden" id="modalAsignarCama">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div>
+          <h3><i data-lucide="bed-double"></i> <span id="asignarCamaTitulo">Asignar Paciente a Cama</span></h3>
+          <p id="asignarCamaSubtitulo" style="font-size: 0.8rem; color: var(--text-muted); margin: 2px 0 0 0;"></p>
+        </div>
+        <button type="button" class="modal-close" onclick="cerrarModalCama()"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="formAsignarCama" novalidate>
+          <input type="hidden" id="asignarCamaSectorId">
+          <input type="hidden" id="asignarCamaNum">
+          <!-- ID del paciente del padrón (vacío si se asigna por nombre libre) -->
+          <input type="hidden" id="asignarCamaPaciente">
+          <input type="hidden" id="asignarCamaNombreLibre">
+
+          <div id="asignarCamaActual" class="cama-actual-box hidden"></div>
+
+          <div class="form-group mb-3">
+            <label style="margin: 0 0 4px 0; font-weight: 700; display:block;">Buscar Paciente (por DNI o Nombre) *</label>
+
+            <div class="patient-picker-wrap" id="camaPatientPickerWrap">
+              <div class="patient-search-box" id="camaPatientSearchBoxWrap">
+                <i data-lucide="search" class="search-icon"></i>
+                <input type="text" id="camaPacienteSearch" placeholder="Escribí el DNI o Apellido del paciente..." autocomplete="off">
+              </div>
+
+              <!-- Tarjeta de Paciente Seleccionado -->
+              <div id="camaPatientSelectedCard" class="patient-selected-card hidden">
+                <div class="patient-card-left">
+                  <i data-lucide="user-check" class="patient-icon"></i>
+                  <div>
+                    <strong id="camaSelectedPatientName">Nombre Paciente</strong>
+                    <div class="selected-patient-meta" id="camaSelectedPatientMeta">DNI: 00000000 · Obra Social</div>
+                  </div>
+                </div>
+                <button type="button" class="btn btn-outline btn-sm" id="camaCambiarPacienteBtn" title="Buscar otro paciente">Cambiar</button>
+              </div>
+
+              <!-- Lista desplegable de sugerencias -->
+              <div id="camaPatientDropdownList" class="patient-dropdown-list hidden"></div>
+            </div>
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="asignarCamaFecha" style="margin: 0 0 4px 0; font-weight: 700; display:block;">Fecha de ingreso</label>
+            <input type="date" id="asignarCamaFecha">
+          </div>
+
+          <div class="cama-modal-footer">
+            <button type="button" class="btn btn-danger-outline" id="camaLiberarBtn">Liberar Cama</button>
+            <div style="display:flex; gap:10px;">
+              <button type="button" class="btn btn-secondary" id="camaCancelarBtn">Cancelar</button>
+              <button type="submit" class="btn btn-primary" id="camaGuardarBtn"><i data-lucide="save"></i> Guardar</button>
+            </div>
           </div>
         </form>
       </div>
     </div>
   </div>
 
-  <!-- TOAST NOTIFICATION -->
-  <div class="toast-notification hidden" id="toastNotification">
-    <i data-lucide="check"></i>
-    <span id="toastMessage">Dirección copiada al portapapeles</span>
+  <!-- ======================================================== -->
+  <!-- MODAL: MI CUENTA (datos, permisos y cambio de contraseña) -->
+  <!-- ======================================================== -->
+  <div class="modal-backdrop hidden" id="modalMiCuenta">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div><h3><i data-lucide="user-round" style="color: var(--primary);"></i> Mi cuenta</h3></div>
+        <button type="button" class="modal-close" onclick="closeModal('modalMiCuenta')"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="cuenta-cabecera">
+          <div class="cuenta-id" id="cuentaId">ID —</div>
+          <div>
+            <div class="cuenta-nombre" id="cuentaNombre">—</div>
+            <div class="cuenta-meta" id="cuentaMeta">—</div>
+          </div>
+        </div>
+        <div class="form-section-title"><i data-lucide="key-round"></i> Mis permisos</div>
+        <ul class="cuenta-permisos" id="cuentaPermisos"></ul>
+        <div class="form-section-title"><i data-lucide="lock"></i> Cambiar mi contraseña</div>
+        <form id="formMiClave" novalidate>
+          <div class="form-group"><label for="miClaveActual">Contraseña actual</label><input type="password" id="miClaveActual" autocomplete="current-password"></div>
+          <div class="hc-fila-2">
+            <div class="form-group"><label for="miClaveNueva">Nueva contraseña</label><input type="password" id="miClaveNueva" autocomplete="new-password"></div>
+            <div class="form-group"><label for="miClaveRepite">Repetila</label><input type="password" id="miClaveRepite" autocomplete="new-password"></div>
+          </div>
+          <p class="cuenta-ayuda">Mínimo 8 caracteres, con letras y números.</p>
+          <p class="cuenta-error hidden" id="miClaveError"></p>
+          <button type="submit" class="btn btn-primary" id="btnMiClave"><i data-lucide="save"></i> Cambiar contraseña</button>
+        </form>
+      </div>
+    </div>
   </div>
 
-  <!-- Script JS con version cache-buster -->
-  <script src="app.js?v=9.0"></script>
-  <script>
-    // Verificación constante: si el modal de turnos está abierto, oculta la barra inferior inmediatamente
-    setInterval(function() {
-      var modal = document.getElementById('turnoModal');
-      var bar = document.getElementById('mobileActionBar');
-      if (modal && bar) {
-        if (!modal.classList.contains('hidden')) {
-          bar.style.setProperty('display', 'none', 'important');
-        } else {
-          bar.style.removeProperty('display');
-        }
-      }
-    }, 100);
-  </script>
+  <!-- ======================================================== -->
+  <!-- MODAL: ELEGÍ TU CONTRASEÑA (obligatorio en el primer ingreso) -->
+  <!-- ======================================================== -->
+  <div class="modal-backdrop hidden" id="modalClaveObligatoria">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div>
+          <h3><i data-lucide="shield-check" style="color: var(--primary);"></i> Elegí tu contraseña</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin: 2px 0 0 0;">Es tu primer ingreso (o el administrador te dio una contraseña temporal). Elegí una propia para continuar.</p>
+        </div>
+      </div>
+      <form id="formClaveObligatoria" novalidate>
+        <div class="modal-body">
+          <div class="form-group"><label for="obClaveActual">Contraseña temporal</label><input type="password" id="obClaveActual" autocomplete="current-password"></div>
+          <div class="form-group"><label for="obClaveNueva">Nueva contraseña</label><input type="password" id="obClaveNueva" autocomplete="new-password"></div>
+          <div class="form-group"><label for="obClaveRepite">Repetila</label><input type="password" id="obClaveRepite" autocomplete="new-password"></div>
+          <p class="cuenta-ayuda">Mínimo 8 caracteres, con letras y números. No la compartas: todo lo que hagas queda registrado con tu nombre.</p>
+          <p class="cuenta-error hidden" id="obClaveError"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="volverAPantallaDeAcceso()">Salir</button>
+          <button type="submit" class="btn btn-primary" id="btnClaveObligatoria"><i data-lucide="check"></i> Guardar y entrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: USUARIO (alta / edición — Administración)          -->
+  <!-- ======================================================== -->
+  <div class="modal-backdrop hidden" id="modalUsuario">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div><h3><i data-lucide="user-cog" style="color: var(--primary);"></i> <span id="modalUsuarioTitulo">Nuevo usuario</span></h3></div>
+        <button type="button" class="modal-close" onclick="closeModal('modalUsuario')"><i data-lucide="x"></i></button>
+      </div>
+      <form id="formUsuario" novalidate>
+        <div class="modal-body">
+          <input type="hidden" id="usrId">
+          <div class="form-group"><label for="usrNombre">Nombre y apellido *</label><input type="text" id="usrNombre" maxlength="120" placeholder="Ej: Dra. María Gómez"></div>
+          <div class="hc-fila-2">
+            <div class="form-group"><label for="usrUsuario">Usuario para ingresar *</label><input type="text" id="usrUsuario" maxlength="40" placeholder="Ej: mgomez" autocapitalize="none" spellcheck="false"></div>
+            <div class="form-group"><label for="usrNumero">ID visible</label><input type="text" id="usrNumero" inputmode="numeric" maxlength="6" placeholder="Automático"></div>
+          </div>
+          <div class="hc-fila-2">
+            <div class="form-group"><label for="usrRol">Perfil *</label>
+              <select id="usrRol" onchange="actualizarServicioUsuario()">
+                <option value="REC">Recepción</option>
+                <option value="MED">Médico</option>
+                <option value="ENF">Enfermería</option>
+                <option value="LAB">Laboratorio</option>
+                <option value="RAY">Rayos</option>
+                <option value="ADM">Administración</option>
+              </select>
+            </div>
+            <div class="form-group" id="usrServicioWrap"><label for="usrServicio">Servicio *</label>
+              <select id="usrServicio">
+                <option value="GUARDIA">Guardia</option>
+                <option value="UTI">UTI</option>
+                <option value="PISOS">Pisos</option>
+                <option value="CONSULTORIO">Consultorio</option>
+              </select>
+            </div>
+          </div>
+          <div class="hc-fila-2">
+            <div class="form-group"><label for="usrMatricula">Matrícula</label><input type="text" id="usrMatricula" maxlength="40" placeholder="Ej: MP 12345"></div>
+            <div class="form-group" id="usrConsultorioWrap"><label for="usrConsultorio">Consultorio</label><input type="text" id="usrConsultorio" maxlength="40" placeholder="Ej: Consultorio 3"><small class="campo-ayuda">Se muestra en la pantalla de la sala.</small></div>
+          </div>
+          <div class="usr-permisos-preview" id="usrPermisosPreview"></div>
+          <label class="usr-activo hidden" id="usrActivoWrap"><input type="checkbox" id="usrActivo"> Usuario activo</label>
+          <p class="cuenta-error hidden" id="usrError"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modalUsuario')">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btnGuardarUsuario"><i data-lucide="save"></i> Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: PORTAL DE PACIENTES (recepción habilita el acceso) -->
+  <!-- ======================================================== -->
+  <div class="modal-backdrop hidden" id="modalAppPaciente">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div><h3><i data-lucide="globe" style="color: var(--primary);"></i> Portal de pacientes</h3><p class="modal-sub" id="appPacNombre">—</p></div>
+        <button type="button" class="modal-close" onclick="closeModal('modalAppPaciente')"><i data-lucide="x"></i></button>
+      </div>
+      <form id="formAppPaciente" onsubmit="enviarCodigoAppPaciente(event)" novalidate>
+        <div class="modal-body">
+          <div class="app-pac-estado" id="appPacEstado">Consultando…</div>
+          <div class="form-group">
+            <label for="appPacEmail">Email del paciente *</label>
+            <input type="email" id="appPacEmail" maxlength="200" placeholder="nombre@correo.com" autocapitalize="none" spellcheck="false">
+            <small class="campo-ayuda">Confirmalo con el paciente: ahí le llega el código para entrar al portal de pacientes en clinicapasso.com.ar (y los códigos si se olvida la contraseña).</small>
+          </div>
+          <div class="app-pac-codigo hidden" id="appPacCodigo"></div>
+          <p class="cuenta-error hidden" id="appPacError"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline app-pac-quitar hidden" id="appPacQuitar" onclick="quitarAccesoAppPaciente()"><i data-lucide="user-x"></i> Quitar acceso</button>
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modalAppPaciente')">Cerrar</button>
+          <button type="submit" class="btn btn-primary" id="appPacEnviar"><i data-lucide="send"></i> <span>Enviar código</span></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: CONTRASEÑA TEMPORAL (se muestra una sola vez)      -->
+  <!-- ======================================================== -->
+  <div class="modal-backdrop hidden" id="modalClaveTemporal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div><h3><i data-lucide="key-round" style="color: var(--primary);"></i> Contraseña temporal</h3></div>
+      </div>
+      <div class="modal-body">
+        <p>Dale estos datos a <strong id="tempNombre">—</strong>. En su primer ingreso el sistema le va a pedir que elija su propia contraseña.</p>
+        <div class="temp-datos">
+          <div><span>Usuario</span><strong id="tempUsuario">—</strong></div>
+          <div><span>Contraseña temporal</span><strong id="tempClave" class="temp-clave">—</strong></div>
+        </div>
+        <p class="cuenta-aviso"><i data-lucide="eye-off"></i> Esta contraseña se muestra <strong>una sola vez</strong>. Si se pierde, generá otra con "Resetear contraseña".</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="copiarClaveTemporal()"><i data-lucide="copy"></i> Copiar</button>
+        <button type="button" class="btn btn-primary" onclick="closeModal('modalClaveTemporal')">Listo</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script del Panel con cache buster definitivo -->
+  
+  <script src="app.js?v=157.0"></script>
+  
+  
+
+
 </body>
 </html>
+
+
