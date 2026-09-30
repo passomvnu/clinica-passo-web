@@ -135,7 +135,15 @@ function nav(activa) {
   n.querySelectorAll('a').forEach(a => a.classList.toggle('activo', a.dataset.nav === activa));
 }
 
+function quitarPantallaCarga() {
+  const pc = document.getElementById('pantallaCarga');
+  if (!pc || pc.classList.contains('saliendo')) return;
+  pc.classList.add('saliendo');
+  setTimeout(() => pc.remove(), 250);
+}
+
 function pintar(html) {
+  if (!/^<div class="cargando">/.test(html)) quitarPantallaCarga();
   const v = $('#vista');
   v.innerHTML = html;
   pintarIconos(v);
@@ -372,14 +380,18 @@ function activarCancelar() {
 const TIPOS_DOC = {
   laboratorio: { txt: 'Laboratorio', ico: 'flask-conical', tono: 'tono-verde' },
   adjunto: { txt: 'Estudio', ico: 'file-image', tono: 'tono-violeta' },
-  epicrisis: { txt: 'Epicrisis', ico: 'file-check-2', tono: 'tono-ambar' }
+  epicrisis: { txt: 'Epicrisis', ico: 'file-check-2', tono: 'tono-ambar' },
+  receta: { txt: 'Receta', ico: 'pill', tono: 'tono-rosa' }
 };
 
 function htmlFilaDoc(d) {
   const t = TIPOS_DOC[d.tipo] || TIPOS_DOC.adjunto;
   const f = fechaDoc(d.fecha);
   const sub = [d.tipo === 'adjunto' ? (d.categoria || 'Estudio') : t.txt, f ? fmtCorta(f) : ''].filter(Boolean).join(' · ');
-  const titulo = d.tipo === 'laboratorio' ? 'Análisis de laboratorio' : d.tipo === 'epicrisis' ? (d.datos && d.datos.dx_egreso ? 'Epicrisis: ' + d.datos.dx_egreso : 'Epicrisis') : d.titulo;
+  const titulo = d.tipo === 'laboratorio' ? 'Análisis de laboratorio'
+    : d.tipo === 'epicrisis' ? (d.datos && d.datos.dx_egreso ? 'Epicrisis: ' + d.datos.dx_egreso : 'Epicrisis')
+    : d.tipo === 'receta' ? (d.datos && d.datos.medico ? 'Receta de ' + d.datos.medico : 'Receta')
+    : d.titulo;
   return `<a class="fila" href="#/doc/${encodeURIComponent(d.id)}">
     <span class="ic-caja ${t.tono}">${icono(t.ico)}</span>
     <span class="fila-txt"><span class="fila-tit" style="display:block">${esc(titulo)}</span><span class="fila-sub">${esc(sub)}</span></span>
@@ -549,7 +561,7 @@ async function vistaEstudios() {
   cargando();
   try {
     const docs = await cargarDocs(true);
-    const filtros = [['todos', 'Todos'], ['laboratorio', 'Laboratorios'], ['adjunto', 'Estudios e imágenes'], ['epicrisis', 'Epicrisis']];
+    const filtros = [['todos', 'Todos'], ['laboratorio', 'Laboratorios'], ['adjunto', 'Estudios e imágenes'], ['receta', 'Recetas'], ['epicrisis', 'Epicrisis']];
     const dibujar = () => {
       const lista = docs.filter(d => S.filtroDocs === 'todos' || d.tipo === S.filtroDocs);
       const grupos = [];
@@ -566,7 +578,7 @@ async function vistaEstudios() {
           : `<div class="tarjeta tarjeta-pad" style="text-align:center;color:var(--muted);margin-top:8px">
               <span class="ic-caja tono-azul" style="margin:6px auto 12px">${icono('file-text')}</span>
               ${docs.length ? 'No hay documentos de este tipo.' : 'Todavía no hay estudios cargados. Cuando la clínica cargue un laboratorio, una imagen o una epicrisis, lo vas a ver acá.'}</div>`}
-        <p class="nota-legal">Acá ves tus laboratorios, estudios, imágenes y epicrisis. Si necesitás una copia completa de tu historia clínica, pedila en recepción.</p>`);
+        <p class="nota-legal">Acá ves tus laboratorios, estudios, imágenes, recetas y epicrisis. Si necesitás una copia completa de tu historia clínica, pedila en recepción.</p>`);
       document.querySelectorAll('[data-f]').forEach(b => b.onclick = () => { S.filtroDocs = b.dataset.f; dibujar(); });
     };
     dibujar();
@@ -597,6 +609,30 @@ async function vistaDoc(id) {
           </section>`).join('')
         : `<div class="tarjeta tarjeta-pad" style="color:var(--muted)">Este laboratorio todavía no tiene resultados cargados.</div>`}
         <p class="nota-legal">Los resultados los interpreta tu médico. Ante cualquier duda, consultalo en tu próximo turno.</p>
+        ${imprimir}`);
+    } else if (d.tipo === 'receta') {
+      barra({ titulo: 'Receta', volver: true });
+      const x = d.datos || {};
+      const mats = [x.mn ? 'M.N. ' + x.mn : '', x.mp ? 'M.P. ' + x.mp : ''].filter(Boolean).join(' - ');
+      const os = [x.obra_social, x.nro_afiliado ? 'N° ' + x.nro_afiliado : ''].filter(Boolean).join(' · ');
+      pintar(`
+        <div class="doc-cab no-imprimir"><span class="chip ${t.tono}">${icono(t.ico)} Receta</span><h2>${esc(x.medico ? 'Receta de ' + x.medico : 'Receta')}</h2><p>${esc(fmtCorta(f))}</p></div>
+        <article class="tarjeta receta">
+          <header class="receta-cab">
+            <div class="receta-clinica">Clínica Passo S.A.</div>
+            <div class="receta-dir">EVA PERÓN 3097</div>
+            ${x.medico || mats ? `<div class="receta-medico">${esc([x.medico, mats].filter(Boolean).join(' · '))}</div>` : ''}
+          </header>
+          <div class="receta-datos">
+            <div><span>Paciente</span><b>${esc(nombre)}</b></div>
+            ${os ? `<div><span>Obra social</span><b>${esc(os)}</b></div>` : ''}
+            <div><span>Fecha</span><b>${esc(fmtCorta(f))}</b></div>
+          </div>
+          <div class="receta-rp">Rp.</div>
+          <div class="receta-texto">${esc(x.rp || '').replace(/\n/g, '<br>')}</div>
+          ${x.diagnostico ? `<div class="receta-dx"><span>Diagnóstico</span>${esc(x.diagnostico)}</div>` : ''}
+        </article>
+        <p class="nota-legal">Esta es una copia de tu receta para que la tengas a mano. Para comprar medicamentos en la farmacia usá la receta firmada que te entregó el médico.</p>
         ${imprimir}`);
     } else if (d.tipo === 'epicrisis') {
       barra({ titulo: 'Epicrisis', volver: true });

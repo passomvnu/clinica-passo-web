@@ -66,8 +66,45 @@ a { color: var(--primary); }
 /* ---------------------------------------------------------------- contenido */
 .vista { flex: 1; padding: 8px 16px calc(var(--nav-h) + var(--safe-b) + 24px); outline: none; }
 .vista.sin-nav { padding-bottom: calc(32px + var(--safe-b)); }
-.cargando { display: grid; place-items: center; padding: 64px 0; gap: 14px; color: var(--muted); text-align: center; font-size: 14px; }
-.spinner { width: 28px; height: 28px; border-radius: 50%; border: 3px solid var(--primary-soft); border-top-color: var(--primary); animation: gira .8s linear infinite; }
+.cargando { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 55vh; gap: 14px; color: var(--muted); text-align: center; font-size: 14px; }
+
+/* Ruedita de carga (la misma del panel de la clínica): 8 puntos que giran */
+.spinner {
+  --s: 30px;
+  position: relative; display: inline-block; flex-shrink: 0; vertical-align: middle;
+  width: var(--s); height: var(--s); color: var(--primary);
+}
+.spinner::before {
+  content: ''; position: absolute; left: 50%; top: 50%;
+  width: calc(var(--s) * .17); height: calc(var(--s) * .17); margin: calc(var(--s) * -.085);
+  border-radius: 50%;
+  box-shadow:
+    0 calc(var(--s) * -.38) currentColor, calc(var(--s) * -.269) calc(var(--s) * -.269) currentColor,
+    calc(var(--s) * -.38) 0 currentColor, calc(var(--s) * -.269) calc(var(--s) * .269) currentColor,
+    0 calc(var(--s) * .38) currentColor, calc(var(--s) * .269) calc(var(--s) * .269) currentColor,
+    calc(var(--s) * .38) 0 currentColor, calc(var(--s) * .269) calc(var(--s) * -.269) currentColor;
+  box-shadow:
+    0 calc(var(--s) * -.38) currentColor,
+    calc(var(--s) * -.269) calc(var(--s) * -.269) color-mix(in srgb, currentColor 86%, transparent),
+    calc(var(--s) * -.38) 0 color-mix(in srgb, currentColor 72%, transparent),
+    calc(var(--s) * -.269) calc(var(--s) * .269) color-mix(in srgb, currentColor 58%, transparent),
+    0 calc(var(--s) * .38) color-mix(in srgb, currentColor 44%, transparent),
+    calc(var(--s) * .269) calc(var(--s) * .269) color-mix(in srgb, currentColor 32%, transparent),
+    calc(var(--s) * .38) 0 color-mix(in srgb, currentColor 22%, transparent),
+    calc(var(--s) * .269) calc(var(--s) * -.269) color-mix(in srgb, currentColor 14%, transparent);
+  animation: gira .85s steps(8) infinite;
+}
+.spinner-lg { --s: 48px; }
+@media (prefers-reduced-motion: reduce) { .spinner::before { animation-duration: 2.4s; } }
+
+/* Pantalla completa al abrir el portal */
+.pantalla-carga {
+  position: fixed; inset: 0; z-index: 100; width: 100%; min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+  background: var(--bg); color: var(--muted); font-size: 14px; text-align: center; padding: 24px;
+  transition: opacity .25s ease;
+}
+.pantalla-carga.saliendo { opacity: 0; pointer-events: none; }
 @keyframes gira { to { transform: rotate(360deg); } }
 
 h2.titulo { font-family: var(--font-h); font-size: 26px; font-weight: 800; color: var(--text-dark); margin: 8px 0 4px; letter-spacing: -0.02em; line-height: 1.15; }
@@ -96,7 +133,7 @@ h2.titulo { font-family: var(--font-h); font-size: 26px; font-weight: 800; color
 .btn-peligro { background: var(--card); color: var(--red); border-color: #FECACA; }
 .btn-texto { background: transparent; color: var(--primary); min-height: 44px; font-family: var(--font-b); font-weight: 600; }
 .btn-chico { min-height: 40px; padding: 8px 14px; font-size: 14px; border-radius: 10px; width: auto; }
-.btn .spinner { width: 18px; height: 18px; border-width: 2px; border-color: rgba(255,255,255,.4); border-top-color: #fff; }
+.btn .spinner { --s: 20px; color: inherit; }
 .botones { display: grid; gap: 10px; margin-top: 20px; }
 
 .campo { display: block; margin-bottom: 16px; }
@@ -217,7 +254,7 @@ details.pasados[open] summary .ic { transform: rotate(90deg); }
 .miniatura img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .miniatura-pdf { background: var(--card); border: 1px solid var(--border); color: var(--text-dark); text-decoration: none; padding: 12px; text-align: center; gap: 6px; align-content: center; font-size: 13px; font-weight: 600; word-break: break-word; }
 .miniatura-pdf .ic { width: 34px; height: 34px; color: var(--red); }
-.miniatura .spinner { border-color: rgba(255,255,255,.25); border-top-color: #fff; }
+.miniatura .spinner { color: #fff; }
 
 .lab-toma { padding: 0; overflow: hidden; }
 .lab-toma + .lab-toma { margin-top: 14px; }
@@ -307,3 +344,17 @@ details.pasados[open] summary .ic { transform: rotate(90deg); }
 .hora:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--primary-soft); }
 .hora.activo { background: var(--primary); border-color: var(--primary); color: #fff; }
 .suave { color: var(--muted); font-weight: 400; }
+
+/* ---------- Receta (copia para el paciente) ---------- */
+.receta { padding: 20px 18px 22px; margin-top: 4px; }
+.receta-cab { text-align: center; padding-bottom: 10px; border-bottom: 3px double var(--text-dark); }
+.receta-clinica { font-family: 'Pinyon Script', 'Snell Roundhand', 'Apple Chancery', cursive; font-size: 32px; line-height: 1.1; color: var(--text-dark); }
+.receta-dir { font-size: 12px; letter-spacing: .06em; margin-top: 2px; color: var(--text-dark); }
+.receta-medico { font-size: 13px; color: var(--muted); margin-top: 6px; }
+.receta-datos { display: flex; flex-wrap: wrap; gap: 8px 22px; padding: 12px 0 4px; }
+.receta-datos span, .receta-dx span { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.receta-datos b { font-size: 16px; color: var(--text-dark); }
+.receta-rp { font-family: 'Pinyon Script', 'Snell Roundhand', 'Apple Chancery', cursive; font-size: 30px; margin: 10px 0 4px; color: var(--text-dark); }
+.receta-texto { font-size: 17px; line-height: 1.7; color: var(--text-dark); padding-left: 14px; overflow-wrap: anywhere; }
+.receta-dx { margin: 22px 0 0 14px; padding-top: 10px; border-top: 1px solid var(--border); font-size: 15px; color: var(--text-dark); }
+@media print { .receta { border: 0 !important; padding: 0; } }

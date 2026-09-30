@@ -17,10 +17,15 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=2">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&family=Pinyon+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=3">
 </head>
 <body>
+  <!-- Pantalla de carga inicial: se va cuando aparece la primera pantalla -->
+  <div class="pantalla-carga" id="pantallaCarga" role="status" aria-live="polite">
+    <span class="spinner spinner-lg" aria-hidden="true"></span>
+    <span class="cargando-texto">Cargando…</span>
+  </div>
   <div class="app" id="app">
     <header class="barra" id="barra">
       <button type="button" class="barra-volver hidden" id="barraVolver" aria-label="Volver"></button>
@@ -48,7 +53,7 @@
 
   <noscript><p style="padding:24px;font-family:sans-serif">Para usar el portal de pacientes de Clínica Passo necesitás activar JavaScript en el navegador.</p></noscript>
 
-  <script src="iconos.js?v=1"></script>
-  <script src="app.js?v=2"></script>
+  <script src="iconos.js?v=2"></script>
+  <script src="app.js?v=3"></script>
 </body>
 </html>
