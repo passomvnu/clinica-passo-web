@@ -346,15 +346,229 @@ details.pasados[open] summary .ic { transform: rotate(90deg); }
 .suave { color: var(--muted); font-weight: 400; }
 
 /* ---------- Receta (copia para el paciente) ---------- */
+@font-face { font-family: 'Pinyon Script Passo'; font-style: normal; font-weight: 400; font-display: block;
+  src: url('fonts/pinyon-script.woff2') format('woff2'); }
 .receta { padding: 20px 18px 22px; margin-top: 4px; }
 .receta-cab { text-align: center; padding-bottom: 10px; border-bottom: 3px double var(--text-dark); }
-.receta-clinica { font-family: 'Pinyon Script', 'Snell Roundhand', 'Apple Chancery', cursive; font-size: 32px; line-height: 1.1; color: var(--text-dark); }
+.receta-clinica { font-family: 'Pinyon Script Passo', 'Edwardian Script ITC', 'Palace Script MT', 'Monotype Corsiva', 'Times New Roman', serif; font-size: 32px; line-height: 1.1; color: var(--text-dark); }
 .receta-dir { font-size: 12px; letter-spacing: .06em; margin-top: 2px; color: var(--text-dark); }
 .receta-medico { font-size: 13px; color: var(--muted); margin-top: 6px; }
 .receta-datos { display: flex; flex-wrap: wrap; gap: 8px 22px; padding: 12px 0 4px; }
 .receta-datos span, .receta-dx span { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
 .receta-datos b { font-size: 16px; color: var(--text-dark); }
-.receta-rp { font-family: 'Pinyon Script', 'Snell Roundhand', 'Apple Chancery', cursive; font-size: 30px; margin: 10px 0 4px; color: var(--text-dark); }
+.receta-rp { font-family: 'Pinyon Script Passo', 'Edwardian Script ITC', 'Palace Script MT', 'Monotype Corsiva', 'Times New Roman', serif; font-size: 30px; margin: 10px 0 4px; color: var(--text-dark); }
 .receta-texto { font-size: 17px; line-height: 1.7; color: var(--text-dark); padding-left: 14px; overflow-wrap: anywhere; }
 .receta-dx { margin: 22px 0 0 14px; padding-top: 10px; border-top: 1px solid var(--border); font-size: 15px; color: var(--text-dark); }
 @media print { .receta { border: 0 !important; padding: 0; } }
+
+
+/* ==========================================================================
+   HOJAS DE LABORATORIO Y EPICRISIS — mismos estilos que el panel de la clínica
+   (copiados de su styles.css). La hoja se dibuja a tamaño A4 y se achica para
+   entrar en la pantalla del celular.
+   ========================================================================== */
+.hoja-marco { position: relative; width: 100%; overflow: hidden; margin-top: 4px; border-radius: 10px; background: #E2E8F0; }
+.hoja-escala { transform-origin: top left; }
+.hoja-escala .foja-visor, .hoja-escala .lab-sheet-screen { margin: 0; }
+.hoja-escala .lab-sheet-screen .lab-print-container { margin: 0 auto; box-shadow: none; }
+.hoja-escala .foja-visor { border-radius: 0; }
+.lab-val { display: block; text-align: center; font-weight: 600; }
+.lab-val-inline { display: inline; font-weight: 600; }
+.foja-page { background: #fff; color: #111; font-family: Arial, Helvetica, sans-serif; }
+
+.lab-print-container {background: white;
+  padding: 10px;
+  color: #000;
+  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: auto;}
+.lab-table {width: 100%;
+  border-collapse: collapse;
+  font-size: 0.7rem;}
+.lab-table th, .lab-table td {border: 1px solid #333;
+  padding: 2px;
+  text-align: center;
+  vertical-align: middle;}
+.lab-header-left {text-align: left !important; padding: 10px !important;}
+.lab-title {font-size: 1.1rem; font-weight: bold;}
+.lab-subtitle {font-size: 0.85rem; font-weight: normal;}
+.lab-header-center {text-align: center !important;}
+.lab-logo-box {border: 2px solid #000; display: inline-flex; align-items: center; justify-content: center; padding: 2px 8px; font-weight: bold; font-size: 1.2rem; letter-spacing: -2px;}
+.lab-header-right {text-align: right !important; padding: 10px !important; font-weight: normal;}
+.lab-input-inline {border: none;
+  border-bottom: 1px dotted #333;
+  background: transparent;
+  color: #000;
+  font-family: inherit;
+  font-size: inherit;
+  outline: none;
+  width: 180px;}
+.lab-patient-name, .lab-patient-bed {background: #f0f0f0;
+  padding: 6px !important;}
+.lab-fechas-label {text-align: right !important; font-weight: bold; background: #f0f0f0;}
+.lab-date-input {width: 100%;
+  border: none;
+  text-align: center;
+  background: transparent;
+  outline: none;
+  font-weight: bold;}
+.lab-category-vertical {width: 30px;
+  background: #f9f9f9;
+  letter-spacing: 1px;
+  line-height: 1.2;}
+.lab-category-rotated {background: #f9f9f9;  writing-mode: vertical-rl;  transform: rotate(180deg);  text-align: center;  vertical-align: middle;}
+.lab-category-horizontal {background: #f9f9f9;}
+.lab-test-name {text-align: left !important;
+  font-weight: bold;
+  white-space: nowrap;
+  padding-left: 8px !important;}
+.lab-normal {font-size: 0.7rem;
+  color: #555;
+  white-space: nowrap;}
+.lab-input-cell {padding: 0 !important;
+  width: 12%;}
+.lab-input-wrapper {display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  padding: 2px 4px;}
+.lab-input-wrapper input {flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  text-align: center;
+  width: 100%;}
+.lab-unit {font-size: 0.65rem;
+  color: #777;
+  margin-left: 2px;}
+.lab-sheet-screen .lab-print-container {width: 100%;
+  max-width: 794px;            
+  margin: 12px auto;
+  padding: 18px 20px;
+  box-sizing: border-box;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.15);
+  overflow-x: auto;}
+.lab-print-container .lab-table {width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-size: 11px;}
+.lab-print-container .lab-table th, .lab-print-container .lab-table td {border: 1px solid #333;
+  padding: 1px 3px;
+  height: 19px;
+  line-height: 1.1;
+  text-align: center;
+  vertical-align: middle;
+  overflow: hidden;}
+.lab-print-container .lab-category-vertical, .lab-print-container .lab-category-horizontal, .lab-print-container .lab-category-rotated {width: 5%;}
+.lab-print-container .lab-test-name {width: 14%;}
+.lab-print-container .lab-normal {width: 10%; font-size: 10px;}
+.lab-print-container .lab-input-cell {width: 11.8%;}
+.lab-print-container .lab-category-vertical {font-size: 9px;
+  line-height: 1;
+  letter-spacing: 0;}
+.lab-print-container .lab-category-horizontal {font-size: 8px;
+  line-height: 1.1;
+  word-break: break-word;}
+.lab-print-container .lab-header-left, .lab-print-container .lab-header-right {padding: 4px 6px !important;}
+.lab-print-container .lab-title {font-size: 14px;}
+.lab-print-container .lab-subtitle {font-size: 11px;}
+.lab-print-container .lab-logo-box img {height: 38px !important;}
+.lab-print-container .lab-input-inline {width: 60%;}
+.lab-print-container .lab-input-wrapper {padding: 0 2px; height: 100%;}
+.lab-print-container .lab-input-wrapper input, .lab-print-container .lab-input-cell > input {width: 100%;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  outline: none;
+  text-align: center;
+  font-size: 11px;
+  padding: 0;}
+.lab-print-container .lab-input-cell input:focus, .lab-print-container .lab-date-input:focus, .lab-print-container .lab-input-inline:focus {background: #EFF6FF;}
+.lab-print-container .lab-unit {font-size: 8px;}
+.lab-print-container .lab-date-input {font-size: 10px;}
+.lab-print-container .lab-val {flex: 1;
+  display: inline-block;
+  min-width: 0;
+  text-align: center;
+  font-weight: 600;
+  color: #000;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;}
+.lab-print-container .lab-val-inline {flex: none;
+  text-align: left;
+  margin-left: 4px;
+  min-width: 60px;
+  border-bottom: 1px dotted #333;}
+.lab-print-container .lab-val-date {font-weight: 700;}
+.foja-page {font-family: Arial, Helvetica, sans-serif; color: #000; background: #fff;
+  font-size: 10pt; line-height: 1.25;}
+.foja-membrete {display: flex; align-items: center; gap: 10px; border-bottom: 1.2pt solid #000; padding-bottom: 6px; margin-bottom: 8px;}
+.foja-logo {width: 44px; height: 44px; object-fit: contain;}
+.foja-membrete-nombre {font-family: Georgia, 'Times New Roman', serif; font-size: 16pt; font-weight: bold; letter-spacing: 0.02em;}
+.foja-membrete-dir {font-size: 7.5pt; font-style: italic;}
+.foja-membrete-inst {font-size: 10pt; font-weight: bold; letter-spacing: 0.04em; margin-top: 2px;}
+.foja-titulo {text-align: center; font-size: 13pt; font-weight: bold; letter-spacing: 0.06em; margin: 4px 0 8px;}
+.foja-titulo-izq {text-align: left; margin: 0; flex: 3;}
+.foja-fila {display: flex; gap: 12px; border-bottom: 0.7pt solid #000; padding: 4px 0 2px; align-items: flex-end;}
+.foja-fila-titulo {align-items: center;}
+.foja-campo {flex: 1; display: flex; gap: 6px; align-items: baseline; min-width: 0;}
+.foja-campo.flex2 {flex: 2;}
+.foja-campo.flex3 {flex: 3;}
+.foja-lbl {font-size: 8pt; font-weight: bold; white-space: nowrap;}
+.foja-val {font-size: 10pt; overflow-wrap: anywhere;}
+.foja-multilinea .foja-val {min-height: 30px;}
+.foja-firma {margin-top: auto; padding-top: 30px; width: 60%; font-size: 8.5pt; text-align: center;}
+.foja-firma-der {margin: 10px 0 8px auto; width: 45%; padding-top: 24px;}
+.foja-firma-linea {border-top: 0.8pt dotted #000; margin-bottom: 3px;}
+.foja-visor {background: #E2E8F0; padding: 14px; border-radius: 10px; display: flex; flex-direction: column; gap: 14px;}
+.foja-visor .foja-page {max-width: 794px; width: 100%; margin: 0 auto; padding: 28px 32px; box-shadow: 0 2px 10px rgba(15, 23, 42, 0.15); box-sizing: border-box;}
+.pl-page {display: flex; flex-direction: column;}
+.pl-imp-seccion {margin-top: 8px; padding: 2px 6px; background: #F1F5F9; border: 0.6pt solid #000; border-bottom: none;
+  font-size: 8.5pt; font-weight: bold; letter-spacing: 0.04em;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;}
+.pl-imp-bloque {border-bottom: 0.7pt solid #000; padding: 4px 0;}
+.pl-imp-texto {font-size: 10pt; margin-top: 2px;}
+.pl-imp-checks {display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px 10px; padding: 4px 0; border-bottom: 0.7pt solid #000; font-size: 9pt;}
+.pl-imp-tabla {width: 100%; border-collapse: collapse; margin: 2px 0 4px; table-layout: fixed;}
+.pl-imp-tabla th, .pl-imp-tabla td {border: 0.6pt solid #000; padding: 2px 4px; font-size: 9pt; text-align: left; overflow-wrap: anywhere;}
+.pl-imp-tabla th {font-size: 8pt; background: #F1F5F9; -webkit-print-color-adjust: exact; print-color-adjust: exact;}
+.pl-imp-tabla td {height: 16px;}
+.pl-page .foja-firma-der {margin-top: 24px;}
+.pl-page .foja-fila {flex-wrap: wrap; row-gap: 3px; column-gap: 14px;}
+.pl-page .foja-campo {flex: 1 1 auto;}
+.pl-page .foja-campo.flex3 {flex: 3 1 60%;}
+.pl-page .foja-val {white-space: nowrap;}
+.pl-page .foja-campo.flex3 .foja-val {white-space: normal;}
+
+
+
+.doc-firma-img {display: block; margin: 0 auto -6px; max-width: 85%; max-height: 17mm; object-fit: contain; -webkit-print-color-adjust: exact; print-color-adjust: exact;}
+.doc-firma-col {display: flex; flex-direction: column; align-items: center;}
+.foja-firma .doc-firma-img {max-height: 16mm;}
+.foja-visor .receta-page {min-height: 1040px;}
+.receta-col-arriba .doc-firma-img {display: block; margin: 0; max-width: 100%; max-height: 22mm; object-fit: contain; object-position: center bottom;}
+
+@media print {
+  /* Igual que al imprimir desde el panel */
+  @page { size: A4 portrait; margin: 5mm; }
+  .app { max-width: none !important; margin: 0 !important; background: #fff !important; }
+  .vista { padding: 0 !important; }
+  .hoja-marco { height: auto !important; overflow: visible; background: none; border-radius: 0; margin: 0; }
+  .hoja-escala { transform: none !important; width: auto !important; }
+  .hoja-escala .foja-visor { background: none; padding: 0; }
+  .hoja-escala .foja-page { width: 196mm !important; max-width: none !important; min-height: 0; padding: 2mm 1mm !important; box-shadow: none !important; margin: 0 !important; break-inside: avoid; }
+  .hoja-escala .lab-print-sheet { width: 200mm !important; height: 285mm !important; overflow: hidden !important; margin: 0 !important; padding: 0 !important; background: none !important; break-inside: avoid; }
+  .hoja-escala .lab-print-sheet .lab-print-container { width: 100% !important; max-width: none !important; height: 100% !important; margin: 0 !important; padding: 0 !important; box-shadow: none !important; overflow: hidden !important; }
+  .hoja-escala .lab-print-sheet .lab-table { width: 100% !important; height: 100% !important; table-layout: fixed !important; border-collapse: collapse !important; font-size: 7.5pt !important; }
+  .hoja-escala .lab-print-sheet .lab-table th, .hoja-escala .lab-print-sheet .lab-table td { padding: 0 2px !important; height: auto !important; font-size: 7.5pt !important; line-height: 1.05 !important; color: #000 !important; border: 0.6pt solid #000 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .hoja-escala .lab-print-sheet .lab-category-vertical { font-size: 6.5pt !important; line-height: 1 !important; }
+  .hoja-escala .lab-print-sheet .lab-category-horizontal { font-size: 6pt !important; }
+  .hoja-escala .lab-print-sheet .lab-normal { font-size: 6.5pt !important; }
+  .hoja-escala .lab-print-sheet .lab-unit { font-size: 5.5pt !important; color: #333 !important; }
+  .hoja-escala .lab-print-sheet .lab-title { font-size: 10pt !important; }
+  .hoja-escala .lab-print-sheet .lab-subtitle { font-size: 7.5pt !important; }
+  .hoja-escala .lab-print-sheet .lab-logo-box img { height: 9mm !important; }
+  .hoja-escala .lab-print-sheet .lab-input-wrapper { height: auto !important; padding: 0 !important; }
+}

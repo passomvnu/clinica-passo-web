@@ -586,6 +586,7 @@ async function vistaEstudios() {
 }
 
 async function vistaDoc(id) {
+  window.onresize = null;
   barra({ titulo: 'Documento', volver: true }); nav('estudios');
   cargando();
   try {
@@ -598,18 +599,31 @@ async function vistaDoc(id) {
     const imprimir = `<button class="btn btn-borde no-imprimir" id="btnImprimir" style="margin-top:18px">${icono('download')} Guardar como PDF o imprimir</button>`;
     const cabImpresion = `<div class="solo-impresion" style="margin-bottom:12px"><b>Clínica Passo S.A.</b> — ${esc(nombre)}${S.perfil ? ' · DNI ' + esc(fmtDni(S.perfil.dni)) : ''}</div>`;
 
+    const pacHoja = { nombre_completo: nombre, dni: S.perfil ? S.perfil.dni : '' };
+    const conHoja = (cab, hojaHtml, nota) => {
+      pintar(`${cab}
+        <div class="hoja-marco" id="hojaMarco"><div class="hoja-escala">${hojaHtml}</div></div>
+        <p class="nota-legal no-imprimir">${nota} En el celular podés ampliar la hoja con dos dedos.</p>
+        ${imprimir}`);
+      const marco = $('#hojaMarco');
+      window.ajustarHoja(marco);
+      const img = marco.querySelector('img');
+      if (img && !img.complete) img.addEventListener('load', () => window.ajustarHoja(marco), { once: true });
+      window.onresize = () => window.ajustarHoja(document.getElementById('hojaMarco'));
+    };
+
     if (d.tipo === 'laboratorio') {
       barra({ titulo: 'Laboratorio', volver: true });
-      pintar(`${cabImpresion}
-        <div class="doc-cab"><span class="chip ${t.tono}">${icono(t.ico)} Laboratorio</span><h2>Análisis de laboratorio</h2><p>Cargado el ${esc(fmtCorta(f))}</p></div>
-        ${d.tomas && d.tomas.length ? d.tomas.map(toma => `<section class="tarjeta lab-toma">
-            <div class="lab-fecha">${icono('calendar')} ${toma.fecha ? 'Muestra del ' + esc(toma.fecha) : 'Muestra'}</div>
-            ${toma.grupos.map(g => `<div class="lab-grupo"><h4>${esc(g.nombre)}</h4>
-              ${g.resultados.map(r => `<div class="lab-fila"><span>${esc(r.nombre)}</span><b>${esc(r.valor)}${r.unidad ? `<small>${esc(r.unidad)}</small>` : ''}</b></div>`).join('')}</div>`).join('')}
-          </section>`).join('')
-        : `<div class="tarjeta tarjeta-pad" style="color:var(--muted)">Este laboratorio todavía no tiene resultados cargados.</div>`}
-        <p class="nota-legal">Los resultados los interpreta tu médico. Ante cualquier duda, consultalo en tu próximo turno.</p>
-        ${imprimir}`);
+      conHoja(`<div class="doc-cab no-imprimir"><span class="chip ${t.tono}">${icono(t.ico)} Laboratorio</span><h2>Análisis de laboratorio</h2><p>Cargado el ${esc(fmtCorta(f))}</p></div>`,
+        window.hojaLaboratorioHTML(d.planilla, nombre),
+        'Los resultados los interpreta tu médico. Ante cualquier duda, consultalo en tu próximo turno.');
+    } else if (d.tipo === 'epicrisis') {
+      barra({ titulo: 'Epicrisis', volver: true });
+      const x = d.datos || {};
+      const fi = fechaDoc(x.fecha_ingreso), fe = fechaDoc(x.fecha_egreso);
+      conHoja(`<div class="doc-cab no-imprimir"><span class="chip ${t.tono}">${icono(t.ico)} Epicrisis</span><h2>Resumen de tu internación</h2><p>${fi && fe ? `Del ${esc(fmtCorta(fi))} al ${esc(fmtCorta(fe))}` : esc(fmtCorta(f))}</p></div>`,
+        window.hojaEpicrisisHTML(x, pacHoja),
+        'Es el resumen que escribió tu médico al darte el alta.');
     } else if (d.tipo === 'receta') {
       barra({ titulo: 'Receta', volver: true });
       const x = d.datos || {};
@@ -633,34 +647,6 @@ async function vistaDoc(id) {
           ${x.diagnostico ? `<div class="receta-dx"><span>Diagnóstico</span>${esc(x.diagnostico)}</div>` : ''}
         </article>
         <p class="nota-legal">Esta es una copia de tu receta para que la tengas a mano. Para comprar medicamentos en la farmacia usá la receta firmada que te entregó el médico.</p>
-        ${imprimir}`);
-    } else if (d.tipo === 'epicrisis') {
-      barra({ titulo: 'Epicrisis', volver: true });
-      const x = d.datos || {};
-      const bloque = (k, titulo, destacado) => x[k] ? `<div class="epi-bloque ${destacado ? 'epi-destacado' : ''}"><h4>${esc(titulo)}</h4><p>${esc(x[k])}</p></div>` : '';
-      const fi = fechaDoc(x.fecha_ingreso), fe = fechaDoc(x.fecha_egreso);
-      pintar(`${cabImpresion}
-        <div class="doc-cab"><span class="chip ${t.tono}">${icono(t.ico)} Epicrisis</span><h2>Resumen de tu internación</h2><p>${fi && fe ? `Del ${esc(fmtCorta(fi))} al ${esc(fmtCorta(fe))}` : esc(fmtCorta(f))}</p></div>
-        <div class="tarjeta" style="overflow:hidden">
-          <div class="epi-bloque"><div class="epi-datos">
-            ${fi ? `<div><span>Ingreso</span><b>${esc(fmtCorta(fi))}</b></div>` : ''}
-            ${fe ? `<div><span>Alta</span><b>${esc(fmtCorta(fe))}</b></div>` : ''}
-            ${x.servicio ? `<div><span>Servicio</span><b>${esc(x.servicio)}</b></div>` : ''}
-            ${x.condicion ? `<div><span>Condición al alta</span><b>${esc(x.condicion)}</b></div>` : ''}
-            ${x.medico ? `<div style="grid-column:1/-1"><span>Médico responsable</span><b>${esc(x.medico)}${x.matricula ? ' · ' + esc(x.matricula) : ''}</b></div>` : ''}
-          </div></div>
-          ${bloque('dx_egreso', 'Diagnóstico al alta', true)}
-          ${bloque('indicaciones_alta', 'Indicaciones al alta', true)}
-          ${bloque('seguimiento', 'Controles y seguimiento', true)}
-          ${bloque('motivo', 'Motivo de internación')}
-          ${bloque('dx_ingreso', 'Diagnóstico de ingreso')}
-          ${bloque('dx_secundarios', 'Otros diagnósticos')}
-          ${bloque('antecedentes', 'Antecedentes')}
-          ${bloque('evolucion', 'Evolución durante la internación')}
-          ${bloque('procedimientos', 'Cirugías y procedimientos')}
-          ${bloque('estudios', 'Estudios realizados')}
-          ${bloque('tratamiento', 'Tratamiento recibido')}
-        </div>
         ${imprimir}`);
     } else {
       barra({ titulo: d.categoria || 'Estudio', volver: true });
