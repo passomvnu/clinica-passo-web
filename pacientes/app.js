@@ -345,6 +345,8 @@ function htmlTurno(t, { conAcciones = true } = {}) {
       <div class="turno-linea">${esc(capital(DIAS[d.getDay()]))} ${d.getDate()} de ${esc(MESES[d.getMonth()])}${d.getFullYear() !== new Date().getFullYear() ? ' de ' + d.getFullYear() : ''}</div>
       ${cuando}
       ${t.medico ? `<div class="turno-linea">${icono('stethoscope')} ${esc(t.medico)}</div>` : ''}
+      ${htmlCodigoAtencion(t)}
+      ${t.estado === 'realizado' && t.atencion_verificada ? `<div class="turno-linea verificada">${icono('shield-check')} Confirmaste la atención con tu código</div>` : ''}
       ${pedido ? `<div class="turno-nota">Pediste este turno desde la web. Recepción te lo va a confirmar por email.${comentario ? `<br><em>"${esc(comentario)}"</em>` : ''}</div>` : ''}
       <div class="turno-pie">
         <span class="chip chip-${esc(t.estado)}">${icono(e.ico)} ${esc(pedido ? 'Esperando confirmación' : e.txt)}</span>
@@ -352,6 +354,19 @@ function htmlTurno(t, { conAcciones = true } = {}) {
       </div>
     </div>
   </article>`;
+}
+
+// Código de atención: el paciente se lo dice al médico al terminar la consulta
+function htmlCodigoAtencion(t, { grande = false } = {}) {
+  if (!t.codigo_atencion) return '';
+  const d = fechaTurno(t.fecha_turno);
+  const digitos = String(t.codigo_atencion).split('').map(c => `<span>${esc(c)}</span>`).join('');
+  return `<div class="codigo-atencion${grande ? ' grande' : ''}" role="group" aria-label="Código de atención ${esc(String(t.codigo_atencion).split('').join(' '))}">
+    <div class="codigo-etq">${icono('shield-check')} Código de atención</div>
+    ${grande ? `<div class="codigo-turno">${esc(t.especialidad || 'Consulta')} · hoy ${esc(fmtHora(d))} hs</div>` : ''}
+    <div class="codigo-num">${digitos}</div>
+    <div class="codigo-ayuda">Al terminar la consulta, <strong>decíselo al médico</strong>. Así queda confirmado que te atendió.</div>
+  </div>`;
 }
 
 function activarCancelar() {
@@ -403,7 +418,8 @@ async function vistaInicio() {
   barra(); nav('inicio');
   cargando();
   try {
-    const [perfil, turnos, docs] = await Promise.all([cargarPerfil(), cargarTurnos(), cargarDocs()]);
+    const [perfil, turnos, docs] = await Promise.all([cargarPerfil(), cargarTurnos(true), cargarDocs()]);
+    const deHoy = turnos.filter(t => t.codigo_atencion).sort((a, b) => fechaTurno(a.fecha_turno) - fechaTurno(b.fecha_turno));
     const proximos = turnos.filter(esProximo).sort((a, b) => fechaTurno(a.fecha_turno) - fechaTurno(b.fecha_turno));
     const confirmado = proximos.find(t => t.estado === 'confirmado');
     const pedidos = proximos.filter(esPedidoSinConfirmar).length;
@@ -431,6 +447,7 @@ async function vistaInicio() {
     pintar(`
       ${htmlAviso()}
       <div class="saludo"><h2>${esc(saludo)}, ${esc(capital(perfil.nombre).split(' ')[0])}</h2><p>¿Qué necesitás hoy?</p></div>
+      ${deHoy.map(t => htmlCodigoAtencion(t, { grande: true })).join('')}
       ${tarjetaTurno}
       <div class="seccion">Accesos rápidos</div>
       <div class="accesos">

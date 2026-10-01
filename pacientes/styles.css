@@ -572,3 +572,15 @@ details.pasados[open] summary .ic { transform: rotate(90deg); }
   .hoja-escala .lab-print-sheet .lab-logo-box img { height: 9mm !important; }
   .hoja-escala .lab-print-sheet .lab-input-wrapper { height: auto !important; padding: 0 !important; }
 }
+
+/* Código de atención (el paciente se lo dice al médico al terminar) */
+.codigo-atencion { margin: 12px 0 4px; padding: 14px 14px 12px; border-radius: 14px; background: var(--primary-light); border: 1.5px dashed var(--primary-soft); text-align: center; }
+.codigo-atencion.grande { margin: 0 0 14px; padding: 18px 16px 16px; background: #fff; border: 2px solid var(--primary); box-shadow: 0 8px 22px rgba(0, 31, 209, .10); }
+.codigo-etq { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--primary-dark); text-transform: uppercase; letter-spacing: .04em; }
+.codigo-etq svg { width: 16px; height: 16px; flex: none; }
+.codigo-num { display: flex; justify-content: center; gap: 8px; margin: 10px 0 8px; }
+.codigo-num span { display: grid; place-items: center; width: 46px; height: 56px; border-radius: 10px; background: #fff; border: 1.5px solid var(--primary-soft); font-family: var(--font-h); font-size: 32px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
+.codigo-atencion.grande .codigo-num span { width: 58px; height: 70px; font-size: 42px; background: var(--primary-light); border-color: transparent; }
+.codigo-ayuda { font-size: 14px; color: var(--text); line-height: 1.4; }
+.turno-linea.verificada { color: var(--green); font-weight: 600; }
+.codigo-turno { margin-top: 4px; font-size: 14px; color: var(--muted); }
