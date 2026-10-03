@@ -50,16 +50,39 @@ function pintarIconos(raiz) {
 }
 
 // ---------------------------------------------------------------- sesión
+// La sesión la da Supabase Auth: un token de acceso (dura ~1 hora) y uno de renovación.
+// Cuando el de acceso está por vencer, se renueva solo, sin que el paciente vuelva a ingresar.
 function leerSesion() {
   try {
     const s = JSON.parse(localStorage.getItem(CLAVE_SESION) || 'null');
-    if (s && s.token && s.exp > Date.now()) return s;
+    if (s && s.token && (s.refresh || s.exp > Date.now())) return s;
   } catch (e) {}
   return null;
 }
 function guardarSesion(d) {
-  S.sesion = { token: d.token, exp: d.exp, nombre: d.paciente && d.paciente.nombre };
+  const nombre = (d.paciente && d.paciente.nombre) || (S.sesion && S.sesion.nombre) || '';
+  S.sesion = { token: d.token, refresh: d.refresh || null, exp: d.exp, nombre };
   try { localStorage.setItem(CLAVE_SESION, JSON.stringify(S.sesion)); } catch (e) {}
+}
+
+// Renovación compartida: si varios pedidos la necesitan a la vez, se renueva una sola vez
+let renovando = null;
+function renovarSesion() {
+  if (!S.sesion || !S.sesion.refresh) return Promise.resolve(false);
+  if (!renovando) {
+    const refresh = S.sesion.refresh;
+    renovando = fetch(API + '/mi/refrescar', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ refresh }) })
+      .then(async r => {
+        if (!r.ok) return false;
+        const d = await r.json().catch(() => null);
+        if (!d || !d.token) return false;
+        guardarSesion(d);
+        return true;
+      })
+      .catch(() => null)   // sin conexión: no es lo mismo que sesión vencida
+      .finally(() => { renovando = null; });
+  }
+  return renovando;
 }
 function borrarSesion() {
   S.sesion = null; S.perfil = null; S.turnos = null; S.docs = null; S.opciones = null; S.urls.clear();
@@ -68,7 +91,10 @@ function borrarSesion() {
 
 // ---------------------------------------------------------------- servidor
 let avisoLento = null;
-async function api(ruta, { method = 'GET', body, publico } = {}) {
+async function api(ruta, opciones = {}, reintento = false) {
+  const { method = 'GET', body, publico } = opciones;
+  // Token por vencer (o vencido): se renueva antes de pedir
+  if (!publico && S.sesion && S.sesion.refresh && S.sesion.exp - Date.now() < 60000) await renovarSesion();
   const headers = { 'Content-Type': 'application/json' };
   if (!publico && S.sesion) headers.Authorization = 'Bearer ' + S.sesion.token;
   // El servidor puede tardar en "despertar" la primera vez
@@ -84,6 +110,7 @@ async function api(ruta, { method = 'GET', body, publico } = {}) {
   }
   const datos = await res.json().catch(() => ({}));
   if (res.status === 401 && !publico) {
+    if (!reintento && S.sesion && S.sesion.refresh && (await renovarSesion())) return api(ruta, opciones, true);
     borrarSesion();
     irA('#/ingresar', datos.error || 'Tu sesión venció. Volvé a ingresar.');
     throw Object.assign(new Error(datos.error || 'Sesión vencida'), { sesion: true });
@@ -231,9 +258,9 @@ function vistaIngresar() {
       <button class="btn btn-primario" type="submit">Ingresar</button>
     </form>
     <div class="separador">¿Es tu primera vez?</div>
-    <a class="btn btn-secundario" href="#/codigo"><span data-ico="key-round"></span> Tengo un código</a>
-    <div class="botones" style="margin-top:6px"><a class="btn btn-texto" href="#/olvide">Olvidé mi contraseña</a></div>
-    <p class="ingreso-pie">¿Todavía no tenés acceso? Pedilo en recepción de la clínica con tu DNI: te mandamos un código a tu email.</p>
+    <a class="btn btn-secundario" href="#/activar"><span data-ico="key-round"></span> Activar mi cuenta</a>
+    <div class="botones" style="margin-top:6px"><a class="btn btn-texto" href="#/olvide">Olvidé mi contraseña</a><a class="btn btn-texto" href="#/codigo">Ya tengo un código</a></div>
+    <p class="ingreso-pie">Para activar tu cuenta poné tu DNI: te mandamos un código al email que tenés registrado en la clínica. Si no tenés email cargado, pedilo en recepción.</p>
     <p class="ingreso-pie"><a href="../">${icono('chevron-left')} Volver a clinicapasso.com.ar</a></p>
   </div>`);
   activarOjos();
@@ -264,7 +291,7 @@ function vistaCodigo() {
       ${campoClave('clave2', 'Repetila', 'new-password')}
       <button class="btn btn-primario" type="submit">Activar mi cuenta</button>
     </form>
-    <p class="ingreso-pie">¿No te llegó? Revisá la carpeta de spam. El código vence a las 72 horas: podés pedir otro con <a href="#/olvide">Olvidé mi contraseña</a> o en recepción.</p>
+    <p class="ingreso-pie">¿No te llegó? Revisá la carpeta de spam. El código vence a las 72 horas: podés pedir otro con <a href="#/activar">Activar mi cuenta</a> o en recepción.</p>
   </div>`);
   activarOjos();
   const cod = $('#codigo');
@@ -286,27 +313,35 @@ function vistaCodigo() {
   };
 }
 
-function vistaOlvide() {
-  barra({ titulo: 'Recuperar contraseña', volver: '#/ingresar' }); nav(null);
+function vistaOlvide() { return vistaPedirCodigo('olvide'); }
+function vistaActivar() { return vistaPedirCodigo('activar'); }
+
+// El paciente pone su DNI y le llega un código al email registrado en la clínica.
+// Sirve para activar la cuenta la primera vez y para recuperar la contraseña.
+function vistaPedirCodigo(modo) {
+  const activar = modo === 'activar';
+  barra({ titulo: activar ? 'Activar mi cuenta' : 'Recuperar contraseña', volver: '#/ingresar' }); nav(null);
   pintar(`<div class="ingreso">
-    <p class="bajada" style="margin-top:8px">Te mandamos un código al email que registraste en recepción. Con ese código elegís una contraseña nueva.</p>
-    <form id="fOlvide" novalidate>
+    <p class="bajada" style="margin-top:8px">${activar
+      ? 'Poné tu DNI. Si sos paciente de la clínica y tenés un email registrado, te mandamos un código para crear tu contraseña.'
+      : 'Te mandamos un código al email que tenés registrado en la clínica. Con ese código elegís una contraseña nueva.'}</p>
+    <form id="fPedir" novalidate>
       <label class="campo"><span>DNI</span><input class="input" id="dni" inputmode="numeric" autocomplete="username" placeholder="Sin puntos" maxlength="12" value="${esc(S.dniRecordado)}"></label>
       <button class="btn btn-primario" type="submit"><span data-ico="mail"></span> Enviarme un código</button>
     </form>
-    <div id="olvideOk"></div>
-    <p class="ingreso-pie">¿Cambiaste de email? Actualizalo en recepción de la clínica.</p>
+    <div id="pedirOk"></div>
+    <p class="ingreso-pie">¿Cambiaste de email o no tenés uno cargado? Actualizalo en recepción de la clínica.</p>
   </div>`);
-  const f = $('#fOlvide');
+  const f = $('#fPedir');
   f.onsubmit = async (e) => {
     e.preventDefault(); limpiarError(f);
     const dni = soloDigitos($('#dni').value);
     if (dni.length < 6) return mostrarError(f, 'Ingresá tu DNI (solo números).');
     S.dniRecordado = dni;
     try {
-      const d = await conBoton($('button[type=submit]', f), () => api('/mi/olvide', { method: 'POST', body: { dni }, publico: true }));
+      const d = await conBoton($('button[type=submit]', f), () => api('/mi/codigo', { method: 'POST', body: { dni }, publico: true }));
       f.classList.add('hidden');
-      $('#olvideOk').innerHTML = `<div class="aviso aviso-ok">${icono('mail')}<span>${esc(d.mensaje)}</span></div>
+      $('#pedirOk').innerHTML = `<div class="aviso aviso-ok">${icono('mail')}<span>${esc(d.mensaje)}</span></div>
         <a class="btn btn-primario" href="#/codigo">Ya tengo el código</a>`;
     } catch (err) { mostrarError(f, err.message); }
   };
@@ -764,6 +799,7 @@ async function vistaPerfil() {
     };
     $('#btnSalir').onclick = async () => {
       if (!(await preguntar({ titulo: '¿Cerrar sesión?', texto: 'Para volver a entrar vas a necesitar tu DNI y tu contraseña.', si: 'Cerrar sesión' }))) return;
+      try { await api('/mi/salir', { method: 'POST' }); } catch (e) { /* igual se cierra en este equipo */ }
       borrarSesion(); irA('#/ingresar', 'Cerraste la sesión.');
     };
     $('#btnSalirTodos').onclick = async () => {
@@ -787,7 +823,7 @@ async function vistaPerfil() {
 }
 
 // ---------------------------------------------------------------- router
-const PUBLICAS = { ingresar: vistaIngresar, codigo: vistaCodigo, olvide: vistaOlvide };
+const PUBLICAS = { ingresar: vistaIngresar, activar: vistaActivar, codigo: vistaCodigo, olvide: vistaOlvide };
 const PRIVADAS = { inicio: vistaInicio, turnos: vistaTurnos, pedir: vistaPedir, estudios: vistaEstudios, doc: vistaDoc, perfil: vistaPerfil };
 
 function render() {
