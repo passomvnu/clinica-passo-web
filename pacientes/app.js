@@ -277,6 +277,7 @@ function vistaIngresar() {
     try {
       const d = await conBoton($('button[type=submit]', f), () => api('/mi/login', { method: 'POST', body: { dni, password }, publico: true }));
       guardarSesion(d);
+      if (window.bienvenidaPasso) bienvenidaPasso();   // animación de entrada; el inicio se carga por detrás
       irA('#/inicio');
     } catch (err) { mostrarError(f, err.message); }
   };

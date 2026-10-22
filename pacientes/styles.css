@@ -632,3 +632,28 @@ details.pasados[open] summary .ic { transform: rotate(90deg); }
 
 /* Barra de abajo: 3 pestañas ("Mi cuenta" pasó al avatar de arriba) */
 .nav { grid-template-columns: repeat(3, 1fr); box-shadow: 0 -6px 24px rgba(15, 23, 42, .06); }
+
+/* ---------------------------------------------------------------- bienvenida al entrar (bienvenida.js) */
+.bv { position: fixed; inset: 0; z-index: 200; background: var(--bv-fondo); overflow: hidden; cursor: pointer; transition: opacity .4s ease .45s; }
+.bv svg { width: 100%; height: 100%; display: block; }
+.bv-sube { transform: translateY(calc(var(--bv-r) * .6)); animation: bv-sube var(--bv-escribe) cubic-bezier(.2, .7, .2, 1) forwards; }
+.bv-sol { transition: transform .75s cubic-bezier(.55, 0, .2, 1); }
+.bv-listo .bv-sol { animation: bv-latido .6s cubic-bezier(.3, 1.6, .4, 1); }
+.bv-leyenda { fill: var(--bv-luz); font-family: var(--font-h); font-weight: 600; letter-spacing: .02em; opacity: 0; animation: bv-aparece .6s ease calc(var(--bv-escribe) * .55) forwards; }
+.bv-palabra path {
+  fill: none; stroke: var(--bv-tinta); stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 1 1; stroke-dashoffset: 1; opacity: 0;
+  animation-name: bv-tinta; animation-timing-function: cubic-bezier(.45, 0, .2, 1); animation-fill-mode: both;
+}
+.bv-letra { transition: transform .75s cubic-bezier(.4, 0, .7, .4), opacity .45s ease .15s; }
+.bv-sale { opacity: 0; pointer-events: none; }
+.bv-sale .bv-sol { transform: scale(var(--bv-cubre)); }
+.bv-sale .bv-letra { transform: translate(var(--fx), var(--fy)) rotate(var(--fr)); opacity: 0; }
+@keyframes bv-sube { to { transform: translateY(0); } }
+@keyframes bv-tinta { 0% { opacity: 0; stroke-dashoffset: 1; } 1% { opacity: 1; } 100% { opacity: 1; stroke-dashoffset: 0; } }
+@keyframes bv-latido { 0% { transform: scale(1); } 35% { transform: scale(1.05); } 100% { transform: scale(1); } }
+@keyframes bv-aparece { to { opacity: .92; } }
+/* Reducir movimiento: todo quieto y escrito, se va con un fundido */
+.bv-quieto .bv-sube, .bv-quieto .bv-leyenda, .bv-quieto .bv-palabra path { animation: none; transform: none; opacity: 1; stroke-dashoffset: 0; }
+.bv-quieto .bv-sol, .bv-quieto .bv-letra { transition: none; transform: none; }
+.bv-quieto.bv-sale { transition: opacity .4s ease; }
