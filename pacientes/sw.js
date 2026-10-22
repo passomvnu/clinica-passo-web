@@ -4,8 +4,8 @@
  * y se pueda instalar. Nunca guarda datos del paciente: los pedidos al servidor
  * (turnos, estudios, archivos) siempre van directo a internet.
  */
-const VERSION = 'passo-pacientes-v12';
-const CASCARA = ['./', './index.html', './styles.css?v=11', './iconos.js?v=3', './plantillas.js?v=1', './bienvenida.js?v=1', './app.js?v=12', './manifest.webmanifest', './icons/icon-192.png'];
+const VERSION = 'passo-pacientes-v13';
+const CASCARA = ['./', './index.html', './styles.css?v=12', './iconos.js?v=3', './plantillas.js?v=1', './bienvenida.js?v=1', './app.js?v=12', './manifest.webmanifest', './icons/icon-192.png'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(VERSION).then(c => c.addAll(CASCARA)).then(() => self.skipWaiting()));
