@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=6">
+  <link rel="stylesheet" href="styles.css?v=7">
 </head>
 <body>
   <!-- Pantalla de carga inicial: se va cuando aparece la primera pantalla -->
@@ -31,9 +31,10 @@
       <button type="button" class="barra-volver hidden" id="barraVolver" aria-label="Volver"></button>
       <a class="barra-marca" id="barraMarca" href="../" title="Ir a clinicapasso.com.ar">
         <img src="../assets/logo.jpg" alt="" class="barra-logo" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'barra-logo barra-logo-letra',textContent:'P'}))">
-        <span class="barra-nombre">Clínica Passo</span>
+        <span class="barra-marca-txt"><span class="barra-nombre">Clínica Passo S.A.</span><span class="barra-desde">Desde 1967</span></span>
       </a>
       <h1 class="barra-titulo hidden" id="barraTitulo"></h1>
+      <a class="barra-avatar hidden" id="barraAvatar" href="#/perfil" aria-label="Mi cuenta"></a>
     </header>
 
     <main class="vista" id="vista" tabindex="-1">
@@ -44,7 +45,6 @@
       <a href="#/inicio" data-nav="inicio"><span data-ico="house"></span><span>Inicio</span></a>
       <a href="#/turnos" data-nav="turnos"><span data-ico="calendar"></span><span>Turnos</span></a>
       <a href="#/estudios" data-nav="estudios"><span data-ico="file-text"></span><span>Estudios</span></a>
-      <a href="#/perfil" data-nav="perfil"><span data-ico="user-round"></span><span>Mi cuenta</span></a>
     </nav>
   </div>
 
@@ -53,8 +53,8 @@
 
   <noscript><p style="padding:24px;font-family:sans-serif">Para usar el portal de pacientes de Clínica Passo necesitás activar JavaScript en el navegador.</p></noscript>
 
-  <script src="iconos.js?v=2"></script>
+  <script src="iconos.js?v=3"></script>
   <script src="plantillas.js?v=1"></script>
-  <script src="app.js?v=7"></script>
+  <script src="app.js?v=8"></script>
 </body>
 </html>

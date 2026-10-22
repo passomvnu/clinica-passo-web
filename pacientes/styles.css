@@ -584,3 +584,51 @@ details.pasados[open] summary .ic { transform: rotate(90deg); }
 .codigo-ayuda { font-size: 14px; color: var(--text); line-height: 1.4; }
 .turno-linea.verificada { color: var(--green); font-weight: 600; }
 .codigo-turno { margin-top: 4px; font-size: 14px; color: var(--muted); }
+
+/* ---------------------------------------------------------------- inicio rediseñado (v7) */
+/* Cabecera: logo + "Desde 1967" + avatar; en el inicio, un degradado azul muy suave abraza marca, avatar y saludo */
+.barra-marca-txt { display: flex; flex-direction: column; min-width: 0; line-height: 1.1; }
+.barra-nombre { text-transform: uppercase; font-size: 15px; letter-spacing: 0.02em; color: #0A2540; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.barra-desde { font-size: 12px; font-weight: 500; color: var(--muted); margin-top: 2px; }
+.barra-avatar {
+  margin-left: auto; flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+  background: linear-gradient(135deg, #1E3A8A, #4F46E5); color: #fff; font-family: var(--font-h); font-weight: 700; font-size: 15px;
+  text-decoration: none; text-transform: uppercase; border: 2px solid #fff; box-shadow: 0 2px 10px rgba(30, 58, 138, .22);
+}
+.app.en-inicio { background: linear-gradient(180deg, #E6EDFF 0, #EEF2FD 140px, #F8FAFC 300px); }
+.app.en-inicio .barra { background: rgba(230, 237, 255, .82); }
+.app.en-inicio .saludo h2 { color: #0A2540; }
+.app.en-inicio .saludo p { color: #6B7280; }
+
+/* Próximo turno: degradado azul real → violeta con curvas traslúcidas */
+.proximo {
+  background: linear-gradient(135deg, #1E3A8A 0%, #2F55D4 55%, #6D4AE8 100%); border-radius: 22px; padding: 22px;
+  box-shadow: 0 10px 28px -10px rgba(30, 58, 138, .55);
+}
+.proximo::after { right: -50px; top: -70px; width: 200px; height: 200px; background: rgba(255,255,255,.10); }
+.proximo::before { content: ''; position: absolute; left: -60px; bottom: -90px; width: 220px; height: 160px; border-radius: 50%; background: rgba(255,255,255,.07); }
+.proximo-curva { position: absolute; right: 18%; bottom: -60px; width: 140px; height: 140px; border-radius: 50%; border: 18px solid rgba(255,255,255,.06); pointer-events: none; }
+.proximo > *:not(.proximo-curva) { position: relative; z-index: 1; }
+.proximo-fecha { font-size: 26px; }
+.proximo .chip { background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.35); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+
+/* Accesos rápidos con foto: dos cuadradas arriba, una ancha abajo */
+.accesos-foto { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.acceso-card {
+  display: flex; flex-direction: column; overflow: hidden; text-decoration: none; color: #0A2540; border-radius: 18px;
+  box-shadow: 0 1px 2px rgba(15,23,42,.04), 0 8px 22px -12px rgba(15,23,42,.18); transition: transform .12s;
+}
+.accesos-foto > .tarjeta + .tarjeta { margin-top: 0; }
+.acceso-card:active { transform: scale(.985); }
+.acceso-foto { position: relative; display: grid; place-items: center; aspect-ratio: 4 / 3; overflow: hidden; }
+.acceso-foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.acceso-foto .acceso-foto-ic { width: 46px; height: 46px; opacity: .55; }
+.acceso-pie { display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; padding: 12px 12px 14px 14px; }
+.acceso-pie b { font-family: var(--font-h); font-weight: 700; font-size: 16px; line-height: 1.2; }
+.acceso-pie .ic-caja { width: 38px; height: 38px; border-radius: 11px; }
+.acceso-ancho { grid-column: 1 / -1; flex-direction: row; min-height: 118px; }
+.acceso-ancho .acceso-pie { flex: 1; flex-direction: column-reverse; align-items: flex-start; justify-content: center; gap: 10px; padding: 16px; }
+.acceso-ancho .acceso-foto { flex: 1; aspect-ratio: auto; }
+
+/* Barra de abajo: 3 pestañas ("Mi cuenta" pasó al avatar de arriba) */
+.nav { grid-template-columns: repeat(3, 1fr); box-shadow: 0 -6px 24px rgba(15, 23, 42, .06); }

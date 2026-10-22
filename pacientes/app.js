@@ -146,6 +146,9 @@ function toast(txt) {
 }
 
 function barra({ titulo, volver } = {}) {
+  // El avatar y el fondo degradado son solo del inicio: cada pantalla arranca sin ellos
+  $('#barraAvatar').classList.add('hidden');
+  $('#app').classList.remove('en-inicio');
   $('#barraMarca').classList.toggle('hidden', !!titulo);
   $('#barraTitulo').classList.toggle('hidden', !titulo);
   $('#barraTitulo').textContent = titulo || '';
@@ -449,6 +452,13 @@ function htmlFilaDoc(d) {
   </a>`;
 }
 
+// Acceso rápido con foto. Si la foto (pacientes/img/…) no está, queda un degradado con un ícono grande.
+function htmlAccesoFoto({ href, titulo, foto, ico, tono, fondo, ancho, filtro }) {
+  const fotoHtml = `<span class="acceso-foto ${tono}" aria-hidden="true">${icono(fondo, 'acceso-foto-ic')}<img src="${foto}" alt="" loading="lazy" onerror="this.remove()"></span>`;
+  const pie = `<span class="acceso-pie"><b>${esc(titulo)}</b><span class="ic-caja ${tono}">${icono(ico)}</span></span>`;
+  return `<a class="tarjeta acceso-card${ancho ? ' acceso-ancho' : ''}" href="${href}"${filtro ? ` data-filtro="${filtro}"` : ''}>${ancho ? pie + fotoHtml : fotoHtml + pie}</a>`;
+}
+
 async function vistaInicio() {
   barra(); nav('inicio');
   cargando();
@@ -461,10 +471,17 @@ async function vistaInicio() {
     const hora = new Date().getHours();
     const saludo = hora < 12 ? 'Buen día' : hora < 20 ? 'Buenas tardes' : 'Buenas noches';
 
+    // Cabecera del inicio: degradado suave + avatar con iniciales (lleva a "Mi cuenta", que ya no está en la barra de abajo)
+    $('#app').classList.add('en-inicio');
+    const av = $('#barraAvatar');
+    av.textContent = ((perfil.nombre || '').trim()[0] || '') + ((perfil.apellido || '').trim()[0] || '');
+    av.classList.remove('hidden');
+
     let tarjetaTurno;
     if (confirmado) {
       const d = fechaTurno(confirmado.fecha_turno);
       tarjetaTurno = `<a class="tarjeta proximo" href="#/turnos" style="display:block;text-decoration:none">
+        <span class="proximo-curva" aria-hidden="true"></span>
         <div class="proximo-etq">Tu próximo turno</div>
         <div class="proximo-fecha">${esc(fmtLarga(d))}</div>
         <div class="proximo-hora">${icono('clock')} ${esc(fmtHora(d))} hs</div>
@@ -485,11 +502,10 @@ async function vistaInicio() {
       ${deHoy.map(t => htmlCodigoAtencion(t, { grande: true })).join('')}
       ${tarjetaTurno}
       <div class="seccion">Accesos rápidos</div>
-      <div class="accesos">
-        <a class="tarjeta acceso" href="#/pedir"><span class="ic-caja tono-azul">${icono('calendar-plus')}</span>Pedir turno</a>
-        <a class="tarjeta acceso" href="#/turnos"><span class="ic-caja tono-rosa">${icono('calendar-check')}</span>Mis turnos</a>
-        <a class="tarjeta acceso" href="#/estudios" data-filtro="laboratorio"><span class="ic-caja tono-verde">${icono('flask-conical')}</span>Laboratorios</a>
-        <a class="tarjeta acceso" href="#/estudios" data-filtro="adjunto"><span class="ic-caja tono-violeta">${icono('scan')}</span>Estudios e imágenes</a>
+      <div class="accesos-foto">
+        ${htmlAccesoFoto({ href: '#/pedir', titulo: 'Pedir turno', foto: 'img/pedir-turno.jpg', ico: 'calendar-plus', tono: 'tono-azul', fondo: 'stethoscope' })}
+        ${htmlAccesoFoto({ href: '#/turnos', titulo: 'Mis turnos', foto: 'img/mis-turnos.jpg', ico: 'calendar-heart', tono: 'tono-rosa', fondo: 'hospital' })}
+        ${htmlAccesoFoto({ href: '#/estudios', titulo: 'Estudios e imágenes', foto: 'img/estudios.jpg', ico: 'scan', tono: 'tono-violeta', fondo: 'heart-pulse', ancho: true, filtro: 'adjunto' })}
       </div>
       <div class="seccion">Últimos resultados ${docs.length ? '<a href="#/estudios">Ver todos</a>' : ''}</div>
       ${recientes.length ? `<div class="tarjeta lista">${recientes.map(htmlFilaDoc).join('')}</div>`
