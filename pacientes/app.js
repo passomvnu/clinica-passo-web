@@ -453,8 +453,8 @@ function htmlFilaDoc(d) {
 }
 
 // Acceso rápido con foto. Si la foto (pacientes/img/…) no está, queda un degradado con un ícono grande.
-function htmlAccesoFoto({ href, titulo, foto, ico, tono, fondo, ancho, filtro }) {
-  const fotoHtml = `<span class="acceso-foto ${tono}" aria-hidden="true">${icono(fondo, 'acceso-foto-ic')}<img src="${foto}" alt="" loading="lazy" onerror="this.remove()"></span>`;
+function htmlAccesoFoto({ href, titulo, foto, encuadre, ico, tono, fondo, ancho, filtro }) {
+  const fotoHtml = `<span class="acceso-foto ${tono}" aria-hidden="true">${icono(fondo, 'acceso-foto-ic')}<img src="${foto}" alt="" loading="lazy"${encuadre ? ` style="object-position:${encuadre}"` : ''} onerror="this.remove()"></span>`;
   const pie = `<span class="acceso-pie"><b>${esc(titulo)}</b><span class="ic-caja ${tono}">${icono(ico)}</span></span>`;
   return `<a class="tarjeta acceso-card${ancho ? ' acceso-ancho' : ''}" href="${href}"${filtro ? ` data-filtro="${filtro}"` : ''}>${ancho ? pie + fotoHtml : fotoHtml + pie}</a>`;
 }
@@ -504,8 +504,8 @@ async function vistaInicio() {
       <div class="seccion">Accesos rápidos</div>
       <div class="accesos-foto">
         ${htmlAccesoFoto({ href: '#/pedir', titulo: 'Pedir turno', foto: 'img/pedir-turno.jpg', ico: 'calendar-plus', tono: 'tono-azul', fondo: 'stethoscope' })}
-        ${htmlAccesoFoto({ href: '#/turnos', titulo: 'Mis turnos', foto: 'img/mis-turnos.jpg', ico: 'calendar-heart', tono: 'tono-rosa', fondo: 'hospital' })}
-        ${htmlAccesoFoto({ href: '#/estudios', titulo: 'Estudios e imágenes', foto: 'img/estudios.jpg', ico: 'scan', tono: 'tono-violeta', fondo: 'heart-pulse', ancho: true, filtro: 'adjunto' })}
+        ${htmlAccesoFoto({ href: '#/turnos', titulo: 'Mis turnos', foto: 'img/mis-turnos.jpg', encuadre: '38% center', ico: 'calendar-heart', tono: 'tono-rosa', fondo: 'hospital' })}
+        ${htmlAccesoFoto({ href: '#/estudios', titulo: 'Estudios e imágenes', foto: 'img/estudios.jpg', encuadre: '62% center', ico: 'scan', tono: 'tono-violeta', fondo: 'heart-pulse', ancho: true, filtro: 'adjunto' })}
       </div>
       <div class="seccion">Últimos resultados ${docs.length ? '<a href="#/estudios">Ver todos</a>' : ''}</div>
       ${recientes.length ? `<div class="tarjeta lista">${recientes.map(htmlFilaDoc).join('')}</div>`
