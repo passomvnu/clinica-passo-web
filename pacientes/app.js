@@ -148,7 +148,8 @@ function toast(txt) {
 function barra({ titulo, volver } = {}) {
   // El avatar y el fondo degradado son solo del inicio: cada pantalla arranca sin ellos
   $('#barraAvatar').classList.add('hidden');
-  $('#app').classList.remove('en-inicio');
+  $('#barra').classList.remove('hidden');
+  $('#app').classList.remove('en-inicio', 'en-ingreso');
   $('#barraMarca').classList.toggle('hidden', !!titulo);
   $('#barraTitulo').classList.toggle('hidden', !titulo);
   $('#barraTitulo').textContent = titulo || '';
@@ -248,21 +249,28 @@ function activarOjos() {
 // ---------------------------------------------------------------- INGRESO
 function vistaIngresar() {
   barra(); nav(null);
+  // En el ingreso la marca va en el encabezado de la pantalla: la barra de arriba se esconde para no repetirla
+  $('#barra').classList.add('hidden');
+  $('#app').classList.add('en-ingreso');
   pintar(`<div class="ingreso">
     <div class="ingreso-hero">
-      <div class="ingreso-logo"><img src="../assets/logo.jpg" alt="Clínica Passo" onerror="this.remove()"></div>
+      <div class="ingreso-marca">
+        <img src="img/logo.png" alt="" onerror="this.remove()">
+        <div><b>Clínica Passo S.A.</b><span>Desde 1967</span></div>
+      </div>
       <h2>Portal de pacientes</h2>
-      <p>Tus turnos, estudios y resultados de Clínica Passo.</p>
+      <p>Tus turnos, estudios e imágenes.</p>
     </div>
     ${htmlAviso()}
     <form id="fIngreso" novalidate>
       <label class="campo"><span>DNI</span><input class="input" id="dni" inputmode="numeric" autocomplete="username" placeholder="Sin puntos" maxlength="12" value="${esc(S.dniRecordado)}"></label>
       ${campoClave('clave', 'Contraseña', 'current-password')}
+      <a class="olvide" href="#/olvide">¿Olvidaste tu contraseña?</a>
       <button class="btn btn-primario" type="submit">Ingresar</button>
     </form>
     <div class="separador">¿Es tu primera vez?</div>
     <a class="btn btn-secundario" href="#/activar"><span data-ico="key-round"></span> Activar mi cuenta</a>
-    <div class="botones" style="margin-top:6px"><a class="btn btn-texto" href="#/olvide">Olvidé mi contraseña</a><a class="btn btn-texto" href="#/codigo">Ya tengo un código</a></div>
+    <div class="botones" style="margin-top:6px"><a class="btn btn-texto" href="#/codigo">Ya tengo un código</a></div>
     <p class="ingreso-pie">Para activar tu cuenta poné tu DNI: te mandamos un código al email que tenés registrado en la clínica. Si no tenés email cargado, pedilo en recepción.</p>
     <p class="ingreso-pie"><a href="../">${icono('chevron-left')} Volver a clinicapasso.com.ar</a></p>
   </div>`);

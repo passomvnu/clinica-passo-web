@@ -657,3 +657,17 @@ details.pasados[open] summary .ic { transform: rotate(90deg); }
 .bv-quieto .bv-sube, .bv-quieto .bv-leyenda, .bv-quieto .bv-palabra path { animation: none; transform: none; opacity: 1; stroke-dashoffset: 0; }
 .bv-quieto .bv-sol, .bv-quieto .bv-letra { transition: none; transform: none; }
 .bv-quieto.bv-sale { transition: opacity .4s ease; }
+
+/* ---------------------------------------------------------------- ingreso rediseñado (v9) */
+.app.en-ingreso {
+  background:
+    radial-gradient(circle at 105% 8%, rgba(147, 197, 253, .35) 0, transparent 38%),
+    radial-gradient(circle at -10% 62%, rgba(165, 180, 252, .28) 0, transparent 42%),
+    linear-gradient(180deg, #EEF4FF 0, #F8FAFC 100%);
+}
+.app.en-ingreso .vista { padding-top: calc(24px + var(--safe-t)); }
+.ingreso-marca { display: inline-flex; align-items: center; gap: 12px; margin-bottom: 22px; text-align: left; }
+.ingreso-marca img { height: 50px; width: auto; } /* logo PNG transparente (img/logo.png), sin recuadro */
+.ingreso-marca b { display: block; font-family: var(--font-h); font-weight: 800; font-size: 17px; letter-spacing: .06em; text-transform: uppercase; color: #0A2540; line-height: 1.15; }
+.ingreso-marca span { display: block; font-size: 13px; color: var(--muted); margin-top: 2px; }
+.olvide { display: block; text-align: right; font-size: 14px; font-weight: 600; text-decoration: none; margin: -6px 2px 16px; }
