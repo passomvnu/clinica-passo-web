@@ -504,12 +504,12 @@ async function vistaInicio() {
       <div class="seccion">Accesos rápidos</div>
       <div class="accesos-foto">
         ${htmlAccesoFoto({ href: '#/pedir', titulo: 'Pedir turno', foto: 'img/pedir-turno.jpg', ico: 'calendar-plus', tono: 'tono-azul', fondo: 'stethoscope' })}
-        ${htmlAccesoFoto({ href: '#/turnos', titulo: 'Mis turnos', foto: 'img/mis-turnos.jpg', encuadre: '38% center', ico: 'calendar-heart', tono: 'tono-rosa', fondo: 'hospital' })}
-        ${htmlAccesoFoto({ href: '#/estudios', titulo: 'Estudios e imágenes', foto: 'img/estudios.jpg', encuadre: '62% center', ico: 'scan', tono: 'tono-violeta', fondo: 'heart-pulse', ancho: true, filtro: 'adjunto' })}
+        ${htmlAccesoFoto({ href: '#/turnos', titulo: 'Mis turnos', foto: 'img/mis-turnos.jpg', encuadre: '30% center', ico: 'calendar-heart', tono: 'tono-rosa', fondo: 'hospital' })}
+        ${htmlAccesoFoto({ href: '#/estudios', titulo: 'Estudios e imágenes', foto: 'img/estudios.jpg', encuadre: '60% 45%', ico: 'scan', tono: 'tono-violeta', fondo: 'heart-pulse', ancho: true, filtro: 'adjunto' })}
       </div>
       <div class="seccion">Últimos resultados ${docs.length ? '<a href="#/estudios">Ver todos</a>' : ''}</div>
       ${recientes.length ? `<div class="tarjeta lista">${recientes.map(htmlFilaDoc).join('')}</div>`
-        : `<div class="tarjeta tarjeta-pad" style="color:var(--muted);font-size:15px">Todavía no hay estudios cargados. Cuando la clínica cargue un laboratorio, una imagen o una epicrisis, lo vas a ver acá.</div>`}
+        : `<div class="tarjeta tarjeta-pad" style="color:var(--muted);font-size:15px">Todavía no hay estudios cargados. Cuando la clínica cargue un estudio, una imagen o una epicrisis, lo vas a ver acá.</div>`}
       <div class="seccion">¿Necesitás ayuda?</div>
       <a class="tarjeta fila" href="https://wa.me/${WHATSAPP_CLINICA}" target="_blank" rel="noopener">
         <span class="ic-caja tono-verde">${icono('smartphone')}</span>
@@ -629,7 +629,7 @@ async function vistaEstudios() {
   cargando();
   try {
     const docs = await cargarDocs(true);
-    const filtros = [['todos', 'Todos'], ['laboratorio', 'Laboratorios'], ['adjunto', 'Estudios e imágenes'], ['receta', 'Recetas'], ['epicrisis', 'Epicrisis']];
+    const filtros = [['todos', 'Todos'], ['adjunto', 'Estudios e imágenes'], ['receta', 'Recetas'], ['epicrisis', 'Epicrisis']];
     const dibujar = () => {
       const lista = docs.filter(d => S.filtroDocs === 'todos' || d.tipo === S.filtroDocs);
       const grupos = [];
@@ -645,8 +645,8 @@ async function vistaEstudios() {
         ${grupos.length ? grupos.map(g => `<div class="grupo-mes">${esc(g.clave)}</div><div class="tarjeta lista">${g.docs.map(htmlFilaDoc).join('')}</div>`).join('')
           : `<div class="tarjeta tarjeta-pad" style="text-align:center;color:var(--muted);margin-top:8px">
               <span class="ic-caja tono-azul" style="margin:6px auto 12px">${icono('file-text')}</span>
-              ${docs.length ? 'No hay documentos de este tipo.' : 'Todavía no hay estudios cargados. Cuando la clínica cargue un laboratorio, una imagen o una epicrisis, lo vas a ver acá.'}</div>`}
-        <p class="nota-legal">Acá ves tus laboratorios, estudios, imágenes, recetas y epicrisis. Si necesitás una copia completa de tu historia clínica, pedila en recepción.</p>`);
+              ${docs.length ? 'No hay documentos de este tipo.' : 'Todavía no hay estudios cargados. Cuando la clínica cargue un estudio, una imagen o una epicrisis, lo vas a ver acá.'}</div>`}
+        <p class="nota-legal">Acá ves tus estudios, imágenes, recetas y epicrisis. Si necesitás un laboratorio o una copia completa de tu historia clínica, pedila en recepción y te la mandamos por mail.</p>`);
       document.querySelectorAll('[data-f]').forEach(b => b.onclick = () => { S.filtroDocs = b.dataset.f; dibujar(); });
     };
     dibujar();
