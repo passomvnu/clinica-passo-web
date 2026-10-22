@@ -256,7 +256,7 @@ function vistaIngresar() {
     <div class="ingreso-hero">
       <div class="ingreso-marca">
         <img src="img/logo.png" alt="" onerror="this.remove()">
-        <div><b>Clínica Passo S.A.</b><span>Desde 1967</span></div>
+        <div class="ingreso-marca-txt"><span class="im-1">Clínica</span><b class="im-2">Passo S.A.</b><span class="im-3">Desde 1967</span></div>
       </div>
       <h2>Portal de pacientes</h2>
       <p>Tus turnos, estudios e imágenes.</p>
