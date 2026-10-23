@@ -680,3 +680,10 @@ details.pasados[open] summary .ic { transform: rotate(90deg); }
 .ingreso-marca-txt .im-2 { font-family: var(--font-h); font-weight: 800; font-size: 21px; letter-spacing: .08em; text-transform: uppercase; color: #0A2540; margin-top: 3px; }
 .ingreso-marca-txt .im-3 { font-size: 13px; color: var(--muted); margin-top: 6px; letter-spacing: .02em; }
 @media (max-width: 360px) { .ingreso-marca img { height: 56px; } .ingreso-marca-txt .im-1, .ingreso-marca-txt .im-2 { font-size: 18px; } }
+
+/* ingreso v11: logo centrado con CLÍNICA / PASSO S.A. ("Desde 1967" cuelga abajo) y título en Inter, más sobrio */
+.ingreso-marca-txt { position: relative; }
+.ingreso-marca-txt .im-3 { position: absolute; top: 100%; left: 0; white-space: nowrap; }
+.ingreso-marca { margin-bottom: 40px; }
+.ingreso-hero h2 { font-family: 'Inter', system-ui, sans-serif; font-weight: 700; font-size: 27px; letter-spacing: -0.025em; color: #0A2540; }
+.ingreso-hero p { font-family: 'Inter', system-ui, sans-serif; font-weight: 500; font-size: 15px; letter-spacing: -0.005em; }
